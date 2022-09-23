@@ -1,6 +1,6 @@
 # Process
 ## Team Organization
-The team is organized based on the team contract in which the rules and regulations will be based on that. For the project itself, we planned to divide work equally so 2 members will work on the front end, 2 on the back end, and the last 2 will work on the database. So far all members are equal in status and power in the team. Some members have his/her own roles and are responsible for their duty. The following are the roles and who are responsible for each role:
+The team is organized based on the rules and regulations stated in the team contract. For the project itself, we planned to divide work equally so 2 members will work on the front end, 2 on the back end, and the last 2 will work on the database. So far all members are equal in status and power in the team. Some members have his/her own roles and are responsible for their duty. The following are the roles and who are responsible for each role:
 
     Team lead - Scrum master: Alfred
     Scrum development team member - All of us
@@ -33,5 +33,5 @@ We held our first meeting on week 1’s Sunday on zoom. Then on week 2 all membe
 
 ## Lessons to take on this phrase and our next steps
 * __Time efficient__: We need to make decisions faster. Furthermore, we need to be less decisive and strictly follow our decision making process. Most importantly, we need to stop questioning and reconsider the decisions that are already made. To do this we should think twice when making decisions and make sure we stay with those decisions.
-* __Smoother communication__: All of us need to be less shy and don't be afraid to express our true thoughts and feelings. Also don't stay quiet if there is an opinion/idea that comes to mind.
-* __Preparation__: We should come up with a plan before attending our meetings so we know what we are doing/discussing beforehand. 
+* __Smoother communication__: All of us need to be honest and don't be afraid to express our true thoughts and feelings. Also, don't stay quiet if there is an opinion/idea that comes to mind.
+* __Preparation__: We should come up with a plan before attending our meetings so we know what we will be doing/discussing beforehand. 
