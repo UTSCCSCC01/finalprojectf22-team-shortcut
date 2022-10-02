@@ -1,0 +1,39 @@
+
+*{
+    margin: auto;
+}
+
+.page {
+    height: 100vh;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;   
+   
+}
+
+.login_box {
+    
+    background-color: aliceblue;
+    
+    width:25em;
+    height: 25em;
+    border-radius: 5em;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    box-shadow: 0em 0.4em 0.4em rgb(160, 160, 160); 
+    margin-top: 2em;
+}
+
+input{
+
+    text-align: center;
+    border-color: azure;
+    height: 1.6em;
+    width: 50%;
+}
+
+
+
