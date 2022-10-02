@@ -1,1 +1,25 @@
+.signup{
+    height: 32px;
+    background: #FFFFFF;
+    border-radius: 2px;
+    border: 1px solid #355BEB;
+}
 
+
+.inputTitle{
+    margin-left: 16px;
+    width: 20%;
+    height: 26px;
+    font-size: 18px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.85);
+    line-height: 26px;
+}
+.mystyle {  
+    background-color: #cdc0b0;  
+    color: Red;  
+    padding: 10px;  
+    font-family: Arial;  
+    text-align: center;  
+  }  
