@@ -8,15 +8,15 @@ const { default: mongoose } = require('mongoose');
 router.use(express.json());
 var mongo = require('mongodb').MongoClient;
 var url = "mongodb+srv://CalebZhang:Zhangkeyuan333@cluster0.lb38qs6.mongodb.net/?retryWrites=true&w=majority";
-
+const bcrypt = require('bcrypt');
 //Login
 router.post('/login', bodyParser.json(), async(req,res)=>{
     var email = req.body.email;
-    var password = req.body.pasword;
+    var password = await bcrypt.hash(req.body.pasword,10) ;
   
         mongo.connect(url, async(err, db) => {
         var db1 = db.db("ShortCut");
-        var student  = await db1.collection('Student').findOne({password: req.body.password, "email.data": req.body.email});
+        var student  = await db1.collection('Student').findOne({password: password, "email.data": req.body.email});
         console.log(student);
         if(student == null){
             const params = {
