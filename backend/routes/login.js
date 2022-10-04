@@ -29,29 +29,36 @@ router.post('/login', bodyParser.json(), async(req,res)=>{
         mongo.connect(url, async(err, db) => {
         var db1 = db.db("ShortCut");
         var student  = await db1.collection('Student').findOne({"email.data": req.body.email});
+        console.log(student.password);
         if(student == null){
             const params = {
                 check:0
             }
             res.json(params);
         }else{
-            const result = comparePassword(password,student.password);
-            if(result){
+            const params1 = {
+                check:0
+            }
+            if(await bcrypt.compare(req.body.password,student.password)){
+                console.log(1);
+           
                 const check1 = {
                     check:1
                 };
-    
+                
                 // const obj1 = JSON.parse(check1);
                 // const obj2 = JSON.parse(student);
-    
+                
                 const params = {
                     ...check1,
                     ...student,
                 }
                 res.json(params);
+        
             }else{
-                res.json(params);
+                res.json(params1);
             }
+            
 
            
          
