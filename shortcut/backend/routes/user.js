@@ -21,18 +21,24 @@ router.post('/delete', bodyParser.json(), async(req,res)=>{
     
     mongo.connect(url, async(err, db) => {
       if (err){
-        res.send('flag 1');
+        res.json({ 'data': req.body, 'result': 0, 'message': 'Error when deleting.' });
+        res.end();
         return;
       }
       var id = req.body._id.$oid;
       var db1 = db.db("ShortCut");
       myobj  = await db1.collection('Student').findOne({"email.data": req.body.email.data});
       if(myobj == null){
-          res.send('flag 2');
+          res.json({ 'data': req.body, 'result': 0, 'message': 'Error when deleting.' });
+          res.end();
           return;
       }
       await db1.collection('Student').deleteOne({"email.data": req.body.email.data});
-      res.send('success');
+      res.json({ 'data': req.body, 'result': 1, 'message': 'User deleted.' });
+      res.end();
+
+      db.close();
+
     });
 
 });
