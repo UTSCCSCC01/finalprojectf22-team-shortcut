@@ -23,9 +23,11 @@ const studentSchema = new mongoose.Schema({
         minLength: 6,
         validate: [
             { validator: v => { return v.search(/\d/) > -1 }, message: props => `${props.value} does not contain digits.`},
+
             { validator: v => { return v.search(/[a-zA-Z]/) > -1 }, message: props => `${props.value} does not contain alphabets.`},
             { validator: v => { return v.search(/\W/) == -1 }, message: props => `${props.value} contains invalid characters.`}
         ]
+
     },
     name: {data: String, display: Boolean},
     dateOfBirth: {data: Date, display: Boolean},
@@ -33,5 +35,6 @@ const studentSchema = new mongoose.Schema({
     program: {data: String, display: Boolean},
     description: {data: String, display: Boolean}
 }, { collection: "Student"});
+
 
 module.exports = mongoose.model("Student", studentSchema);
