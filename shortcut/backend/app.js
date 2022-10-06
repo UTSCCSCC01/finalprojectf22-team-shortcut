@@ -41,8 +41,13 @@ app.use(cors({origin: true, credentials: true}));
 const testRoutes = require("./routes/test");
 app.use("/", testRoutes);
 
+
+const userRoutes = require("./routes/user");
+app.use("/user", userRoutes);
+
 const userRoutes = require("./routes/deleteUser");
 app.use("/", userRoutes);
+
 
 
 //port
