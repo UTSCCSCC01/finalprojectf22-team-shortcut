@@ -23,9 +23,7 @@ const studentSchema = new mongoose.Schema({
         minLength: 6,
         validate: [
             { validator: v => { return v.search(/\d/) > -1 }, message: props => `${props.value} does not contain digits.`},
-            { validator: v => { return v.search(/[a-zA-Z]/) > -1 }, message: props => `${props.value} does not contain alphabets.`},
-            { validator: v => { return v.search(/\W/) == -1 }, message: props => `${props.value} contains invalid characters.`}
-        ]
+            { validator: v => { return v.search(/[a-zA-Z]/) > -1 }, message: props => `${props.value} does not contain alphabets.`}        ]
     },
     name: {data: String, display: Boolean},
     dateOfBirth: {data: Date, display: Boolean},
