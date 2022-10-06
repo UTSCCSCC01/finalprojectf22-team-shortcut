@@ -7,10 +7,12 @@ const Home =()=>{
     let navigate = useNavigate();
 
     const {state} =useLocation();
-    const{email, password, name, dateOfBirth, gender, program, description} =state.feedback; 
+    const{email, password, name, dateOfBirth, gender, Program, Description} =state.feedback; 
     
-    const user = {email, password, name, dateOfBirth, gender, program, description};
-    
+    const user = {email, password, name, dateOfBirth, gender, Program, Description};
+    console.log(Program);
+    console.log(Description);
+    console.log(user);
 
 
     function handleClick(){
