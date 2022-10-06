@@ -45,6 +45,7 @@ const Login =()=>{
         }
         else{
             setHeader("Login Failed");
+            setMsg("Please input correct email and password")
             setPopout(true);
             
 
