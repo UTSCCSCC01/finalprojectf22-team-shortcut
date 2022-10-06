@@ -6,7 +6,7 @@ var mongo = require('mongodb').MongoClient;
 var url = "mongodb+srv://CalebZhang:Zhangkeyuan333@cluster0.lb38qs6.mongodb.net/?retryWrites=true&w=majority";
 
 
-router.post('/delete', bodyParser.json(), async(req,res)=>{
+router.delete('/delete', bodyParser.json(), async(req,res)=>{
     // var id = req.body._id.$oid;
     // // var id = '"$oid":"6336546fe4297bcdbfe06641"';
     // Student.findById(id, function(err, doc) {
@@ -25,7 +25,6 @@ router.post('/delete', bodyParser.json(), async(req,res)=>{
         res.end();
         return;
       }
-      var id = req.body._id.$oid;
       var db1 = db.db("ShortCut");
       myobj  = await db1.collection('Student').findOne({"email.data": req.body.email.data});
       if(myobj == null){
