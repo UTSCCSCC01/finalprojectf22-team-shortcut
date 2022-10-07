@@ -3,10 +3,11 @@ const express  = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors  = require('cors');
+
+require('dotenv').config();
+//app
 const app = express();
 app.use(express.json());
-require('dotenv').config();
-
 //db
 
 mongoose.connect(process.env.MONGO_URI, {
@@ -23,12 +24,14 @@ require('dotenv').config();
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(bodyParser.json());
 
 
 
 
   
+
 
 
 
@@ -47,9 +50,11 @@ app.use(cors({origin: true, credentials: true}));
 
 
 //routes
-const testRoutes = require("./routes/test");
-const e = require('express');
+
+const testRoutes = require("./routes/signup");
 app.use("/", testRoutes);
+
+
 
 
 const loginRoutes = require("./routes/login");
@@ -63,6 +68,7 @@ app.use("/", userRoutes);
 
 
 
+
 //port
 const port = process.env.PORT || 8080; // process.env.PORT
 
@@ -70,3 +76,4 @@ const port = process.env.PORT || 8080; // process.env.PORT
 const server = app.listen(port, ()=>
     console.log(`System is running on port ${port}`)
 );
+
