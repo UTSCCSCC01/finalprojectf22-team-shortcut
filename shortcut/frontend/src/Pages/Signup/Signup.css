@@ -1,8 +1,9 @@
-
-
 *{
     margin: auto;
+    
+    
 }
+
 
 
 .button_group .back{
@@ -20,6 +21,7 @@
     background-color:rgb(173, 216, 230);
     box-shadow: 0em 0.2em 0.2em rgb(160, 160, 160);
 }
+
 .button_group{
     display: flex;
     
