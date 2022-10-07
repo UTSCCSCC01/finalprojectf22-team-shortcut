@@ -7,7 +7,7 @@ function Button({text, func, wid, col, lft, tp}) {
         <div>
             <button 
                 class="btn" 
-                style={{backgroundColor: col, width: wid, position: "fixed", left: lft, top: tp}}
+                style={{backgroundColor: col, width: wid, left: lft, top: tp}}
                 onClick = {func}
             >
                 {text}
