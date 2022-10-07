@@ -2,11 +2,11 @@ import React from "react";
 import './Login.css';
 import { Link, Routes, Route, BrowserRouter as Router, useNavigate} from "react-router-dom";
 import { useState } from "react";
+
+
+// Components
+import Logo from "../../Components/Logo";
 import Popout from "../../Components/Popout";
-
-
-// icons
-import{MdOutlineMail} from "react-icons/md";
 
 
 
@@ -36,8 +36,10 @@ const Login =()=>{
             body: JSON.stringify(data)
         });
         feedback = await feedback.json();
+        console.log("passin");
+
         console.log(feedback);
-        
+        console.log("passend");
         if(feedback.check===1){
             navigate('/home', {state:{feedback}});
 
@@ -55,6 +57,7 @@ const Login =()=>{
  
     return(
         <div>
+           <Logo/>
             <div className="login_box">
                 <h1>Log In</h1> 
                 <input type = "email"  onChange={getEmail}  placeholder="email address" />
@@ -64,7 +67,7 @@ const Login =()=>{
                 
                 
                 <input type="password" onChange={getPassword} placeholder="password"/>
-                <button onClick={handleClick} > Login</button>
+                <button className="login_submit"onClick={handleClick} > Login</button>
         
                 <div className="register">
                     <p>Don't have an account?</p>

@@ -12,6 +12,8 @@
    
 }
 
+
+
 .login_box {
     
     background-color: aliceblue;
@@ -27,7 +29,7 @@
     margin-top: 2em;
 }
 
-input{
+.page input{
 
     text-align: center;
     border-color: azure;
