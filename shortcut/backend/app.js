@@ -3,19 +3,9 @@ const express  = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors  = require('cors');
-const bodyParser = require('body-parser');
-
-require('dotenv').config();
-
-//app
 const app = express();
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-
-
-
-
+app.use(express.json());
+require('dotenv').config();
 
 //db
 
@@ -25,6 +15,25 @@ mongoose.connect(process.env.MONGO_URI, {
 
 })
 .then(()=> console.log("DB CONNECTED")).catch(err=>console.log("DB CONNECTION", err));
+
+
+
+require('dotenv').config();
+
+
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+
+
+
+  
+
+
+
+
+
 
 
 
@@ -39,13 +48,19 @@ app.use(cors({origin: true, credentials: true}));
 
 //routes
 const testRoutes = require("./routes/test");
+const e = require('express');
 app.use("/", testRoutes);
+
+
+const loginRoutes = require("./routes/login");
+app.use("/",loginRoutes);
 
 const deleteUserRoutes = require("./routes/deleteUser");
 app.use("/", deleteUserRoutes);
 
 const userRoutes = require("./routes/edit");
 app.use("/", userRoutes);
+
 
 
 //port
