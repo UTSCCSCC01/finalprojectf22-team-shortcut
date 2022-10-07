@@ -41,8 +41,12 @@ app.use(cors({origin: true, credentials: true}));
 const testRoutes = require("./routes/test");
 app.use("/", testRoutes);
 
+const deleteUserRoutes = require("./routes/deleteUser");
+app.use("/", deleteUserRoutes);
+
 const userRoutes = require("./routes/edit");
 app.use("/", userRoutes);
+
 
 //port
 const port = process.env.PORT || 8080; // process.env.PORT

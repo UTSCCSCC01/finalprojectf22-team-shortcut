@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const studentSchema = new mongoose.Schema({
+
   email: {
     _id: false,
     type: {
@@ -50,3 +51,4 @@ const studentSchema = new mongoose.Schema({
 
 
 module.exports = mongoose.model("Student", studentSchema);
+
