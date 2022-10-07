@@ -45,6 +45,14 @@ const userRoutes = require("./routes/deleteUser");
 app.use("/", userRoutes);
 
 
+const userRoutes = require("./routes/user");
+app.use("/user", userRoutes);
+
+const userRoutes = require("./routes/deleteUser");
+app.use("/", userRoutes);
+
+
+
 //port
 const port = process.env.PORT || 8080; // process.env.PORT
 
