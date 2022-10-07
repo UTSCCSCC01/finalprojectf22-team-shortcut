@@ -1,9 +1,11 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
 import "./Signup.css";
-import Popout from "../../Components/Popout";
 import { useState, useEffect} from "react";
 
+// Components
+import Popout from "../../Components/Popout";
+import Logo from "../../Components/Logo";
 
 const Signup =()=>{
 
@@ -70,7 +72,7 @@ const Signup =()=>{
 
     return(
         <div>
-            
+            <Logo/>
             <div className="signup_box">
                 <h1>Sign Up</h1>
                 <input type = "email"  onChange = {e=>setEmail(e.target.value)} placeholder="your email address" />
@@ -90,3 +92,7 @@ const Signup =()=>{
         
     );
 }
+
+
+
+export default Signup;
