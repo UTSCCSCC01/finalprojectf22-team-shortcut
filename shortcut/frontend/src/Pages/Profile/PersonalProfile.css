@@ -1,0 +1,54 @@
+*{
+    margin: auto;
+}
+
+.page {
+    height: 100vh;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;   
+   
+}
+
+.profile_box{
+    margin-top: auto;
+    background-color: aliceblue;
+    width:60em;
+    height: 50em;
+    border-radius: 5em;
+    align-items: center;
+    display: flex;
+    
+    justify-content: center;
+    flex-direction: column;
+    box-shadow: 0em 0.4em 0.4em rgb(160, 160, 160); 
+    margin-top: 2em; 
+
+}
+
+.profile_box .one_entry{
+    width: 35%;
+}
+
+.Welcome{
+    align-items: center;
+
+}
+
+.buttons{
+    display: flex;
+    
+    flex-direction: row;
+    width: 58%;
+    margin: 1.5em auto;
+    
+    
+}
+input{
+
+    border-color: azure;
+    height: 1.6em;
+    width: 100%;
+}
+
