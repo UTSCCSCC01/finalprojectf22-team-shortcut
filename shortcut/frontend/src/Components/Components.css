@@ -1,5 +1,7 @@
 
-
+body{
+    background-color: ghostwhite;
+}
 
 .failure {
     position:fixed;
@@ -47,6 +49,5 @@
 
 .logo{
     font-size: larger;
-    margin-top: 0.8em;
+    background-color: transparent;
 }
-
