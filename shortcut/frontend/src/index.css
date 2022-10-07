@@ -1,0 +1,28 @@
+*{
+  margin: auto;
+}
+
+body {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-size: cover;
+  background-image: url("Images/background6.jpg");
+  background-position: center;
+  background-repeat:no-repeat;
+  background-attachment: fixed;
+  min-height: 100%;
+  min-width: 100%;
+
+  
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+
+
