@@ -209,20 +209,19 @@
     - 1 mark  = Somewhat related
     - 0 marks = Missing or not related
 
-    Your mark: _
+    Your mark: 2
 
   - Graphic representation is clear and represents well indended user interface elements (max 2 marks)
     - 2 marks = Clear and well done
     - 1 mark  = Not very clear, 
     - 0 marks = missing or completely unclear
   
-    Your mark: _ 
+    Your mark: 2 
   
-  Link provided in UI.md is not accessible.
   
-  User experience Total Mark: 0 / 4
+  User experience Total Mark: 4 / 4
    
 ---
 ## Total Mark  
-Sprint 0 Total Mark : 44 / 48
+Sprint 0 Total Mark : 48 / 48
 	
