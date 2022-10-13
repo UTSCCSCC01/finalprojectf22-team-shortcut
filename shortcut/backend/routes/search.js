@@ -20,16 +20,30 @@ router.post('/search', bodyParser.json(), async(req,res)=>{
         db1.collection('Course').find({$or:[{name:{$regex:keywords, $options:'i'}}, {code:{$regex:keywords.toUpperCase()}}]}).toArray((err,result) =>{
             if(err) throw err;
             var rLength = result.length;
-            var a = new Array();
-            for(let i=0;i<rLength;i++){
-                const params = {
-                    name:result[i].name,
-                    code:result[i].code
+            
+            if(rLength === 0){
+                console.log('wudi');
+                const params={
+                    check:0
                 }
-                a[i] = params;
+                res.json(params);
+            }else{
+                var a = new Array();
+            
+                for(let i=0;i<rLength;i++){
+                    const params = {
+                        name:result[i].name,
+                        code:result[i].code
+                    }
+                    a[i] = params;
+
+                }
+            
+            
+                res.send({check:1,a});
 
             }
-            res.json(a);
+            
 
         });
 
