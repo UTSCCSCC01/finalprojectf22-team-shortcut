@@ -17,7 +17,7 @@ router.post('/search', bodyParser.json(), async(req,res)=>{
         console.log(keywords);
         mongo.connect(url, async(err, db) => {
         var db1 = db.db("ShortCut");
-        db1.collection('Course').find({$or:[{name:{$regex:keywords.toUpperCase()}}, {code:{$regex:keywords}}]}).toArray((err,result) =>{
+        db1.collection('Course').find({$or:[{name:{$regex:keywords, $options:'i'}}, {code:{$regex:keywords.toUpperCase()}}]}).toArray((err,result) =>{
             if(err) throw err;
             var rLength = result.length;
             var a = new Array();
