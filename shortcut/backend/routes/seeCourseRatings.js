@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt');
 const e = require('express');
 const { default: mongoose } = require('mongoose');
 //const studentSchema = require('../schemas/studentSchema');
@@ -40,6 +39,7 @@ router.post('/seeCourseRatings', bodyParser.json(), async (req, res) => {
                 res.end(); 
 
                 db.close();
+                
             });
 
         });
