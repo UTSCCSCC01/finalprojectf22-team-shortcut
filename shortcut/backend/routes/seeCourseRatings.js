@@ -28,15 +28,15 @@ router.post('/seeCourseRatings', bodyParser.json(), async (req, res) => {
                 return;
             }
             for(const rating of ratings){
-                ids.push(rating.comment);
+                ids.push(mongoose.Types.ObjectId(rating.comment));
             }
-            db1.collection('Comment').find({"comment_id":{ $in: ids }}).toArray((err,comments) =>{
+            db1.collection('Comment').find({"_id":{ $in: ids }}).toArray((err,comments) =>{
                 if (err){
                     res.json({ 'result': 0, 'message': 'Error.' });
                     res.end();
                     return;
                 }
-                res.json({ 'result': 1, 'ratings': ratings, 'ids': ids, 'comments': comments, 'message': 'returning course ratings.' });
+                res.json({ 'result': 1, 'ratings': ratings, 'comments': comments, 'message': 'returning course ratings.' });
                 res.end(); 
 
                 db.close();
