@@ -77,3 +77,8 @@ const server = app.listen(port, ()=>
     console.log(`System is running on port ${port}`)
 );
 
+const searchprogramskey = require("./routes/searchprogramskey");
+app.use("/", searchprogramskey);
+
+const searchprogramname = require("./routes/searchprogramname");
+app.use("/", searchprogramname);
