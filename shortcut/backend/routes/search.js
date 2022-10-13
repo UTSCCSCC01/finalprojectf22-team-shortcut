@@ -13,13 +13,23 @@ const bcrypt = require('bcrypt');
 //search 
 router.post('/search', bodyParser.json(), async(req,res)=>{
     var keywords = req.body.keywords;
+
         console.log(keywords);
         mongo.connect(url, async(err, db) => {
         var db1 = db.db("ShortCut");
-        db1.collection('Course').find({$or:[{name:{$regex:keywords}}, {code:{$regex:keywords}}]}).toArray((err,result) =>{
+        db1.collection('Course').find({$or:[{name:{$regex:keywords.toUpperCase()}}, {code:{$regex:keywords}}]}).toArray((err,result) =>{
             if(err) throw err;
-            
-            res.json(result);
+            var rLength = result.length;
+            var a = new Array();
+            for(let i=0;i<rLength;i++){
+                const params = {
+                    name:result[i].name,
+                    code:result[i].code
+                }
+                a[i] = params;
+
+            }
+            res.json(a);
 
         });
 
