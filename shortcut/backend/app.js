@@ -66,6 +66,8 @@ app.use("/", deleteUserRoutes);
 const userRoutes = require("./routes/edit");
 app.use("/", userRoutes);
 
+const seeCourseRatingsRoutes = require("./routes/seeCourseRatings");
+app.use("/", seeCourseRatingsRoutes);
 
 
 
