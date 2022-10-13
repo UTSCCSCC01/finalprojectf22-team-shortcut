@@ -7,6 +7,11 @@ const commentSchema = new mongoose.Schema({
     type: String,
     required: [true, "Email required."]
   },
+  anonymity: {
+    _id: false,
+    type: Boolean,
+    default: true,
+  },
   created: {
     _id: false,
     type: Date,

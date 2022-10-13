@@ -38,7 +38,7 @@ router.post('/course/rate', bodyParser.json(), async (req, res) => {
     console.log("Found course!");
 
     // create comment
-    const comment = new Comment({ 'email': req.body.email, 'course': req.body.course, 'content': req.body.comment });
+    const comment = new Comment({ 'email': req.body.email, 'course': req.body.course, 'content': req.body.comment, 'anonymity': req.body.anonymity });
     try {
         await comment.save();
     }
@@ -56,7 +56,7 @@ router.post('/course/rate', bodyParser.json(), async (req, res) => {
     console.log(comment);
 
     // create rating with new comment
-    const rating = new Rating({ 'email': req.body.email, 'created': comment.created, 'course': req.body.course, 'score': req.body.score, 'comment': comment._id.toString() });
+    const rating = new Rating({ 'email': req.body.email, 'created': comment.created, 'course': req.body.course, 'score': req.body.score, 'comment': comment._id.toString(), 'anonymity': req.body.anonymity });
     try {
         await rating.save();
     }
