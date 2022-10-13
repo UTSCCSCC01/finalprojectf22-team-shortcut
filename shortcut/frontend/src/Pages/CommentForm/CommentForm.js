@@ -3,7 +3,7 @@ import './CommentForm.css';
 
 import Button from '../../Components/Button';
 import * as React from 'react';
-import { Link, Routes, Route, BrowserRouter as Router, useNavigate, useLocation } from "react-router-dom";
+import { useParams, Link, Routes, Route, BrowserRouter as Router, useNavigate, useLocation } from "react-router-dom";
 import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
@@ -15,6 +15,8 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import Popout from '../../Components/Popout';
 import Logo from "../../Components/Logo";
+
+
 
 const CommentForm =()=> {
     let navigate = useNavigate();
@@ -28,7 +30,11 @@ const CommentForm =()=> {
     const user = state.user;
 
     const [email, setEmail] = useState(state.user.email.data);
-    const [course, setCourse] = useState("CSCC01");
+
+    const{code}=useParams();
+    console.log(code);
+
+    const [course, setCourse] = useState(code);
     const [score, setScore] = useState(0);
     const [comment, setComment] = useState("");
     const [anonymity, setAnonymity]= useState(false);
@@ -65,8 +71,8 @@ const CommentForm =()=> {
         
         if(feedback.result===1){
             console.log("succeed");
-            const feedback = state.user
-            navigate('/home', {state: {feedback}});
+            
+            navigate(-1, {state: {user}});
         }
         else{
             
@@ -75,6 +81,7 @@ const CommentForm =()=> {
             setPopout(true);
 
             console.log("failed");
+            console.log("fed");
 
         }
     
@@ -115,7 +122,7 @@ const CommentForm =()=> {
                     />
                 </div>
 
-                <div className="buttons">
+                <div className="buttons2">
                     <Button text = "Cancel" col="steelblue" func={handleCancel}></Button>
                     <Button text = "Submit" col="steelblue" func={submit}></Button>
                 </div>
