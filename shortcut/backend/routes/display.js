@@ -33,7 +33,7 @@ router.post('/display', bodyParser.json(), async(req,res)=>{
             }
             res.json(params);
         }else{
-            res.json(course);           
+            res.send({check:1,course});           
          
         }
        
