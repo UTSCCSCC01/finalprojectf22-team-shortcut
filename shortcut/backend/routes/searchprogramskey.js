@@ -12,7 +12,7 @@ router.post('/searchprogramskey', bodyParser.json(), async(req,res)=>{
         console.log(key);
         mongo.connect(url, async(err, db) => {
         var db1 = db.db("ShortCut");
-        db1.collection('Program').find({name:{$regex:key}}).project({name:1,_id:0,type:1}).toArray((err,result) =>{
+        db1.collection('Program').find({name:{$regex:key,$options: 'i'}}).project({name:1,_id:0,type:1}).toArray((err,result) =>{
             if(err){
                 res.send({length:0});
                 return;
