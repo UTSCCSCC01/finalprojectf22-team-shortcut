@@ -1,0 +1,64 @@
+.box {
+    
+    background-color: aliceblue;
+    
+    width: 70em;
+    height: 40em;
+    border-radius: 5em;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0em 0.4em 0.4em rgb(160, 160, 160); 
+    margin-top: 2em;
+    opacity: 100%;
+}
+
+.scoreDiv {
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    position: relative;
+    left: -15%;
+}
+
+.commentDiv {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    position: relative;
+    top: -6%;
+    left: -3.5%;
+}
+
+.commentHeader {
+    position: relative;
+    left: -40%;
+}
+
+.commentInput {
+    width: 50em;
+    height: 15em;
+    position: relative;
+    top: 5%;
+    font-size: medium;
+    text-align: left;
+    resize: none;
+    
+}
+
+.anonymityDiv {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    left: -17%;
+    top: -9%;
+}
+
+.buttons{
+    display: flex;
+    flex-direction: row;
+    width: 58%;
+    margin: 1.5em auto;
+    position: relative;
+    top: -5%;
+    
+}
