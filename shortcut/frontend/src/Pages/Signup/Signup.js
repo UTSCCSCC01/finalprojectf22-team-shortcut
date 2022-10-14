@@ -71,7 +71,7 @@ const Signup =()=>{
 
 
     return(
-        <div>
+        <div className="signup">
             <Logo/>
             <div className="signup_box">
                 <h1>Sign Up</h1>
