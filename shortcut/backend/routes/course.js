@@ -14,12 +14,12 @@ router.post('/course/rate', bodyParser.json(), async (req, res) => {
     // const student = await Student.findById(req.body._id);
     const student = await Student.findOne({ "email.data": req.body.email });
     // console.log(req.body._id);
-    if (student === null) {
+    if (student === null || student.name.data != req.body.username) {
         // debug message
         console.log("User does not exist.");
         // send data to frontend
         res.status(400);
-        res.json({ 'data': {'rating': null, 'comment': null}, 'result': 0, 'message': 'User does not exist.' });
+        res.json({ 'data': {'username': null, 'rating': null, 'comment': null}, 'result': 0, 'message': 'User does not exist.' });
         return;
     }
     console.log("Found user!");
@@ -32,7 +32,7 @@ router.post('/course/rate', bodyParser.json(), async (req, res) => {
         console.log("Course does not exist.");
         // send data to frontend
         res.status(400);
-        res.json({ 'data': {'rating': null, 'comment': null}, 'result': 0, 'message': 'Course does not exist.' });
+        res.json({ 'data': {'username': req.body.username, 'rating': null, 'comment': null}, 'result': 0, 'message': 'Course does not exist.' });
         return;
     }
     console.log("Found course!");
@@ -48,7 +48,7 @@ router.post('/course/rate', bodyParser.json(), async (req, res) => {
         if (e instanceof mongoose.Error.ValidationError) res.status(400);
         // database error
         else res.status(500);
-        res.json({ 'data': {'rating': null, 'comment': null}, 'result': 0, 'message': e.message });
+        res.json({ 'data': {'username': req.body.username, 'rating': null, 'comment': null}, 'result': 0, 'message': e.message });
         return;
     }
 
@@ -64,11 +64,11 @@ router.post('/course/rate', bodyParser.json(), async (req, res) => {
         console.log(e);
         if (e instanceof mongoose.Error.ValidationError) res.status(400);
         else res.status(500);
-        res.json({ 'data': {'rating': null, 'comment': null}, 'result': 0, 'message': e.message });
+        res.json({ 'data': {'username': req.body.username, 'rating': null, 'comment': null}, 'result': 0, 'message': e.message });
         return;
     }
 
-    res.json({ 'data': {'rating': rating, 'comment': comment}, 'result': 1, 'message': "Successfully posted new rating." });
+    res.json({ 'data': {'username': req.body.username, 'rating': rating, 'comment': comment}, 'result': 1, 'message': "Successfully posted new rating." });
 
     console.log("New rating:");
     console.log(rating);
