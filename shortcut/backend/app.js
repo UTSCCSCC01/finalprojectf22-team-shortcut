@@ -67,7 +67,8 @@ const userRoutes = require("./routes/edit");
 app.use("/", userRoutes);
 
 
-
+const searchRoutes = require("./routes/search");
+app.use("/",searchRoutes);
 
 //port
 const port = process.env.PORT || 8080; // process.env.PORT
