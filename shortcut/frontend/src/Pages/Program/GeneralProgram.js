@@ -4,9 +4,12 @@ import { useState} from "react";
 
 // Components
 import Navbar from "../../Components/Navbar";
-import {Card, CardContent, CardMedia, Collapse, Paper, InputBase, IconButton, Divider, MenuList, MenuItem, ListItemText} from '@mui/material';
+import { Table, TableHead, TableBody, TableCell, Card, CardContent, CardMedia, Collapse, Paper, InputBase, IconButton, Divider, MenuList, MenuItem, ListItemText} from '@mui/material';
 import { GrSearchAdvanced, GrMore } from "react-icons/gr";
 import { ImFilter } from "react-icons/im";
+
+import TableContainer from '@mui/material/TableContainer';
+import TableRow from '@mui/material/TableRow';
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -20,8 +23,10 @@ import CardActions from '@mui/material/CardActions';
 import Specialist from "../../Images/specialist.jpg";
 import Major from "../../Images/major.jpg";
 import Minor from "../../Images/minor.jpg";
-import Program_Word from "../../Images/Program_Word.jpg";
+import bottom1 from "../../Images/b12.jpg";
+import bottom2 from "../../Images/Program_Word.jpg";
 
+import { useEffect } from "react";
 var programs = require("./ProgramDictionary.json");
 
 const GeneralProgram =()=>{
@@ -30,10 +35,21 @@ const GeneralProgram =()=>{
     const {state} =useLocation();
     const user=state.user;
     const [search, setSearch]=useState('');
+    // indicate search status
+    const [search_result, setSearchResult] = useState(0);
 
+    // info card
     const [specialist, setSpecialist]=useState(false);
     const [major, setMajor]=useState(false);
     const [minor, setMinor]=useState(false);
+
+    // store return data from backend
+    const [nameList, setNameList]=useState(["cscc01", "cscb09"]);
+    const [typeList, setTypeList] = useState(["minor", "major"]);
+
+    const [programList, setProgramList] = useState([]);
+ 
+
 
     function toProfile(){
         navigate('/profile', {state:{user}});
@@ -43,8 +59,33 @@ const GeneralProgram =()=>{
         navigate('/home', {state:{user}});
     }
 
-    async function submitSearch(){
+    useEffect(()=> {setSearchResult(0)}, [search]);
 
+    async function submitSearch(){
+        const keywords=search;
+        const data = {keywords};
+        let feedback = await fetch('http://localhost:8080/searchprogramskey', {
+            method:'POST',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data)
+        });
+        feedback = await feedback.json();
+        if(feedback.length===0){
+            // no course found
+            setSearchResult(-1);
+ 
+            
+        }
+        else{
+            setSearchResult(1);
+            setProgramList(feedback.result);
+
+            // setNameList(feedback.programname);
+            // setTypeList(feedback.type);
+            
+            // course found
+
+        }
     }
 
     return(
@@ -99,10 +140,10 @@ const GeneralProgram =()=>{
             </CardContent>
             <Collapse in={minor} >
             <CardContent >
-            <p >A Minor program gives you the flexibility to diversify 
+            <p> A Minor program gives you the flexibility to diversify 
                 your academic portfolio. It will introduce you to a subject
                  area and allow you to augment skills that can be applied to 
-                 other fields. </p>
+                 other fields.</p>
             </CardContent>
             </Collapse>
         </Card>
@@ -135,12 +176,43 @@ const GeneralProgram =()=>{
                     </div>    
                 ))}
             </MenuList>
-        
         </Paper>
-   
-        <img style={{ maxWidth: "100%", maxHeight:"50%"}} src={Program_Word}/>
         
+      
+
+
+
+        {search_result>0 && 
+        <Table sx={{maxWidth: "60%"}} >
+            <TableHead >
+                <TableCell><h3>Program Name</h3></TableCell>
+                <TableCell><h3>Type</h3></TableCell>
+            </TableHead>
+            
+                {programList.map((item)=>(
+                <TableBody>    
+                    <TableCell> <a href={`/program/${item.name}`}>{item.name}</a> </TableCell>
+                    <TableCell>{item.type}</TableCell>
+                </TableBody>
+                ))}
+        </Table>
+        }
+
+        {search_result<0 &&
+            <div>
+                <h3 style={{color: "red", textAlign:"center", marginTop:"2em"}}> Sorry, keyword doesn't match any program</h3>
+            </div>
+        }
+
+        <div>
+            <img style={{ width: "20%", height:"15%"}} src={bottom1}/>
+            <img style={{ width: "50%", height:"35%"}} src={bottom2}/>
         </div>
+ 
+        </div>
+
+
+
     )
 }
 export default GeneralProgram;
