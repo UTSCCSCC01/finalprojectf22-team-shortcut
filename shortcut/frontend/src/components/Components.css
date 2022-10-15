@@ -1,6 +1,7 @@
 
 body{
     background-color: ghostwhite;
+    
 }
 
 .failure {
@@ -22,7 +23,7 @@ body{
     
     position:relative;
     text-align:center;
-    display: flex;
+    display:flex;
     
     width: 100%;
     max-width: 40em;
