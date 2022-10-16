@@ -66,6 +66,9 @@ app.use("/", deleteUserRoutes);
 const userRoutes = require("./routes/edit");
 app.use("/", userRoutes);
 
+const courseRoutes = require("./routes/course");
+app.use("/", courseRoutes);
+
 
 
 
@@ -76,4 +79,3 @@ const port = process.env.PORT || 8080; // process.env.PORT
 const server = app.listen(port, ()=>
     console.log(`System is running on port ${port}`)
 );
-
