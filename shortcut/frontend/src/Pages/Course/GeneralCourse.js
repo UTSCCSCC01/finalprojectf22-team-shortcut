@@ -4,6 +4,7 @@ import Navbar from "../../Components/Navbar";
 import "./GeneralCourse.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Table, TableHead, TableBody, TableCell, Card, CardContent, CardMedia, Collapse, Paper, InputBase, IconButton, Divider, MenuList, MenuItem, ListItemText} from '@mui/material';
+import { ReactSearchAutocomplete } from 'react-search-autocomplete'
 
 // icons
 import { ImFilter } from "react-icons/im";
@@ -16,7 +17,7 @@ import C from "../../Images/b16.jpg";
 import D from "../../Images/b14.jpg";
 import b9 from "../../Images/b9.jpg";
 
-// corse disctionary keyword
+// course disctionary keyword
 var courses = require("./CourseDictionary.json");
 
 const GeneralCourse =()=>{
@@ -53,14 +54,14 @@ const GeneralCourse =()=>{
     async function submitSearch(){
         // submit keyword to backend
         const keywords=search;
+        console.warn(keywords);
         const data = {keywords};
         let feedback = await fetch('http://localhost:8080/search', {
             method:'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(data)
         });
-        feedback = await feedback.json();
-        if(feedback.check===0){
+        if (feedback == []){
             // no course found
             // console.log(feedback);
             setSearchResult(-1);
@@ -68,11 +69,8 @@ const GeneralCourse =()=>{
         else{
             // course found
             setSearchResult(1);
-            setCourseList(feedback.a);
-            
+            setCourseList(feedback);
         }
-
-
     }
     
 
@@ -148,7 +146,7 @@ const GeneralCourse =()=>{
         </Paper> <h1 style={{textAlign:"center", margin:"1.3em"}}>Course Search </h1>
         <Paper component="form"  style={{backgroundColor:"white", width:"60%", height: "50%"}}>
             
-            <InputBase style={{width: "80%", height: "8em"}} placeholder="Search..." value={search} onChange={(e)=> setSearch(e.target.value)}> </InputBase>
+            <InputBase style={{width: "80%", height: "8em"}} placeholder="Search..." value={search} onChange={(e)=> {setSearch(e.target.value); submitSearch()}}> </InputBase>
             
             <IconButton type="button" onClick={submitSearch} sx={{p:"15px"}}>
             <GrSearchAdvanced/>
@@ -156,19 +154,16 @@ const GeneralCourse =()=>{
             
             <IconButton type="button" sx={{ p:"15px"}}><ImFilter color="black"/></IconButton>
             <MenuList dense style={{maxHeight:"10em", overflow: "scroll"}}>
-                {courses.filter(course=>{
-                    const input=search.toLowerCase();
-                    const output=course.keyword.toLowerCase();
-                    return input && output.startsWith(input) &&input!==output;
-                }) 
-                .map((course)=>(
+            {
+                courseList.map((course) => (
                     <div><Divider/>
                         <MenuItem>
-                        <ListItemText onClick={()=>setSearch(course.keyword)}
-                        sx={{mx:"21em"}}>{course.keyword}</ListItemText>  
+                        <ListItemText onClick={()=>setSearch(course.name)}
+                        sx={{mx:"21em"}}>{course.name}</ListItemText>  
                         </MenuItem>                    
                     </div>    
-                ))}
+                ))
+            }
             </MenuList>
         
         </Paper>

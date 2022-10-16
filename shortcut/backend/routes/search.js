@@ -11,44 +11,73 @@ var url = "mongodb+srv://CalebZhang:Zhangkeyuan333@cluster0.lb38qs6.mongodb.net/
 const bcrypt = require('bcrypt');
 
 //search 
-router.post('/search', bodyParser.json(), async(req,res)=>{
+router.post('/search', bodyParser.json(), async(req,res) => {
     var keywords = req.body.keywords;
+    if (keywords === "") {
+        res.sendStatus(400);
+        return;
+    }
 
-        console.log(keywords);
-        mongo.connect(url, async(err, db) => {
-        var db1 = db.db("ShortCut");
-        db1.collection('Course').find({$or:[{name:{$regex:keywords, $options:'i'}}, {code:{$regex:keywords.toUpperCase()}}]}).toArray((err,result) =>{
-            if(err) throw err;
-            var rLength = result.length;
-            
-            if(rLength === 0){
-                console.log('wudi');
-                const params={
-                    check:0
-                }
-                res.json(params);
-            }else{
-                var a = new Array();
-            
-                for(let i=0;i<rLength;i++){
-                    const params = {
-                        name:result[i].name,
-                        code:result[i].code
+    console.log(keywords);
+    mongo.connect(url, async(err, db) => {
+        var collection = db.db("ShortCut").collection('Course');
+        let resultsByName = await collection.aggregate([
+            {
+                "$search": {
+                    "autocomplete": {
+                        "query": keywords,
+                        "path": "name",
+                        "fuzzy": {
+                            "maxEdits": 2
+                        }
                     }
-                    a[i] = params;
-
                 }
-            
-            
-                res.send({check:1,a});
-
             }
-            
-
-        });
-
-        });
+        ]).toArray();
+        let resultsByCode = await collection.aggregate([
+            {
+                "$search": {
+                    "autocomplete": {
+                        "query": keywords,
+                        "path": "code",
+                        "fuzzy": {
+                            "maxEdits": 2
+                        }
+                    }
+                }
+            }
+        ]).toArray();
+        let resultsByDescription = await collection.aggregate([
+            {
+                "$search": {
+                    "autocomplete": {
+                        "query": keywords,
+                        "path": "description",
+                        "fuzzy": {
+                            "maxEdits": 2
+                        }
+                    }
+                }
+            }
+        ]).toArray();
+        let resultsByArea = await collection.aggregate([
+            {
+                "$search": {
+                    "autocomplete": {
+                        "query": keywords,
+                        "path": "area",
+                        "fuzzy": {
+                            "maxEdits": 2
+                        }
+                    }
+                }
+            }
+        ]).toArray();
+        let results = resultsByName.concat(resultsByArea).concat(resultsByCode).concat(resultsByDescription);
+        const unique = [...new Map(results.map((m) => [m.code, m])).values()];
+        res.send(unique);
     });
+});
 
 
 
