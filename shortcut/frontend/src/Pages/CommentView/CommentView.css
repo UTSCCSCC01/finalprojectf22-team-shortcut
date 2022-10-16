@@ -1,0 +1,59 @@
+.boxCV {
+    background-color: aliceblue;
+    width: 100em;
+    size: auto;
+    border-radius: 2em;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0em 0.4em 0.4em rgb(160, 160, 160); 
+    margin-top: 2em;
+    opacity: 100%;
+}
+
+.buttonsCV {
+    display: flex;
+    flex-direction: row;
+    width: 58%;
+    margin: 1.5em auto;
+    position: relative;
+    top: -5%;   
+}
+
+.courseHeaderCV {
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    position: relative;
+    top: 0%;
+    left: 0%;
+}
+
+.commentsDivCV {
+    background-color: rgb(223, 228, 233);
+    width: 96em;
+    size: auto;
+    border-radius: 1em;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0em 0.4em 0.4em rgb(160, 160, 160); 
+    margin-top: 5em;
+    opacity: 100%;
+    position: relative;
+}
+
+.commentDivCV {
+    background-color: rgb(223, 228, 233);
+    width: 92em;
+    size: auto;
+    border-color: black;
+    border-radius: 1em;
+    opacity: 100%;
+    position: relative;
+    margin-bottom: 1.2em;
+    box-shadow: 0.2em 0.2em 0.2em rgb(160, 160, 160); 
+}
+
+.pageButtonsCV {
+    margin-bottom: 1.5em;
+    margin: auto, auto;
+}
