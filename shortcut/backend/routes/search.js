@@ -73,6 +73,7 @@ router.post('/search', bodyParser.json(), async(req,res) => {
                 }
             }
         ]).toArray();
+        db.close();
         // let results = resultsByName.concat(resultsByBreadth).concat(resultsByCode).concat(resultsByDescription);
         let results = resultsByName.concat(resultsByCode).concat(resultsByBreadth);
         const unique = [...new Map(results.map((m) => [m.code, m.code])).values()];
