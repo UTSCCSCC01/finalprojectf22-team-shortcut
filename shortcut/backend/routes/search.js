@@ -26,10 +26,10 @@ router.post('/search', bodyParser.json(), async(req,res) => {
                 "$search": {
                     "autocomplete": {
                         "query": keywords,
-                        "path": "name",
-                        "fuzzy": {
-                            "maxEdits": 2
-                        }
+                        "path": "name"
+                        // "fuzzy": {
+                        //     "maxEdits": 2
+                        // }
                     }
                 }
             }
@@ -39,10 +39,10 @@ router.post('/search', bodyParser.json(), async(req,res) => {
                 "$search": {
                     "autocomplete": {
                         "query": keywords,
-                        "path": "code",
-                        "fuzzy": {
-                            "maxEdits": 2
-                        }
+                        "path": "code"
+                        // "fuzzy": {
+                        //     "maxEdits": 2
+                        // }
                     }
                 }
             }
@@ -65,10 +65,10 @@ router.post('/search', bodyParser.json(), async(req,res) => {
                 "$search": {
                     "autocomplete": {
                         "query": keywords,
-                        "path": "breadth",
-                        "fuzzy": {
-                            "maxEdits": 2
-                        }
+                        "path": "breadth"
+                        // "fuzzy": {
+                        //     "maxEdits": 2
+                        // }
                     }
                 }
             }
