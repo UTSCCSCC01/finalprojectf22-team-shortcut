@@ -76,7 +76,7 @@ router.post('/search', bodyParser.json(), async(req,res) => {
         // let results = resultsByName.concat(resultsByBreadth).concat(resultsByCode).concat(resultsByDescription);
         let results = resultsByName.concat(resultsByCode).concat(resultsByBreadth);
         const unique = [...new Map(results.map((m) => [m.code, m.code])).values()];
-        res.send(unique);
+        res.send({"list": unique});
     });
 });
 
