@@ -13,11 +13,11 @@ const bcrypt = require('bcrypt');
 //search 
 router.post('/search', bodyParser.json(), async(req,res)=>{
     var keywords = req.body.keywords;
-        var area = req.body.area;
-        console.log(keywords);
+        var breadth = req.body.breadth;
+        //console.log(keywords);
         mongo.connect(url, async(err, db) => {
         var db1 = db.db("ShortCut");
-        if(area == ""){
+        if(breadth == ""){
         db1.collection('Course').find({$or:[{name:{$regex:keywords, $options:'i'}}, {code:{$regex:keywords.toUpperCase()}}]}).toArray((err,result) =>{
             if(err) throw err;
             var rLength = result.length;
@@ -49,7 +49,7 @@ router.post('/search', bodyParser.json(), async(req,res)=>{
         });
     }else{
         if(keywords == ""){
-            db1.collection('Course').find({area:area}).toArray((err,result)=>{
+            db1.collection('Course').find({breadth:breadth}).toArray((err,result)=>{
                 if(err) throw err;
             var rLength = result.length;
             
@@ -78,7 +78,8 @@ router.post('/search', bodyParser.json(), async(req,res)=>{
             })
             
         }else{
-            db1.collection('Course').find({$and:[{area:{$regex:area.toLowerCase()}},{$or:[{name:{$regex:keywords, $options:'i'}}, {code:{$regex:keywords.toUpperCase()}}]}]}).toArray((err,result)=>{
+            console.log("happened");
+            db1.collection('Course').find({$and:[{breadth:{$regex:breadth, $options:'i'}},{$or:[{name:{$regex:keywords, $options:'i'}}, {code:{$regex:keywords.toUpperCase()}}]}]}).toArray((err,result)=>{
                 if(err) throw err;
             var rLength = result.length;
             
