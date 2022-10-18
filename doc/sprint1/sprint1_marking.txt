@@ -226,6 +226,6 @@ Tracking on Jira Total Mark: 10 / 10
 
 ## Total Mark
 
-81 / 90
+81 / 89
 
  « Note: This mark will be updated after the demo is presented »
