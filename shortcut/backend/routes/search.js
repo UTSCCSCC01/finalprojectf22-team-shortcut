@@ -47,12 +47,25 @@ router.post('/search', bodyParser.json(), async(req,res) => {
                 }
             }
         ]).toArray();
-        let resultsByDescription = await collection.aggregate([
+        // let resultsByDescription = await collection.aggregate([
+        //     {
+        //         "$search": {
+        //             "autocomplete": {
+        //                 "query": keywords,
+        //                 "path": "description",
+        //                 "fuzzy": {
+        //                     "maxEdits": 2
+        //                 }
+        //             }
+        //         }
+        //     }
+        // ]).toArray();
+        let resultsByBreadth = await collection.aggregate([
             {
                 "$search": {
                     "autocomplete": {
                         "query": keywords,
-                        "path": "description",
+                        "path": "breadth",
                         "fuzzy": {
                             "maxEdits": 2
                         }
@@ -60,21 +73,9 @@ router.post('/search', bodyParser.json(), async(req,res) => {
                 }
             }
         ]).toArray();
-        let resultsByArea = await collection.aggregate([
-            {
-                "$search": {
-                    "autocomplete": {
-                        "query": keywords,
-                        "path": "area",
-                        "fuzzy": {
-                            "maxEdits": 2
-                        }
-                    }
-                }
-            }
-        ]).toArray();
-        let results = resultsByName.concat(resultsByArea).concat(resultsByCode).concat(resultsByDescription);
-        const unique = [...new Map(results.map((m) => [m.code, m])).values()];
+        // let results = resultsByName.concat(resultsByBreadth).concat(resultsByCode).concat(resultsByDescription);
+        let results = resultsByName.concat(resultsByCode).concat(resultsByBreadth);
+        const unique = [...new Map(results.map((m) => [m.code, m.code])).values()];
         res.send(unique);
     });
 });
