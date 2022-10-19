@@ -1,6 +1,6 @@
 .boxCV {
     background-color: aliceblue;
-    width: 100em;
+    width: 90%;
     size: auto;
     border-radius: 2em;
     display: flex;
@@ -15,7 +15,7 @@
     flex-direction: row;
     width: 58%;
     margin: 1.5em auto;
-    position: relative;
+    
     top: -5%;   
 }
 
@@ -30,7 +30,7 @@
 
 .commentsDivCV {
     background-color: rgb(223, 228, 233);
-    width: 96em;
+    width: 95%;
     size: auto;
     border-radius: 1em;
     display: flex;
@@ -43,7 +43,7 @@
 
 .commentDivCV {
     background-color: rgb(223, 228, 233);
-    width: 92em;
+    width: 95%;
     size: auto;
     border-color: black;
     border-radius: 1em;
