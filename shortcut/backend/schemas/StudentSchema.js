@@ -7,8 +7,7 @@ const studentSchema = new mongoose.Schema({
     type: {
       data: {
         type: String,
-        required: [true, 'Email required.'],
-        lowercase: true
+        required: [true, 'Email required.']
         },
       display: {
         type: Boolean,
@@ -24,27 +23,27 @@ const studentSchema = new mongoose.Schema({
     name: {
       _id: false,
       type: { 'data': String, 'display': Boolean },
-      default: { 'data': null, 'display': null}
+      default: { 'data': "", 'display': true}
     },
     dateofbirth: {
       _id: false,
       type: {'data': String, 'display': Boolean},
-      default: { 'data': null, 'display': null}
+      default: { 'data': null, 'display': true}
     },
     gender: {
       _id: false,
       type: {'data': String, 'display': Boolean},
-      default: { 'data': null, 'display': null}
+      default: { 'data': "", 'display': true}
     },
     Program: {
       _id: false,
       type: {'data': String, 'display': Boolean},
-      default: { 'data': null, 'display': null}
+      default: { 'data': "", 'display': true}
     },
     Description: {
       _id: false,
       type: {'data': String, 'display': Boolean},
-      default: { 'data': null, 'display': null}
+      default: { 'data': "", 'display': true}
     }
 },
 { collection: "Student"});
