@@ -55,7 +55,9 @@ const GeneralCourse =()=>{
     async function submitSearch(){
         // submit keyword to backend
         const keywords=search;
-        const data = {keywords};
+        const breadth = "";
+        const data = {keywords, breadth};
+        console.log(data);
         let feedback = await fetch('http://localhost:8080/search', {
             method:'POST',
             headers: {"Content-Type": "application/json"},
