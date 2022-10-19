@@ -5,7 +5,7 @@ const ratingSchema = new mongoose.Schema({
   username: {
     _id: false,
     type: String,
-    required: [true, "Username required."]
+    default: ""
   },
   email: {
     _id: false,

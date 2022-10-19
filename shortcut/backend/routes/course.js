@@ -14,7 +14,7 @@ router.post('/course/rate', bodyParser.json(), async (req, res) => {
     // const student = await Student.findById(req.body._id);
     const student = await Student.findOne({ "email.data": req.body.email });
     // console.log(req.body._id);
-    if (student === null || student.name.data != req.body.username) {
+    if (student === null) {
         // debug message
         console.log("User does not exist.");
         // send data to frontend

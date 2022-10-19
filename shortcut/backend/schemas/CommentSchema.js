@@ -5,7 +5,7 @@ const commentSchema = new mongoose.Schema({
   username: {
     _id: false,
     type: String,
-    required: true
+    default: ""
   },
   email: {
     _id: false,
