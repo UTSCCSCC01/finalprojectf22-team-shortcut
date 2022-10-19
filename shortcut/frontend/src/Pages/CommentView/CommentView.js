@@ -73,7 +73,7 @@ const CommentView =()=> {
         for (; i < ratings.length; i++) {
             totalScore += ratings[i].score;
         }
-        return totalScore/i;
+        return (totalScore/i).toFixed(2);
     }
 
     function renderComment(index) {
