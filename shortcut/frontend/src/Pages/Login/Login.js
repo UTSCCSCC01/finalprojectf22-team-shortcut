@@ -41,7 +41,8 @@ const Login =()=>{
         console.log(feedback);
         console.log("passend");
         if(feedback.check===1){
-            navigate('/home', {state:{feedback}});
+            const user=feedback;
+            navigate('/home', {state:{user}});
 
             //login succeed
         }
@@ -56,7 +57,7 @@ const Login =()=>{
     }
  
     return(
-        <div>
+        <div className="login">
            <Logo/>
             <div className="login_box">
                 <h1>Log In</h1> 
