@@ -4,13 +4,13 @@ import Logo from "../../Components/Logo";
 
 import Button from '../../Components/Button';
 import * as React from 'react';
-import { Link, Routes, Route, BrowserRouter as Router, useNavigate, useLocation } from "react-router-dom";
+import { Link, Routes, Route, BrowserRouter as Router, useNavigate, useLocation, useParams } from "react-router-dom";
 import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import { useState, useEffect } from "react";
 import { requirePropFactory } from '@mui/material';
-
+import Navbar from '../../Components/Navbar';
 
 const CommentView =()=> {
     let navigate = useNavigate();
@@ -25,10 +25,11 @@ const CommentView =()=> {
         "message":"sample message",
         "result":1});
     const {state} = useLocation();
+    const user = state.user;
 
-   // const{code}=useParams();
-   // console.log(code);
-    const course = "CSCC01H3";
+    const{code}=useParams();
+    console.log(code);
+    const [course, setCourse]=useState(code);
     
     const [currentPage, setCurrentPage] = useState(1);
     const maxCommentPerPage = 4;
@@ -39,14 +40,17 @@ const CommentView =()=> {
 
 
     const back =()=>{
-        const feedback = state.user
-        navigate(-1, {state: {feedback}});
+   
+        navigate(-1, {state: {user}});
     }
 
     const home =()=>{
-        const feedback = state.user
-        navigate('/home', {state: {feedback}});
+
+        navigate('/home', {state: {user}});
     }    
+    function toProfile(){
+        navigate('/profile', {state:{user}});
+    }
 
     const prevPage =()=> {
         const length = parentData.comments.length;
@@ -142,12 +146,12 @@ const CommentView =()=> {
     } 
 
     return(
-        <div>
-            <Logo/>
+        <div style={{backgroundColor:"white"}}>
+            <Navbar toHome={home} toProfile={toProfile}/>
             <div className="boxCV">
-                <div className="courseHeaderCV" style={{position:"relative",top:"2em"}}>
-                    <h1 style={{fontSize:"4em",position:"relative",left:"-7em"}}>{course}</h1>
-                    <h1 style={{position:"relative",left:"1em",top:"0.5em"}}>Rating: {calcOverallScore()}/5</h1>
+                <div className="courseHeaderCV" style={{top:"2em"}}>
+                    <h1 style={{fontSize:"3.5em"}}>{course}</h1>
+                    <h1 style={{marginLeft:"4em"}}>Rating: {calcOverallScore()}/5</h1>
                 </div>
                 <div className='commentsDivCV'>
                     {renderComments(currentPage)}
@@ -160,7 +164,7 @@ const CommentView =()=> {
 
                 <div className="buttonsCV">
                     <Button text = "Back" col="steelblue" func={back}></Button>
-                    <Button text = "Home" col="steelblue" func={home}></Button>
+                    
                 </div>
             </div>
 
