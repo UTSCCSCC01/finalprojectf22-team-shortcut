@@ -45,6 +45,10 @@ const CourseDescription =()=>{
     function toRate(){
         navigate(`/course/${code}/commentForm`, {state:{user}});
     }
+
+    function toViewRate(){
+        navigate(`/course/${code}/commentView`, {state:{user}});
+    }
     
     async function fetchData(){
         const data = {code};
@@ -177,7 +181,7 @@ const CourseDescription =()=>{
         <div style={{display:"flex", flexDirection:"row", margin:"3em"}}>
 
         <Button func={toRate} text={`I want to Rate ${code}`} col="steelblue"></Button>
-        <Button text="I want to see others' comments" col="steelblue"></Button>
+        <Button func ={toViewRate} text="I want to see others' comments" col="steelblue"></Button>
         </div> 
         <Popout trigger = {popout} head = {header} setTrigger={setPopout}/>
 
