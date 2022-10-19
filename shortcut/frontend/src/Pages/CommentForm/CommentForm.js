@@ -18,6 +18,7 @@ import Logo from "../../Components/Logo";
 
 
 
+
 const CommentForm =()=> {
     let navigate = useNavigate();
 
@@ -30,6 +31,7 @@ const CommentForm =()=> {
     const user = state.user;
 
     const [email, setEmail] = useState(state.user.email.data);
+    const [username, setUsername]=useState(state.user.name.data);
 
     const{code}=useParams();
     console.log(code);
@@ -58,7 +60,7 @@ const CommentForm =()=> {
     }
 
     async function submit(){
-        const data = {email, course, score, comment, anonymity};
+        const data = {username, email, course, score, comment, anonymity};
         console.log(data);
 
         let feedback = await fetch('http://localhost:8080/course/rate', {
@@ -81,7 +83,6 @@ const CommentForm =()=> {
             setPopout(true);
 
             console.log("failed");
-            console.log("fed");
 
         }
     
