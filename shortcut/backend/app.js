@@ -54,9 +54,6 @@ app.use(cors({origin: true, credentials: true}));
 const testRoutes = require("./routes/signup");
 app.use("/", testRoutes);
 
-
-
-
 const loginRoutes = require("./routes/login");
 app.use("/",loginRoutes);
 
@@ -69,7 +66,20 @@ app.use("/", userRoutes);
 const courseRoutes = require("./routes/course");
 app.use("/", courseRoutes);
 
+const seeCourseRatingsRoutes = require("./routes/seeCourseRatings");
+app.use("/", seeCourseRatingsRoutes);
 
+const displayRoutes = require("./routes/display");
+app.use("/",displayRoutes);
+
+const searchRoutes = require("./routes/search");
+app.use("/",searchRoutes);
+
+const searchprogramskey = require("./routes/searchprogramskey");
+app.use("/", searchprogramskey);
+
+const searchprogramname = require("./routes/searchprogramname");
+app.use("/", searchprogramname);
 
 
 //port
