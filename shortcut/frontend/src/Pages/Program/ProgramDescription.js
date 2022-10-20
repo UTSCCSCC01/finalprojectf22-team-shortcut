@@ -109,7 +109,10 @@ const ProgramDescription =()=>{
                 <h3>Program Description</h3>
             </AccordionSummary>
             <AccordionDetails >
-                <p>{description}</p>
+                {   
+                    description.split('\\n').map((str) =>
+                        <div><p>{str}</p></div>)
+                }
             </AccordionDetails>
         </Accordion>
 
@@ -127,7 +130,11 @@ const ProgramDescription =()=>{
                 <h3>Co-operative</h3>
             </AccordionSummary>
             <AccordionDetails >
-                <p>{coop}</p>
+                {   
+                    coop.split('\\n').map((str) =>
+                        <div><p>{str}</p></div>)
+                }
+            
             </AccordionDetails>
         </Accordion>
         
@@ -136,7 +143,12 @@ const ProgramDescription =()=>{
                 <h3>Program Enrolment</h3>
             </AccordionSummary>
             <AccordionDetails >
-                <p>{enrolment}</p>
+                
+                {   
+                    enrolment.split('\\n').map((str) =>
+                        <div><p>{str}</p></div>)
+                }
+                
             </AccordionDetails>
         </Accordion>
 
@@ -145,7 +157,11 @@ const ProgramDescription =()=>{
                 <h3>Graduation</h3>
             </AccordionSummary>
             <AccordionDetails >
-                <p>{graduation}</p>
+
+                {   
+                    graduation.split('\\n').map((str) =>
+                        <div><p>{str}</p></div>)
+                }
             </AccordionDetails>
         </Accordion>
 
@@ -168,7 +184,7 @@ const ProgramDescription =()=>{
         </Accordion>
         
         <Popout trigger = {popout} head = {header} setTrigger={setPopout}/>
-        
+
         <div> &nbsp;</div>
         <div> &nbsp;</div>
         <div style={{display:"flex", backgroundColor:"whitesmoke"}}>
