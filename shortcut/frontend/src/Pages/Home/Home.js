@@ -2,32 +2,43 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import Logo from "../../Components/Logo";
-
+import Navbar from "../../Components/Navbar";
+import background from "../../Images/b10.jpg";
+import "./Home.css"
 
 const Home =()=>{
     let navigate = useNavigate();
-
+    //get user data
     const {state} =useLocation();
-    const{email, password, name, dateofbirth, gender, Program, Description, _id} =state.feedback; 
+    const user = state.user;
     
-    const user = {email, password, name, dateofbirth, gender, Program, Description, _id};
-    console.log(Program);
-    console.log(Description);
-    console.log(user);
 
 
-    function handleClick(){
+    function toProfile(){
         navigate('/profile', {state:{user}});
     }
-
+    function toCourse(){
+        navigate('/course', {state:{user}});
+    }
+    function toProgram(){
+        navigate('/program', {state:{user}});
+    }
 
     return(
-        <div>
-            <Logo/>
-            <h1>Home Page</h1>
+        <div className="home">
+            <Navbar toProfile={toProfile}/>
             
-            <button onClick = {handleClick}> Personal Profile </button>
-
+            <h1 style={{marginTop: "2em", font:"Arial", fontSize:"4em", textAlign:"center"}}>Welcome to shortcUTSC</h1>
+            <div style={{textDecorationLine:"underline", marginTop: "3em", fontSize: "2.8em", display: "flex", flexDirection:"row"}}>
+                <a style={{color:"sienna"}} onClick={toCourse}>Course Search</a>
+                <a style={{color:"sienna"}} onClick={toProgram}>Program Search</a>
+            </div>
+            <div style={{marginTop: "2.5em", fontSize: "2.8em", display: "flex", flexDirection:"row"}}>
+                <a style={{color:"sienna"}} href="/home">Course Planning</a>
+                <a  style={{color:"sienna"}} href="/home">Graduation Requirements</a>
+            </div>
+                
+            
         </div>
     )
 }
