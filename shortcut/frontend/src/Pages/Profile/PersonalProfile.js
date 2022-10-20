@@ -65,8 +65,8 @@ const PersonalProfile =()=> {
     }
 
     const home =()=>{
-        const feedback = state.user
-        navigate('/home', {state: {feedback}});
+        const user=state.user;
+        navigate('/home', {state: {user}});
     }
     const handleEdit =()=>{
         setEdit(false);
