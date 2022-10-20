@@ -14,6 +14,7 @@ import CommentForm from "./Pages/CommentForm/CommentForm";
 import CommentView from "./Pages/CommentView/CommentView";
 
 
+
 const routes=()=>{
 
     return(
@@ -31,8 +32,9 @@ const routes=()=>{
                 <Route exact path = "/program" element={<GeneralProgram/>}/>
                 <Route path = "/program/:name" element={<ProgramDescription/>}/>
                 <Route path="/course/:code/commentForm" element={<CommentForm/>}/> 
+
                 <Route path="/course/:code/commentView" element ={<CommentView/>}/>
-                
+
                 {/* <Route path='*'><SomeComponent /></Route> */}
             </Routes>
         </Router>
