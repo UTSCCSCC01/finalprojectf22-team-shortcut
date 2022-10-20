@@ -6,7 +6,7 @@ function Button({text, func, wid, col, lft, tp}) {
     return (
         <div>
             <button 
-                class="btn" 
+                className="btn" 
                 style={{backgroundColor: col, width: wid, left: lft, top: tp}}
                 onClick = {func}
             >

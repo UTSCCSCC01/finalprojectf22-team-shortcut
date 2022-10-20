@@ -4,7 +4,16 @@
     
 }
 
-
+.signup{
+    height: 120vh;
+    background-size: cover;
+  background-image: url("../../Images/background6.jpg");
+  background-position: center;
+  background-repeat:no-repeat;
+  background-attachment: fixed;
+  min-height: 100%;
+  min-width: 100%;
+}
 
 .button_group .back{
     background-color:rgb(173, 216, 230);
