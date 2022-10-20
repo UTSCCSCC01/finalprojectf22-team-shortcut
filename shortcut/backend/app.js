@@ -66,6 +66,14 @@ app.use("/", deleteUserRoutes);
 const userRoutes = require("./routes/edit");
 app.use("/", userRoutes);
 
+const seeCourseRatingsRoutes = require("./routes/seeCourseRatings");
+app.use("/", seeCourseRatingsRoutes);
+
+const displayRoutes = require("./routes/display");
+app.use("/",displayRoutes);
+
+const searchRoutes = require("./routes/search");
+app.use("/",searchRoutes);
 
 
 
@@ -77,3 +85,8 @@ const server = app.listen(port, ()=>
     console.log(`System is running on port ${port}`)
 );
 
+const searchprogramskey = require("./routes/searchprogramskey");
+app.use("/", searchprogramskey);
+
+const searchprogramname = require("./routes/searchprogramname");
+app.use("/", searchprogramname);
