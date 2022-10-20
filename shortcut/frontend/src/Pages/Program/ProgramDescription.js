@@ -67,7 +67,7 @@ const ProgramDescription =()=>{
             setEnrolment(feedback.item[0].enrolment);
             setCoop(feedback.item[0].coop);
             setGraduation(feedback.item[0].graduation);
-            setNotes(feedback.item[0].notes);
+            setNotes(feedback.item[0].note);
             setStatus(feedback.item[0].status);
 
             
