@@ -66,8 +66,13 @@ app.use("/", deleteUserRoutes);
 const userRoutes = require("./routes/edit");
 app.use("/", userRoutes);
 
+
+const displayRoutes = require("./routes/display");
+app.use("/",displayRoutes);
+
 const searchRoutes = require("./routes/search");
 app.use("/",searchRoutes);
+
 
 
 //port
