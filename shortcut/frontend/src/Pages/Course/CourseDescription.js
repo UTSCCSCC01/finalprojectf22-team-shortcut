@@ -77,7 +77,7 @@ const CourseDescription =()=>{
             setPre(feedback.course.prerequisites);
             setCore(feedback.course.corequisites);
             setRecommended(feedback.course.recommended);
-            setNotes(feedback.course.notes);
+            setNotes(feedback.course.note);
             setStatus(feedback.course.status);
             setName(feedback.course.name);
            
