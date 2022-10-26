@@ -75,6 +75,9 @@ app.use("/",displayRoutes);
 const searchRoutes = require("./routes/search");
 app.use("/",searchRoutes);
 
+const advanceSearchRoutes = require("./routes/advanceSearch");
+app.use("/",advanceSearchRoutes);
+
 const searchprogramskey = require("./routes/searchprogramskey");
 app.use("/", searchprogramskey);
 
