@@ -17,11 +17,12 @@ router.post('/advanceprograms', bodyParser.json(), async(req,res)=>{
     var enrolment = req.body.enrolment;
     var coop = req.body.coop;
     var type = req.body.type;
+    var name = req.body.keywords;
     // console.log(key);
     mongo.connect(url, async(err, db) => {
         var db1 = db.db("ShortCut");
         if(enrolment=="unlimited"&&coop=="nocoop"){
-            db1.collection('Program').find({area:{$regex:area,$options: 'i'},degree:{$regex:degree,$options: 'i'},
+            db1.collection('Program').find({name:{$regex:name,$options: 'i'},area:{$regex:area,$options: 'i'},degree:{$regex:degree,$options: 'i'},
             enrolment:"",coop:"",type:{$regex:type,$options: 'i'}}).toArray((err,result) =>{
                 if(err){
                     res.send({length:0});
@@ -33,7 +34,7 @@ router.post('/advanceprograms', bodyParser.json(), async(req,res)=>{
             });
         }
         else if((enrolment=="unlimited"&&coop!="nocoop")){
-            db1.collection('Program').find({area:{$regex:area,$options: 'i'},degree:{$regex:degree,$options: 'i'},
+            db1.collection('Program').find({name:{$regex:name,$options: 'i'},area:{$regex:area,$options: 'i'},degree:{$regex:degree,$options: 'i'},
             enrolment:"",coop:{$regex:coop,$options: 'i'},type:{$regex:type,$options: 'i'}}).toArray((err,result) =>{
                 if(err){
                     res.send({length:0});
@@ -45,7 +46,7 @@ router.post('/advanceprograms', bodyParser.json(), async(req,res)=>{
             });
         }
         else if((enrolment!="unlimited"&&coop!="nocoop")){
-            db1.collection('Program').find({area:{$regex:area,$options: 'i'},degree:{$regex:degree,$options: 'i'},
+            db1.collection('Program').find({name:{$regex:name,$options: 'i'},area:{$regex:area,$options: 'i'},degree:{$regex:degree,$options: 'i'},
             enrolment:{$regex:enrolment,$options: 'i'},coop:{$regex:coop,$options: 'i'},type:{$regex:type,$options: 'i'}}).toArray((err,result) =>{
                 if(err){
                     res.send({length:0});
@@ -57,7 +58,7 @@ router.post('/advanceprograms', bodyParser.json(), async(req,res)=>{
             });
         }
         else{
-            db1.collection('Program').find({area:{$regex:area,$options: 'i'},degree:{$regex:degree,$options: 'i'},
+            db1.collection('Program').find({name:{$regex:name,$options: 'i'},area:{$regex:area,$options: 'i'},degree:{$regex:degree,$options: 'i'},
             enrolment:{$regex:enrolment,$options: 'i'},coop:"",type:{$regex:type,$options: 'i'}}).toArray((err,result) =>{
                 if(err){
                     res.send({length:0});
