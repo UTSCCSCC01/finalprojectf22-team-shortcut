@@ -12,24 +12,40 @@ const bodyParser = require('body-parser');
 //if erolment = "unlimited" match the empty string
 //if coop ="nocoop" match no coop
 router.post('/advanceprograms', bodyParser.json(), async(req,res)=>{
-    var area = req.body.area;
-    var degree = req.body.degree;
-    var enrolment = req.body.enrolment;
-    var coop = req.body.coop;
-    var type = req.body.type;
-    var name = req.body.keywords;
+    const area = req.body.area;
+    const degree = req.body.degree;
+    const enrolment = req.body.enrolment;
+    const coop = req.body.coop;
+    const type = req.body.type;
+    const name = req.body.keywords;
+    const finalresult = [];
     // console.log(key);
     mongo.connect(url, async(err, db) => {
         var db1 = db.db("ShortCut");
         if(enrolment=="unlimited"&&coop=="nocoop"){
             db1.collection('Program').find({name:{$regex:name,$options: 'i'},area:{$regex:area,$options: 'i'},degree:{$regex:degree,$options: 'i'},
-            enrolment:"",coop:"",type:{$regex:type,$options: 'i'}}).toArray((err,result) =>{
+            enrolment:"",coop:"",type:{$regex:type,$options: 'i'}}).toArray((err,findresult) =>{
                 if(err){
                     res.send({length:0});
                     return;
                 }
-                console.log(result.length);
-                res.send({length:result.length,result});
+                if(degree=="BA"){
+                    for(let z =0;z<findresult.length;z++){
+                        const finddegree = findresult[z].degree;
+                        console.log(finddegree,finddegree.match(/BBA/i));
+                        if(finddegree.match(/BBA/i)==null){
+                            finalresult.push(result[z]);
+                        }
+                    }
+                }
+                else{
+                    for(let z =0;z<result.length;z++){
+                        finalresult.push(result[z]);
+                    }
+                }
+                // console.log(result[0].degree);
+                // console.log(result);
+                res.send({length:finalresult.length,finalresult});
 
             });
         }
@@ -40,8 +56,25 @@ router.post('/advanceprograms', bodyParser.json(), async(req,res)=>{
                     res.send({length:0});
                     return;
                 }
-                console.log(result.length);
-                res.send({length:result.length,result});
+                if(degree=="BA"){
+                    for(let z =0;z<result.length;z++){
+                        const finddegree = result[z].degree;
+                        console.log(finddegree,finddegree.match(/BBA/i));
+                        if(finddegree.match(/BBA/i)==null){
+                            finalresult.push(result[z]);
+                        }
+                    }
+                }
+                else{
+                    for(let z =0;z<result.length;z++){
+                        finalresult.push(result[z]);
+                    }
+                }
+                res.send({length:finalresult.length,finalresult});
+
+                // // console.log(result[0].degree);
+                // // console.log(result);
+                // res.send({length:result.length,result});
 
             });
         }
@@ -52,8 +85,24 @@ router.post('/advanceprograms', bodyParser.json(), async(req,res)=>{
                     res.send({length:0});
                     return;
                 }
-                console.log(result.length);
-                res.send({length:result.length,result});
+                // // console.log(result[0].degree);
+                // // console.log(result);
+                // res.send({length:result.length,result});
+                if(degree=="BA"){
+                    for(let z =0;z<result.length;z++){
+                        const finddegree = result[z].degree;
+                        console.log(finddegree,finddegree.match(/BBA/i));
+                        if(finddegree.match(/BBA/i)==null){
+                            finalresult.push(result[z]);
+                        }
+                    }
+                }
+                else{
+                    for(let z =0;z<result.length;z++){
+                        finalresult.push(result[z]);
+                    }
+                }
+                res.send({length:finalresult.length,finalresult});
 
             });
         }
@@ -64,8 +113,24 @@ router.post('/advanceprograms', bodyParser.json(), async(req,res)=>{
                     res.send({length:0});
                     return;
                 }
-                console.log(result.length);
-                res.send({length:result.length,result});
+                // // console.log(result[0].degree);
+                // // console.log(result)
+                // res.send({length:result.length,result});
+                if(degree=="BA"){
+                    for(let z =0;z<result.length;z++){
+                        const finddegree = result[z].degree;
+                        console.log(finddegree,finddegree.match(/BBA/i));
+                        if(finddegree.match(/BBA/i)==null){
+                            finalresult.push(result[z]);
+                        }
+                    }
+                }
+                else{
+                    for(let z =0;z<result.length;z++){
+                        finalresult.push(result[z]);
+                    }
+                }
+                res.send({length:finalresult.length,finalresult});
 
             });
         }
