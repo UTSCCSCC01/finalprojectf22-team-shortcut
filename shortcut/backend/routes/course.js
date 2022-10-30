@@ -11,15 +11,15 @@ router.post('/course/rate', bodyParser.json(), async (req, res) => {
 
     // get the user to be updated
     console.log("Checking database for user...");
-    // const student = await Student.findById(req.body._id);
     const student = await Student.findOne({ "email.data": req.body.email });
-    // console.log(req.body._id);
     if (student === null) {
         // debug message
         console.log("User does not exist.");
         // send data to frontend
         res.status(400);
-        res.json({ 'data': {'rating': null, 'comment': null}, 'result': 0, 'message': 'User does not exist.' });
+        res.json({ 'data': {'rating': null, 'comment': null}, 
+                   'result': 0, 
+                   'message': 'User does not exist.' });
         return;
     }
     console.log("Found user!");
@@ -32,13 +32,18 @@ router.post('/course/rate', bodyParser.json(), async (req, res) => {
         console.log("Course does not exist.");
         // send data to frontend
         res.status(400);
-        res.json({ 'data': {'rating': null, 'comment': null}, 'result': 0, 'message': 'Course does not exist.' });
+        res.json({ 'data': {'rating': null, 'comment': null}, 
+                   'result': 0, 
+                   'message': 'Course does not exist.' });
         return;
     }
     console.log("Found course!");
 
     // create comment
-    const comment = new Comment({ 'username': req.body.username, 'email': req.body.email, 'course': req.body.course, 'content': req.body.comment, 'anonymity': req.body.anonymity });
+    const comment = new Comment({ 'email': req.body.email, 
+                                  'course': req.body.course, 
+                                  'content': req.body.comment, 
+                                  'anonymity': req.body.anonymity });
     try {
         await comment.save();
     }
@@ -48,7 +53,9 @@ router.post('/course/rate', bodyParser.json(), async (req, res) => {
         if (e instanceof mongoose.Error.ValidationError) res.status(400);
         // database error
         else res.status(500);
-        res.json({ 'data': {'rating': null, 'comment': null}, 'result': 0, 'message': e.message });
+        res.json({ 'data': {'rating': null, 'comment': null}, 
+                   'result': 0, 
+                   'message': e.message });
         return;
     }
 
@@ -56,7 +63,12 @@ router.post('/course/rate', bodyParser.json(), async (req, res) => {
     console.log(comment);
 
     // create rating with new comment
-    const rating = new Rating({ 'username': req.body.username, 'email': req.body.email, 'created': comment.created, 'course': req.body.course, 'score': req.body.score, 'comment': comment._id.toString(), 'anonymity': req.body.anonymity });
+    const rating = new Rating({ 'email': req.body.email, 
+                                'created': comment.created, 
+                                'course': req.body.course, 
+                                'score': req.body.score, 
+                                'comment': comment._id.toString(), 
+                                'anonymity': req.body.anonymity });
     try {
         await rating.save();
     }
@@ -64,14 +76,25 @@ router.post('/course/rate', bodyParser.json(), async (req, res) => {
         console.log(e);
         if (e instanceof mongoose.Error.ValidationError) res.status(400);
         else res.status(500);
-        res.json({ 'data': {'rating': null, 'comment': null}, 'result': 0, 'message': e.message });
+        res.json({ 'data': {'rating': null, 'comment': null}, 
+                   'result': 0, 
+                   'message': e.message });
         return;
     }
 
-    res.json({ 'data': {'rating': rating, 'comment': comment}, 'result': 1, 'message': "Successfully posted new rating." });
+    res.json({ 'data': {'rating': rating, 'comment': comment}, 
+               'result': 1, 
+               'message': "Successfully posted new rating." });
 
     console.log("New rating:");
     console.log(rating);
+
+    // update score in course
+    course.score.average = (course.score.average * course.score.num + req.body.score) / (course.score.num + 1);
+    course.score.num++;
+    await course.save();
+    console.log("Updated score for course:");
+    console.log(course);
 
     console.log("Successfully posted new rating.");
 
