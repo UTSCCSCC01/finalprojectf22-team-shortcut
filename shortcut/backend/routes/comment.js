@@ -37,8 +37,7 @@ router.post('/comment', bodyParser.json(), async (req, res) => {
     }
 
     // create comment
-    const comment = new Comment({ 'username': req.body.username, 
-                                  'email': req.body.email, 
+    const comment = new Comment({ 'email': req.body.email, 
                                   'course': req.body.course, 
                                   'parent': req.body.id,
                                   'content': req.body.comment, 
