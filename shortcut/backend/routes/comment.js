@@ -26,7 +26,18 @@ router.post('/comment', bodyParser.json(), async (req, res) => {
 
     // get parent comment
     console.log("Checking database for parent comment...");
-    const parent = await Comment.findById(mongoose.Types.ObjectId(req.body.id));
+    var parent = null;
+    try {
+        parent = await Comment.findById(req.body.id);
+    }
+    catch (e) {
+        console.log(e.message);
+        res.status(400);
+        res.json({ 'data': {'parent-comment': null, 'child-comment': null}, 
+                   'result': 0, 
+                   'message': e.message });
+        return;
+    }
     if (parent === null) {
         console.log("Parent comment with id " + req.body.id + " does not exist.");
         res.status(400);
