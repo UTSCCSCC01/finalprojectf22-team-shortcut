@@ -36,7 +36,11 @@ const commentSchema = new mongoose.Schema({
     _id: false,
     type: String,
     required: [true, "Content required."]
-  }
+  },
+  likedEmails: [String],
+  dislikedEmails: [String],
+  numLikes: Number,
+  numDislikes: Number
 },
 { collection: "Comment"});
 
