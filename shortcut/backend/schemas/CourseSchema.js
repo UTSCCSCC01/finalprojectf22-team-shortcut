@@ -19,7 +19,8 @@ const courseSchema = new mongoose.Schema({
   corequisites: [String],
   recommended: [String],
   note: String,
-  status: String
+  status: String,
+  score: { average: Number, num: Number }
 },
 { collection: "Course"});
 
