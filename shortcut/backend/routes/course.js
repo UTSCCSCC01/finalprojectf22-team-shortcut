@@ -101,6 +101,7 @@ router.post('/course/update/comment', bodyParser.json(), async (req, res) => {
         await Comment.updateOne(doc, {
                                         "numLikes": numLikes,
                                         "numDislikes": numDislikes });
+        await Comment.updateOne(doc, {$unset: {"username": 1}});
         console.log(doc);
     }
 
