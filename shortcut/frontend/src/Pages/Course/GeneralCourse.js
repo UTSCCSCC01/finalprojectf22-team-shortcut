@@ -44,7 +44,7 @@ const GeneralCourse =()=>{
     const [average, setAverage]=useState(0);
     const [level, setLevel]=useState("");
     const [pre, setPre]=useState("");
-    const [description, setDescription]=useState('');
+    //const [description, setDescription]=useState('');
     const [search_description, setSearchDescription]=useState(false);
 
 
@@ -67,8 +67,10 @@ const GeneralCourse =()=>{
         setPre("");
         setLevel("");
         setBreadth("");
-        setDescription("");
+
         setAverage(0);
+        setSearchResult(0);
+        setSearchDescription(false);
     }
 
 
@@ -100,10 +102,12 @@ const GeneralCourse =()=>{
         }
         else{
             console.log(search_description);
-            const keywords = search;
+            var keywords=search;
+            var description="";
             if(search_description){
                 
                 keywords="";
+                description=search;
             }
             
             
@@ -124,6 +128,8 @@ const GeneralCourse =()=>{
             }
             else{
                 // course found
+                console.log(feedback);
+                // bug in here, no result still shows check = 1
                 console.log(feedback.a);
                 setSearchResult(1);
                 setCourseList(feedback.a);
@@ -249,9 +255,15 @@ const GeneralCourse =()=>{
         </Table>
         }
 
-        {search_result<0 &&
+        {search_result<0 && !advanced &&
             <div>
                 <h3 style={{color: "red", textAlign:"center", marginTop:"2em"}}> Sorry, keyword doesn't match any courses</h3>
+            </div>
+        }
+
+        {search_result<0 && advanced &&
+            <div>
+                <h3 style={{color: "red", textAlign:"center", marginTop:"2em"}}> Sorry, no matching courses</h3>
             </div>
         }
 
@@ -264,11 +276,11 @@ const GeneralCourse =()=>{
             <FormControl>
                 <FormLabel> Breadth </FormLabel>
                 <RadioGroup onChange={(e)=>setBreadth(e.target.value)}>
-                    <FormControlLabel value="Arts, Literature, and Language"control={<Radio/>} label="Arts, Literature, and Language"/>
-                    <FormControlLabel value="Natural Sciences"control={<Radio/>} label="Natural Sciences"/>
-                    <FormControlLabel value="History, Philosophy, and Cultural Studies"control={<Radio/>} label="History, Philosophy, and Cultural Studies"/>
-                    <FormControlLabel value="Quantitative Reasoning"control={<Radio/>} label="Quantitative Reasoning"/>
-                    <FormControlLabel value="Social and Behavioural Sciences"control={<Radio/>} label="Social and Behavioural Sciences"/>
+                    <FormControlLabel value="Arts"control={<Radio/>} label="Arts, Literature, and Language"/>
+                    <FormControlLabel value="Natural"control={<Radio/>} label="Natural Sciences"/>
+                    <FormControlLabel value="History"control={<Radio/>} label="History, Philosophy, and Cultural Studies"/>
+                    <FormControlLabel value="Quantitative"control={<Radio/>} label="Quantitative Reasoning"/>
+                    <FormControlLabel value="Social"control={<Radio/>} label="Social and Behavioural Sciences"/>
                    
                 </RadioGroup>
             </FormControl></Box>
@@ -308,7 +320,7 @@ const GeneralCourse =()=>{
 
             <div style={{textAlign:"center"}}>
                 Do you want to search your keyword in course description?
-                <Checkbox checked={search_description} onChange={()=>{setSearchDescription(!search_description);setDescription(search);}}/>
+                <Checkbox checked={search_description} onChange={()=>{setSearchDescription(!search_description)}}/>
                 <div> &nbsp;</div>
                 
             </div>
@@ -332,4 +344,3 @@ const GeneralCourse =()=>{
 }
 
 export default GeneralCourse;
-
