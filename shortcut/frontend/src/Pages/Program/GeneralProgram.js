@@ -70,6 +70,7 @@ const GeneralProgram =()=>{
         setEnrolment("");
         setCoop("");
         setType("");
+        setSearchResult(0);
     }
 
     useEffect(()=> {setSearchResult(0)}, [search]);
@@ -114,7 +115,7 @@ const GeneralProgram =()=>{
             }
             else{
                 console.log(feedback.finalresult);
-                setAdvanced(false);
+                
                 setSearchResult(1);
                 setProgramList(feedback.finalresult);
             }
@@ -234,9 +235,15 @@ const GeneralProgram =()=>{
         </Table>
         }
 
-        {search_result<0 &&
+        {search_result<0 && !advanced &&
             <div>
                 <h3 style={{color: "red", textAlign:"center", marginTop:"2em"}}> Sorry, keyword doesn't match any program</h3>
+            </div>
+        }
+
+        {search_result<0 && advanced &&
+            <div>
+                <h3 style={{color: "red", textAlign:"center", marginTop:"2em"}}> Sorry, no matching program</h3>
             </div>
         }
 
@@ -329,3 +336,4 @@ const GeneralProgram =()=>{
     )
 }
 export default GeneralProgram;
+
