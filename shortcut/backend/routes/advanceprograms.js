@@ -24,14 +24,14 @@ router.post('/advanceprograms', bodyParser.json(), async(req,res)=>{
         var db1 = db.db("ShortCut");
         if(enrolment=="unlimited"&&coop=="nocoop"){
             db1.collection('Program').find({name:{$regex:name,$options: 'i'},area:{$regex:area,$options: 'i'},degree:{$regex:degree,$options: 'i'},
-            enrolment:"",coop:"",type:{$regex:type,$options: 'i'}}).toArray((err,findresult) =>{
+            enrolment:"",coop:"",type:{$regex:type,$options: 'i'}}).toArray((err,result) =>{
                 if(err){
                     res.send({length:0});
                     return;
                 }
                 if(degree=="BA"){
-                    for(let z =0;z<findresult.length;z++){
-                        const finddegree = findresult[z].degree;
+                    for(let z =0;z<result.length;z++){
+                        const finddegree = result[z].degree;
                         console.log(finddegree,finddegree.match(/BBA/i));
                         if(finddegree.match(/BBA/i)==null){
                             finalresult.push(result[z]);
@@ -48,7 +48,7 @@ router.post('/advanceprograms', bodyParser.json(), async(req,res)=>{
                 res.send({length:finalresult.length,finalresult});
 
             });
-        }
+        } 
         else if((enrolment=="unlimited"&&coop!="nocoop")){
             db1.collection('Program').find({name:{$regex:name,$options: 'i'},area:{$regex:area,$options: 'i'},degree:{$regex:degree,$options: 'i'},
             enrolment:"",coop:{$regex:coop,$options: 'i'},type:{$regex:type,$options: 'i'}}).toArray((err,result) =>{
