@@ -23,7 +23,7 @@ router.post('/advanceSearch', bodyParser.json(), async(req,res)=>{
         var breadth = req.body.res.breadth;
         var level = req.body.res.level;
         
-        //console.log(level);
+        console.log(score);
         //{"score.average":{$regex:score, $options:'i'}}
         mongo.connect(url, async(err, db) => {
         var db1 = db.db("ShortCut");
@@ -31,6 +31,7 @@ router.post('/advanceSearch', bodyParser.json(), async(req,res)=>{
         db1.collection('Course').find({$and:[{breadth:{$regex:breadth, $options:'i'}},{$or:[{name:{$regex:keywords, $options:'i'}}, {code:{$regex:keywords, $options:'i'}}]},{description:{$regex:description, $options:'i'}}]}).toArray((err,result) =>{
             if(err) throw err;
             var rLength = result.length;
+            console.log(result);
              console.log(rLength);
             
             if(rLength === 0){
@@ -41,10 +42,13 @@ router.post('/advanceSearch', bodyParser.json(), async(req,res)=>{
                 res.json(params);
             }else{
                 var a = new Array();
-                var b = 0;
+              
             if(pre == "no"){    
                if(level == ""){
+                         var b = 0;
+                         //console.log("heheheh")
                         for(let i=0;i<rLength;i++){
+                            console.log(result[i].prerequisites.length)
                             if(result[i].score.average >= score && result[i].prerequisites.length == 0){
                                 const params = {
                                     name:result[i].name,
@@ -53,14 +57,17 @@ router.post('/advanceSearch', bodyParser.json(), async(req,res)=>{
                                 a[b] = params;
                                 b = b+1;
                             }
-                        
+                        if(a.length == 0){
+                            res.send({check:0});
+                        }
 
 
                         }
 
-                    
+                        
                         res.send({check:1,a});
                 }else{
+                    var b = 0;
                     for(let i=0;i<rLength;i++){
                   
                         if(result[i].score.average >= score && result[i].code[3] == level && result[i].prerequisites.length == 0){
@@ -71,6 +78,10 @@ router.post('/advanceSearch', bodyParser.json(), async(req,res)=>{
                             a[b] = params;
                             b=b+1;
                         }
+                        if(a.length == 0){
+                            res.send({check:0});
+                        }
+
                     
                     }
 
@@ -81,6 +92,7 @@ router.post('/advanceSearch', bodyParser.json(), async(req,res)=>{
 
             }else if(pre == "need"){
                 if(level == ""){
+                    var b = 0;
                     for(let i=0;i<rLength;i++){
                         if(result[i].score.average >= score && result[i].prerequisites.length != 0){
                             const params = {
@@ -90,6 +102,10 @@ router.post('/advanceSearch', bodyParser.json(), async(req,res)=>{
                             a[b] = params;
                             b = b+1;
                         }
+                        if(a.length == 0){
+                            res.send({check:0});
+                        }
+
                     
 
 
@@ -101,6 +117,7 @@ router.post('/advanceSearch', bodyParser.json(), async(req,res)=>{
 
 
             }else{
+                var b = 0;
                 for(let i=0;i<rLength;i++){
               
                     if(result[i].score.average >= score && result[i].code[3] == level && result[i].prerequisites.length != 0){
@@ -111,6 +128,10 @@ router.post('/advanceSearch', bodyParser.json(), async(req,res)=>{
                         a[b] = params;
                         b=b+1;
                     }
+                    if(a.length == 0){
+                        res.send({check:0});
+                    }
+
                 
                 }
 
@@ -120,8 +141,12 @@ router.post('/advanceSearch', bodyParser.json(), async(req,res)=>{
             }
 
             }else{
+                console.log("hello");
                 if(level == ""){
+                    console.log(rLength);
+                    var b = 0;
                     for(let i=0;i<rLength;i++){
+                        console.log(score);
                         if(result[i].score.average >= score){
                             const params = {
                                 name:result[i].name,
@@ -130,6 +155,10 @@ router.post('/advanceSearch', bodyParser.json(), async(req,res)=>{
                             a[b] = params;
                             b = b+1;
                         }
+                        if(a.length == 0){
+                            res.send({check:0});
+                        }
+
                     
 
 
@@ -138,6 +167,7 @@ router.post('/advanceSearch', bodyParser.json(), async(req,res)=>{
                 
                     res.send({check:1,a});
             }else{
+                var b = 0;
                 for(let i=0;i<rLength;i++){
               
                     if(result[i].score.average >= score && result[i].code[3] == level){
@@ -148,6 +178,10 @@ router.post('/advanceSearch', bodyParser.json(), async(req,res)=>{
                         a[b] = params;
                         b=b+1;
                     }
+                    if(a.length == 0){
+                        res.send({check:0});
+                    }
+
                 
                 }
 
