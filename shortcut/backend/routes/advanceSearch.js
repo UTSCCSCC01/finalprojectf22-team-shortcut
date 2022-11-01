@@ -31,7 +31,7 @@ router.post('/advanceSearch', bodyParser.json(), async(req,res)=>{
         db1.collection('Course').find({$and:[{breadth:{$regex:breadth, $options:'i'}},{$or:[{name:{$regex:keywords, $options:'i'}}, {code:{$regex:keywords, $options:'i'}}]},{description:{$regex:description, $options:'i'}}]}).toArray((err,result) =>{
             if(err) throw err;
             var rLength = result.length;
-            console.log(result);
+            //console.log(result);
              console.log(rLength);
             
             if(rLength === 0){
@@ -57,15 +57,18 @@ router.post('/advanceSearch', bodyParser.json(), async(req,res)=>{
                                 a[b] = params;
                                 b = b+1;
                             }
+                       
+
+
+                        }
                         if(a.length == 0){
                             res.send({check:0});
-                        }
-
-
+                            return;
                         }
 
                         
                         res.send({check:1,a});
+                        return;
                 }else{
                     var b = 0;
                     for(let i=0;i<rLength;i++){
@@ -78,22 +81,29 @@ router.post('/advanceSearch', bodyParser.json(), async(req,res)=>{
                             a[b] = params;
                             b=b+1;
                         }
-                        if(a.length == 0){
-                            res.send({check:0});
-                        }
+                        
 
                     
+                    }
+                    if(a.length == 0){
+                        res.send({check:0});
+                        return;
                     }
 
                 
                     res.send({check:1,a});
+                    return;
 
                 }
 
             }else if(pre == "need"){
                 if(level == ""){
+                    console.log("yyyyyyyyyyyyy")
                     var b = 0;
+                    console.log(rLength);
                     for(let i=0;i<rLength;i++){
+                        console.log(1)
+                        //console.log(result[i].prerequisites.length )
                         if(result[i].score.average >= score && result[i].prerequisites.length != 0){
                             const params = {
                                 name:result[i].name,
@@ -102,17 +112,20 @@ router.post('/advanceSearch', bodyParser.json(), async(req,res)=>{
                             a[b] = params;
                             b = b+1;
                         }
-                        if(a.length == 0){
-                            res.send({check:0});
-                        }
+                       
 
                     
 
 
                     }
+                    if(a.length == 0){
+                        res.send({check:0});
+                        return;
+                    }
 
                 
                     res.send({check:1,a});
+                    return;
                     
 
 
@@ -128,15 +141,18 @@ router.post('/advanceSearch', bodyParser.json(), async(req,res)=>{
                         a[b] = params;
                         b=b+1;
                     }
-                    if(a.length == 0){
-                        res.send({check:0});
-                    }
+                   
 
                 
+                }
+                if(a.length == 0){
+                    res.send({check:0});
+                    return;
                 }
 
             
                 res.send({check:1,a});
+                return;
 
             }
 
@@ -155,17 +171,20 @@ router.post('/advanceSearch', bodyParser.json(), async(req,res)=>{
                             a[b] = params;
                             b = b+1;
                         }
-                        if(a.length == 0){
-                            res.send({check:0});
-                        }
+                        
 
                     
 
 
                     }
+                    if(a.length == 0){
+                        res.send({check:0});
+                        return;
+                    }
 
                 
                     res.send({check:1,a});
+                    return;
             }else{
                 var b = 0;
                 for(let i=0;i<rLength;i++){
@@ -178,15 +197,18 @@ router.post('/advanceSearch', bodyParser.json(), async(req,res)=>{
                         a[b] = params;
                         b=b+1;
                     }
-                    if(a.length == 0){
-                        res.send({check:0});
-                    }
+                    
 
                 
+                }
+                if(a.length == 0){
+                    res.send({check:0});
+                    return;
                 }
 
             
                 res.send({check:1,a});
+                return;
 
             }
 
