@@ -20,7 +20,18 @@ const courseSchema = new mongoose.Schema({
   recommended: [String],
   note: String,
   status: String,
-  score: { average: Number, num: Number }
+  score: { 
+    average: {
+      _id: false,
+      type: Number,
+      default: 6
+    },
+    num: {
+      _id: false,
+      type: Number,
+      default: 0 
+    }
+  }
 },
 { collection: "Course"});
 
