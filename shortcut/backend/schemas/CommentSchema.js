@@ -31,10 +31,26 @@ const commentSchema = new mongoose.Schema({
     type: String,
     required: [true, "Content required."]
   },
-  likedEmails: [String],
-  dislikedEmails: [String],
-  numLikes: Number,
-  numDislikes: Number
+  likedEmails: {
+    _id: false,
+    type: [String],
+    default: []
+  },
+  dislikedEmails: {
+    _id: false,
+    type: [String],
+    default: []
+  },
+  numLikes: {
+    _id: false,
+    type: Number,
+    default: 0
+  },
+  numDislikes: {
+    _id: false,
+    type: Number,
+    default: 0
+  }
 },
 { collection: "Comment"});
 
