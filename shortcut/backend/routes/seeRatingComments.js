@@ -19,13 +19,29 @@ router.post('/seeRatingComments', bodyParser.json(), async (req, res) => {
           return;
         }
         var db1 = db.db("ShortCut");
-        db1.collection('Comment').find({"parent":{ $eq: key }}).toArray((err,child_comments) =>{
+        db1.collection('Comment').find({"parent":{ $eq: key }}).toArray(async (err,child_comments) =>{
             if (err){
                 res.json({ 'result': 0, 'message': 'Error.' });
                 res.end();
                 return;
             }
-            res.json({ 'result': 1, 'child comments': child_comments, 'message': 'returning child comments.' });
+
+            var student;
+            var name;
+            var names = [];
+
+            for(const comment of child_comments){
+                student = await db1.collection('Student').findOne({"email.data": { $eq: comment.email}});
+                if(student == null){
+                    name = "deleted user";
+                }
+                else{
+                    name = student.name.data;
+                }
+                names.push(name);
+            }
+
+            res.json({ 'result': 1, 'child comments': child_comments, 'names': names, 'message': 'returning child comments.' });
             res.end(); 
 
             db.close();
