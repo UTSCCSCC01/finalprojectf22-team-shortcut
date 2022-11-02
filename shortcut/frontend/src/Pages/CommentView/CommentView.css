@@ -53,6 +53,29 @@
     box-shadow: 0.2em 0.2em 0.2em rgb(160, 160, 160); 
 }
 
+.likeButtonCV {
+    border: none;
+    background-color: rgb(12, 182, 12);
+    color: white;
+}
+.dislikeButtonCV {
+    border: none;
+    background-color: rgb(203, 42, 42);
+    color: white;
+}
+
+.replyButtonCV {
+    border: none;
+    background-color: rgb(118, 18, 185);
+    color: rgb(255, 255, 255);
+}
+
+.viewRepliesButtonCV {
+    border: none;
+    background-color: rgb(206, 134, 18);
+    color: rgb(255, 255, 255);
+}
+
 .pageButtonsCV {
     margin-bottom: 1.5em;
     margin: auto, auto;
