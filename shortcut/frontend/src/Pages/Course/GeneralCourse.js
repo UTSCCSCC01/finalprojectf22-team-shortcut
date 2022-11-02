@@ -344,3 +344,4 @@ const GeneralCourse =()=>{
 }
 
 export default GeneralCourse;
+
