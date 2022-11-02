@@ -12,6 +12,8 @@ import GeneralProgram from "./Pages/Program/GeneralProgram";
 import ProgramDescription from "./Pages/Program/ProgramDescription";
 import CommentForm from "./Pages/CommentForm/CommentForm";
 import CommentView from "./Pages/CommentView/CommentView";
+import ChildCommentForm from "./Pages/ChildCommentForm/ChildCommentForm";
+import ChildCommentView from "./Pages/ChildCommentView/ChildCommentView";
 
 
 
@@ -32,8 +34,9 @@ const routes=()=>{
                 <Route exact path = "/program" element={<GeneralProgram/>}/>
                 <Route path = "/program/:name" element={<ProgramDescription/>}/>
                 <Route path="/course/:code/commentForm" element={<CommentForm/>}/> 
-
                 <Route path="/course/:code/commentView" element ={<CommentView/>}/>
+                <Route path="/course/:code/ChildcommentForm" element ={<ChildCommentForm/>}/>
+                <Route path="/course/:code/ChildcommentView" element ={<ChildCommentView/>}/>
 
                 {/* <Route path='*'><SomeComponent /></Route> */}
             </Routes>
