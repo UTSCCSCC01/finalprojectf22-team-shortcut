@@ -41,6 +41,7 @@ router.post('/dislike', bodyParser.json(), async (req, res) => {
         
                 if (dislikers.includes(user_email)){
                     new_dislikes = comment.numDislikes - 1;
+                    new_likes = comment.numLikes
                     await db1.collection('Comment').updateOne(
                         { "_id": comment_id },
                         {
@@ -49,7 +50,7 @@ router.post('/dislike', bodyParser.json(), async (req, res) => {
                         }
                     );
 
-                    res.json({ 'result': 2, 'dislikes': new_dislikes, 'message': 'Canceled disliked.' });
+                    res.json({ 'result': 2, 'likes': new_likes, 'dislikes': new_dislikes });
                 }
                 else if (likers.includes(user_email)){
                     new_dislikes = comment.numDislikes + 1;
@@ -63,10 +64,11 @@ router.post('/dislike', bodyParser.json(), async (req, res) => {
                         }
                     );
 
-                    res.json({ 'result': 3, 'dislikes': new_dislikes, 'message': 'Canceled liked and disliked.' });
+                    res.json({ 'result': 3, 'likes': new_likes, 'dislikes': new_dislikes });
                 }
                 else{
                     new_dislikes = comment.numDislikes + 1;
+                    new_likes = comment.numLikes
                     await db1.collection('Comment').updateOne(
                         { "_id": comment_id },
                         {
@@ -75,7 +77,7 @@ router.post('/dislike', bodyParser.json(), async (req, res) => {
                         }
                     );
 
-                    res.json({ 'result': 1, 'dislikes': new_dislikes, 'message': 'User disliked.' });
+                    res.json({ 'result': 1, 'likes': new_likes, 'dislikes': new_dislikes });
                 }
                 res.end();
                 db.close();
