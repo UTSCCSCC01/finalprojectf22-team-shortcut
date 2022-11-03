@@ -1,4 +1,4 @@
-.box {
+.boxCCF {
     
     background-color: aliceblue;
     
@@ -12,38 +12,31 @@
     opacity: 100%;
 }
 
-.scoreDiv {
-    display: flex;
-    flex-direction: row;
-    text-align: left;
-    position: relative;
-    left: -15%;
-}
-
-.difficultyDiv {
-    display: flex;
-    flex-direction: row;
-    text-align: left;
-    position: relative;
-    left: -20%;
-    top: -3%;
-}
-
-.commentDiv {
+.contentDivCCF {
+    width: 50em;
     display: flex;
     flex-direction: column;
     text-align: left;
     position: relative;
-    top: -6%;
+    top: -2%;
+    left: -11%;
+}
+
+.commentDivCCF {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    position: relative;
+    top: -2%;
     left: -3.5%;
 }
 
-.commentHeader {
+.commentHeaderCCF {
     position: relative;
     left: -40%;
 }
 
-.commentInput {
+.commentInputCCF {
     width: 50em;
     height: 15em;
     position: relative;
@@ -54,15 +47,15 @@
     
 }
 
-.anonymityDiv {
+.anonymityDivCCF {
     display: flex;
     flex-direction: row;
     position: relative;
     left: -17%;
-    top: -7%;
+    top: 0%;
 }
 
-.buttons2{
+.buttonsCCF{
     display: flex;
     flex-direction: row;
     width: 58%;
