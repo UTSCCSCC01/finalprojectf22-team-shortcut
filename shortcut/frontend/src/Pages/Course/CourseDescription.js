@@ -83,7 +83,7 @@ const CourseDescription =()=>{
             setName(feedback.course.name);
 
             if(feedback.course.score.average<=5 &&feedback.course.score.average>=0){
-                setScore(feedback.course.score.average);
+                setScore(feedback.course.score.average.toFixed(2));
             }
             
             

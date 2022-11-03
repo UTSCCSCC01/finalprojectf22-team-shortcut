@@ -38,12 +38,12 @@ const CommentForm =()=> {
 
     const [course, setCourse] = useState(code);
     const [score, setScore] = useState(0);
-    const [difficulty, setDifficulty] = useState(0);
+    // const [difficulty, setDifficulty] = useState(0);
     const [comment, setComment] = useState("");
     const [anonymity, setAnonymity]= useState(false);
 
     console.log(score);
-    console.log(difficulty);
+    
     console.log(comment);
     console.log(anonymity);
     console.log(state.user.email);
@@ -62,7 +62,7 @@ const CommentForm =()=> {
     }
 
     async function submit(){
-        const data = {username, email, course, score, difficulty, comment, anonymity};
+        const data = {username, email, course, score, comment, anonymity};
         console.log(data);
 
         let feedback = await fetch('http://localhost:8080/course/rate', {
@@ -109,7 +109,7 @@ const CommentForm =()=> {
                         }}
                     />
                 </div>
-
+                {/*
                 <div class="difficultyDiv">
                     <h2 class="scoreHeader"> How difficult this course is: </h2>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -122,7 +122,7 @@ const CommentForm =()=> {
                             setDifficulty(newValue);
                         }}
                     />
-                </div>
+                    </div> */}
 
                 <div class="commentDiv">
                     <h2 class="commentHeader"> Write your comments: </h2>
