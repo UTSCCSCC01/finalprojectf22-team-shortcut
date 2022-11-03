@@ -100,6 +100,38 @@ router.post('/course/rate', bodyParser.json(), async (req, res) => {
 
 });
 
+router.post('/course/update/comment', bodyParser.json(), async (req, res) => {
+    var emails = [];
+    var count = 0;
+    const studentCursor = Student.find().cursor();
+    for (let doc = await studentCursor.next(); doc != null; doc = await studentCursor.next()) {
+        emails.push(doc.email.data);
+        console.log(doc.email.data);
+    }
+    const len = emails.length;
+
+    const commentCursor = Comment.find().cursor();
+    for (let doc = await commentCursor.next(); doc != null; doc = await commentCursor.next()) {
+        count++;
+        var likedEmails = emails.slice(0, count%len);
+        var numLikes = count%len;
+        var dislikedEmails = emails.slice(count%len, len);
+        var numDislikes = len - (count%len);
+        console.log(likedEmails, numLikes, dislikedEmails, numDislikes);
+        doc.likedEmails = likedEmails;
+        doc.dislikedEmails = dislikedEmails;
+        await doc.save();
+        await Comment.updateOne(doc, {
+                                        "numLikes": numLikes,
+                                        "numDislikes": numDislikes });
+        // await Comment.updateOne(doc, {$unset: {"username": 1}});
+        console.log(doc);
+    }
+
+    res.end();
+    return;
+});
+
 router.post('/course/update/course', bodyParser.json(), async (req, res) => {
     var count = 0;
 
