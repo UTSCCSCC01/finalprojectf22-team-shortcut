@@ -77,4 +77,18 @@ router.post('/course/rate', bodyParser.json(), async (req, res) => {
 
 });
 
+router.post('/course/update/course', bodyParser.json(), async (req, res) => {
+    var count = 0;
+
+    const courseCursor = await Course.find().cursor();
+    for (let doc = await courseCursor.next(); doc != null; doc = await courseCursor.next()) {
+        count++;
+        await Course.updateOne(doc, { "score": {"average": count%5, "num": 0} });
+        console.log(doc);
+    }
+
+    res.end();
+    return;
+});
+
 module.exports = router;
