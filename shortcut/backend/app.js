@@ -84,6 +84,12 @@ app.use("/", searchprogramskey);
 const searchprogramname = require("./routes/searchprogramname");
 app.use("/", searchprogramname);
 
+const likeRoutes = require("./routes/like");
+app.use("/", likeRoutes);
+
+const dislikeRoutes = require("./routes/dislike");
+app.use("/", dislikeRoutes);
+
 
 const advancesearchprogram = require("./routes/advanceprograms");
 app.use("/", advancesearchprogram);
