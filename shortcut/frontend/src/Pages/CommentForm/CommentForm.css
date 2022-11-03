@@ -20,6 +20,15 @@
     left: -15%;
 }
 
+.difficultyDiv {
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    position: relative;
+    left: -20%;
+    top: -3%;
+}
+
 .commentDiv {
     display: flex;
     flex-direction: column;
@@ -50,7 +59,7 @@
     flex-direction: row;
     position: relative;
     left: -17%;
-    top: -9%;
+    top: -7%;
 }
 
 .buttons2{
