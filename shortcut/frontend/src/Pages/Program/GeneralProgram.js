@@ -4,7 +4,7 @@ import { useState} from "react";
 
 // Components
 import Navbar from "../../Components/Navbar";
-import { Table, TableHead, TableBody, TableCell, Card, CardContent, CardMedia, Collapse, Paper, InputBase, IconButton, Divider, MenuList, MenuItem, ListItemText} from '@mui/material';
+import {Select, InputLabel, Box, Radio, RadioGroup, FormControlLabel,FormControl,FormLabel, Table, TableHead, TableBody, TableCell, Card, CardContent, CardMedia, Collapse, Paper, InputBase, IconButton, Divider, MenuList, MenuItem, ListItemText} from '@mui/material';
 import { GrSearchAdvanced, GrMore } from "react-icons/gr";
 import { ImFilter } from "react-icons/im";
 
@@ -29,6 +29,9 @@ const GeneralProgram =()=>{
     const [search, setSearch]=useState('');
     // indicate search status
     const [search_result, setSearchResult] = useState(0);
+    
+    // indicate advance searching or not
+    const [advanced, setAdvanced]=useState(false)
 
     // info card
     const [specialist, setSpecialist]=useState(false);
@@ -37,6 +40,13 @@ const GeneralProgram =()=>{
 
     // store return data from backend
     const [programList, setProgramList] = useState([]);
+
+    const [area, setArea]=useState("");
+    const [degree, setDegree]=useState("");
+    const [enrolment, setEnrolment]=useState("");
+    const [coop, setCoop]=useState("");
+    const [type, setType]=useState("");
+
  
 
 
@@ -52,34 +62,68 @@ const GeneralProgram =()=>{
         navigate(`/program/${name}`, {state:{user}});
     }
 
+
+    const advanced_button=()=>{
+        setAdvanced(!advanced);
+        setArea("");
+        setDegree("");
+        setEnrolment("");
+        setCoop("");
+        setType("");
+        setSearchResult(0);
+    }
+
     useEffect(()=> {setSearchResult(0)}, [search]);
 
     async function submitSearch(){
         const keywords=search;
-        const data = {keywords};
-        let feedback = await fetch('http://localhost:8080/searchprogramskey', {
-            method:'POST',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(data)
-        });
-        feedback = await feedback.json();
-        if(feedback.length===0){
-            // no course found
-            setSearchResult(-1);
- 
+        if(!advanced){
             
+            const data = {keywords};
+            let feedback = await fetch('http://localhost:8080/searchprogramskey', {
+                method:'POST',
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(data)
+            });
+            feedback = await feedback.json();
+            if(feedback.length===0){
+                // no program found
+                setSearchResult(-1);
+    
+                
+            }
+            else{
+                setSearchResult(1);
+                setProgramList(feedback.result);
+
+            }
+
         }
         else{
-            setSearchResult(1);
-            setProgramList(feedback.result);
-
-            // setNameList(feedback.programname);
-            // setTypeList(feedback.type);
-            
-            // course found
-
+            const data={coop, enrolment, area, type, degree, keywords};
+            console.log(data)
+            let feedback = await fetch('http://localhost:8080/advanceprograms', {
+                method:'POST',
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(data)
+            });
+            feedback=await feedback.json();
+            if(feedback.length===0){
+                // no program found
+                setSearchResult(-1);
+                console.log(feedback);
+            }
+            else{
+                console.log(feedback.finalresult);
+                
+                setSearchResult(1);
+                setProgramList(feedback.finalresult);
+            }
         }
+        
     }
+
+
 
     return(
         <div style={{backgroundColor:"white"}}>
@@ -153,7 +197,7 @@ const GeneralProgram =()=>{
             <GrSearchAdvanced/>
             </IconButton>
             
-            <IconButton type="button" sx={{ p:"15px"}}><ImFilter color="black"/></IconButton>
+            <IconButton type="button" sx={{ p:"15px"}} onClick={advanced_button}><ImFilter color="black"/></IconButton>
             <MenuList dense style={{maxHeight:"10em", overflow: "scroll"}}>
                 {programs.filter(program=>{
                     const input=search.toLowerCase();
@@ -174,7 +218,7 @@ const GeneralProgram =()=>{
       
 
 
-
+        
         {search_result>0 && 
         <Table sx={{maxWidth: "60%"}} >
             <TableHead >
@@ -191,10 +235,93 @@ const GeneralProgram =()=>{
         </Table>
         }
 
-        {search_result<0 &&
+        {search_result<0 && !advanced &&
             <div>
                 <h3 style={{color: "red", textAlign:"center", marginTop:"2em"}}> Sorry, keyword doesn't match any program</h3>
             </div>
+        }
+
+        {search_result<0 && advanced &&
+            <div>
+                <h3 style={{color: "red", textAlign:"center", marginTop:"2em"}}> Sorry, no matching program</h3>
+            </div>
+        }
+
+        {advanced &&
+        <div ><div>&nbsp;</div>
+        
+        <div style={{maxWidth: "60%", display:"flex"}}>
+            
+            <Box>
+            <FormControl>
+                <FormLabel> Co-op </FormLabel>
+                <RadioGroup onChange={(e)=>setCoop(e.target.value)}>
+                    <FormControlLabel value="\w"control={<Radio/>} label="Yes"/>
+                    <FormControlLabel value="nocoop"control={<Radio/>} label="No"/>
+
+                </RadioGroup>
+            </FormControl></Box>
+
+            <Box>
+            <FormControl>
+            <FormLabel> Type</FormLabel>
+            <RadioGroup onChange={(e)=>setType(e.target.value)}>
+                <FormControlLabel value="specialist" control={<Radio/>} label="Specialist"/>
+                <FormControlLabel value="major" control={<Radio/>} label="Major"/>
+                <FormControlLabel value="minor" control={<Radio/>} label="Minor"/>
+            </RadioGroup>
+            </FormControl></Box>
+
+            <Box>
+            <FormControl>
+            <FormLabel > Enrolment </FormLabel>
+            <RadioGroup onChange={(e)=>setEnrolment(e.target.value)}>
+                <FormControlLabel value="\w"control={<Radio/>} label="Limited"/>
+                <FormControlLabel value="unlimited" control={<Radio/>} label="Unlimited"/>
+            </RadioGroup>
+            </FormControl></Box>
+            </div> 
+            <div>&nbsp;</div>
+            <div style={{maxWidth: "60%", display:"flex"}}>
+            <Box>
+                <FormControl variant="filled" fullWidth >
+                    <InputLabel >Area</InputLabel>
+                    <Select value={area} onChange={(e)=>setArea(e.target.value)} sx={{minWidth:200}} >
+                        <MenuItem value="Computer Science">Computer Science</MenuItem>
+                        <MenuItem value= "Statistics">Statistics</MenuItem>
+                        <MenuItem value="African Studies">African Studies</MenuItem>
+                        <MenuItem value= "paramedicine">Paramedicine</MenuItem>
+                        <MenuItem value= "Combined Degree">Combined Degree</MenuItem>
+                        <MenuItem value= "history">History</MenuItem>
+                        <MenuItem value= "International Development Studies">International Development Studies</MenuItem>
+                        <MenuItem value= "City Studies">City Studies</MenuItem>
+                        <MenuItem value= "neuroscience">Neuroscience</MenuItem>
+                        <MenuItem value= "management">Management</MenuItem>
+
+
+                    </Select>
+                </FormControl>
+            </Box>
+
+            <Box >
+                <FormControl variant="filled" fullWidth>
+                    <InputLabel>Degree</InputLabel>
+                    <Select sx={{minWidth:260}} value={degree} label="Degree" onChange={(e)=>setDegree(e.target.value)} >
+                        <MenuItem value={"BA"}> Honours Bachelor of Arts</MenuItem>
+                        <MenuItem value={"BSc"}> Honours Bachelor of Science</MenuItem>
+                        <MenuItem value={"BBA"}> Bachelor of Business Administration</MenuItem>
+                    </Select>
+                </FormControl>
+            </Box></div>
+            <div>&nbsp;</div> <div>&nbsp;</div>
+            <div style={{textAlign:"center", color:"blue"}}>
+                <div>Note: Not necessary to select every field in detail.</div>
+                Leave blank means accept every options
+                </div>
+            </div>
+
+
+        
         }
 
         <div> &nbsp;</div> <div> &nbsp;</div> <div> &nbsp;</div>
@@ -209,3 +336,4 @@ const GeneralProgram =()=>{
     )
 }
 export default GeneralProgram;
+

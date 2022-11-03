@@ -1,12 +1,6 @@
 const mongoose = require('mongoose');
 
 const ratingSchema = new mongoose.Schema({
-
-  username: {
-    _id: false,
-    type: String,
-    default: ""
-  },
   email: {
     _id: false,
     type: String,

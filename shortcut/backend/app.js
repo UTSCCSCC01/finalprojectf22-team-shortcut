@@ -75,14 +75,22 @@ app.use("/",displayRoutes);
 const searchRoutes = require("./routes/search");
 app.use("/",searchRoutes);
 
+const advanceSearchRoutes = require("./routes/advanceSearch");
+app.use("/",advanceSearchRoutes);
+
 const searchprogramskey = require("./routes/searchprogramskey");
 app.use("/", searchprogramskey);
 
 const searchprogramname = require("./routes/searchprogramname");
 app.use("/", searchprogramname);
 
+
 const advancesearchprogram = require("./routes/advanceprograms");
 app.use("/", advancesearchprogram);
+
+const commentRoutes = require("./routes/comment");
+app.use("/", commentRoutes);
+
 
 
 //port

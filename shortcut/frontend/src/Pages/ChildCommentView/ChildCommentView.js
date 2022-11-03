@@ -1,4 +1,4 @@
-import './CommentView.css';
+import './ChildCommentView.css';
 import Popout from '../../Components/Popout';
 
 import Button from '../../Components/Button';
@@ -11,22 +11,23 @@ import { useState, useEffect } from "react";
 import { requirePropFactory } from '@mui/material';
 import Navbar from '../../Components/Navbar';
 
-const CommentView =()=> {
+const ChildCommentView =()=> {
     let navigate = useNavigate();
 
     // popout for error msg 
     const [msg, setMsg] = useState('');
     const [header, setHeader] = useState('');
     const [popout, setPopout] = useState(false);
-    const [parentData, setParentData] = useState(
+    const [childData, setChildData] = useState(
         {"ratings":[{"anonymity":false, "comment":"", "course":"", "created":"", "email":"", "score":0, username:"Loading...", "__v":0, "_id":""}], 
-        "comments":[{"anonymity":false, "likedEmails":["randomemail"], "dislikedEmails":["randomemail"], "content":"Loading...", "course":"", "created":"", "email":"", "parent":null, username:"Loading...", "__v":0, "_id":""}], 
+        "comments":[{"anonymity":false, "likedEmails":[], "dislikedEmails":[], "content":"Loading...", "course":"", "created":"", "email":"", "parent":null, username:"Loading...", "__v":0, "_id":""}], 
         "message":"sample message",
         "names":[],
         "result":1});
     const {state} = useLocation();
     const user = state.user;
     const email = user.email.data;
+    const parent_id = state.commentId;
 
     const{code}=useParams();
     console.log(code);
@@ -35,9 +36,9 @@ const CommentView =()=> {
     const [currentPage, setCurrentPage] = useState(1);
     const maxCommentPerPage = 4;
 
-    console.log(parentData);
+    console.log(childData);
 
-    useEffect(()=> {reqeustParentComments()}, []);
+    useEffect(()=> {reqeustChildComments(parent_id)}, []);
 
 
     const back =()=>{
@@ -54,14 +55,14 @@ const CommentView =()=> {
     }
 
     const prevPage =()=> {
-        const length = parentData.comments.length;
+        const length = childData.comments.length;
         if (currentPage > 1) {
             setCurrentPage(currentPage - 1);
         }
     }
 
     const nextPage =()=> {
-        const length = parentData.comments.length;
+        const length = childData.comments.length;
         if (currentPage*maxCommentPerPage < length) {
             setCurrentPage(currentPage + 1);
         }
@@ -75,36 +76,14 @@ const CommentView =()=> {
         dislikeOrNot(commentId);
     }
 
-    function handleReply(commentId, content) {
-        // console.log(commentId);
-        navigate(`/course/${code}/ChildCommentForm`, {state:{user, commentId, content}});
-    }
-
-    function handleViewReplies(commentId, content) {
-        // console.log(commentId);
-        navigate(`/course/${code}/ChildCommentView`, {state:{user, commentId, content}});
-    }
-
-    function calcOverallScore() {
-        const ratings = parentData.ratings
-        let i = 0;
-        let totalScore = 0;
-        for (; i < ratings.length; i++) {
-            totalScore += ratings[i].score;
-        }
-        return (totalScore/i).toFixed(2);
-    }
-
-    function renderComment(index) {
-        const rating = parentData.ratings[index];
-        const comment = parentData.comments[index];
-        const anonymity = rating.anonymity;
-        const commentId = rating.comment; 
+    function renderReply(index) {
+        const comment = childData.child_comments[index];
+        const anonymity = comment.anonymity;
+        const commentId = comment._id; 
         let username = "Anonymous User"
         if (anonymity == false) {
-            username = parentData.names[index];
+            username = childData.names[index];
         }
-        const score = rating.score;
         const content = comment.content;
 
         let isLiked = false;
@@ -135,8 +114,7 @@ const CommentView =()=> {
             dislikeButtonText = "Cancel dislike"
         }
 
-        return (
-        <div className='commentDivCV'>
+        return <div className='commentDivCV'>
             <div style={{position:"relative",width:"105%"}}>
                 <img 
                     src={require("../../Images/defaultUserAvatar.png")} 
@@ -154,63 +132,47 @@ const CommentView =()=> {
                 onClick={() => handleDislike(commentId)}>
                     {dislikeButtonText}({numberOfDislikes})
                 </button>
-                <button
-                className='replyButtonCV'
-                style={{position:"relative",left:"5em",margin:"0em 0.7em 0em 0em"}} 
-                onClick={() => handleReply(commentId, content)}>
-                    Reply
-                </button>
-                <button
-                className='viewRepliesButtonCV'
-                style={{position:"relative",left:"5em",margin:"0em 0.7em 0em 0em"}} 
-                onClick={() => handleViewReplies(commentId, content)}>
-                    View Replies
-                </button>
-            
-                <div style={{margin:"0.4em 0em 0em 0em"}}>
-                <Rating value={score} precision={0.5} readOnly size='small'/>
-            
-            <p style={{margin:"0.3em 0em 0.6em 1em"}}>
+            </div>
+            <div style={{margin:"1.1em 0em 0.6em 1em"}}>
                 {content}
-            </p>
-            </div></div></div>
-        )    
-}
+            </div>
+        </div>
+    }
 
-    function renderComments(currentPage) {
+    function renderReplies(currentPage) {
+
         let result = [(
             <h2 style={{float:"left",width:"90em",margin:"1em 1em 0.2em 1em"}}>
-              Comments:
+              Replies:
             </h2>
           )];
-        for (let i=0; (i<maxCommentPerPage)&&(i<parentData.ratings.length-(currentPage-1)*maxCommentPerPage); i++) {
-            result.push(renderComment((currentPage-1)*maxCommentPerPage+i));
+        for (let i=0; (i<maxCommentPerPage)&&(i<childData.names.length-(currentPage-1)*maxCommentPerPage); i++) {
+            result.push(renderReply((currentPage-1)*maxCommentPerPage+i));
             //console.log("Pushed",(currentPage-1)*maxCommentPerPage+i);
         }
         return result;
     }
 
-    async function reqeustParentComments(){
-        const data = {course};
-       // console.log(data);
+    async function reqeustChildComments(parent_id){
+        const data = {parent_id};
+        console.log(data);
 
-        let feedback = await fetch('http://localhost:8080/seeCourseRatings', {
+        let feedback = await fetch('http://localhost:8080/seeRatingComments', {
             method:'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(data)
         });
         feedback = await feedback.json();
-        setParentData(feedback);
+        setChildData(feedback);
         
         if(feedback.result===1){
-            console.log("Parent fetching succeeded...");
-            // console.log(feedback);
+            console.log("Child fetching succeeded...");
         }
         else{          
             setMsg("");
-            setHeader("Parent Fetching failed");
+            setHeader("Child Fetching failed");
             setPopout(true);
-            console.log("Parent fetching failed...");
+            console.log("Child fetching failed...");
         }
     } 
 
@@ -228,7 +190,7 @@ const CommentView =()=> {
         
         if(feedback.result!=0){
             console.log("Operation succeeded...");
-            reqeustParentComments();
+            reqeustChildComments(parent_id);
             // console.log(feedback);
         }
         else{          
@@ -250,24 +212,29 @@ const CommentView =()=> {
         
         if(feedback.result!=0){
             console.log("Operation succeeded...");
-            reqeustParentComments();
+            reqeustChildComments(parent_id);
             // console.log(feedback);
         }
         else{          
             console.log("Operation failed...");
         }
-    } 
+    }  
 
     return(
         <div style={{backgroundColor:"white"}}>
             <Navbar toHome={home} toProfile={toProfile}/>
             <div className="boxCV">
+
                 <div className="courseHeaderCV" style={{top:"2em"}}>
                     <h1 style={{fontSize:"3.5em"}}>{course}</h1>
-                    <h1 style={{marginLeft:"4em"}}>Rating: {calcOverallScore()}/5</h1>
                 </div>
+
+                <div style={{fontSize:"2em", position:"relative", top:"2em"}}>
+                    "{state.content.substring(0, 70)}"
+                </div>
+
                 <div className='commentsDivCV'>
-                    {renderComments(currentPage)}
+                    {renderReplies(currentPage)}
                     <div className='pageButtonsCV'>
                         <button onClick = {prevPage}> prev </button>
                         &nbsp; Page {currentPage} &nbsp;
@@ -286,4 +253,4 @@ const CommentView =()=> {
     )
 }
 
-export default CommentView;
+export default ChildCommentView;
