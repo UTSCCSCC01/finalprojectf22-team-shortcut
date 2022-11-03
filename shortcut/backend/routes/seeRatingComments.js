@@ -41,7 +41,7 @@ router.post('/seeRatingComments', bodyParser.json(), async (req, res) => {
                 names.push(name);
             }
 
-            res.json({ 'result': 1, 'child comments': child_comments, 'names': names, 'message': 'returning child comments.' });
+            res.json({ 'result': 1, 'child_comments': child_comments, 'names': names, 'message': 'returning child comments.' });
             res.end(); 
 
             db.close();
