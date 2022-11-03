@@ -31,7 +31,6 @@ const CommentView =()=> {
     const{code}=useParams();
     console.log(code);
     const [course, setCourse]=useState(code);
-
     const [currentPage, setCurrentPage] = useState(1);
     const maxCommentPerPage = 4;
 
