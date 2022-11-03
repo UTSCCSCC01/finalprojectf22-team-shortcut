@@ -20,8 +20,9 @@ const CommentView =()=> {
     const [popout, setPopout] = useState(false);
     const [parentData, setParentData] = useState(
         {"ratings":[{"anonymity":false, "comment":"", "course":"", "created":"", "email":"", "score":0, username:"Loading...", "__v":0, "_id":""}], 
-        "comments":[{"anonymity":false, "content":"Loading...", "course":"", "created":"", "email":"", "parent":null, username:"Loading...", "__v":0, "_id":""}], 
+        "comments":[{"anonymity":false, "likedEmails":["randomemail"], "dislikedEmails":["randomemail"], "content":"Loading...", "course":"", "created":"", "email":"", "parent":null, username:"Loading...", "__v":0, "_id":""}], 
         "message":"sample message",
+        "names":[],
         "result":1});
     const {state} = useLocation();
     const user = state.user;
@@ -30,9 +31,6 @@ const CommentView =()=> {
     const{code}=useParams();
     console.log(code);
     const [course, setCourse]=useState(code);
-
-    // the index of the expanded parent comment. "-1" denotes no expansion. No two comments can be expanded simultaneously.
-    const [indexOfExpanded, setIndexOfExpanded] = useState(-1);
 
     const [currentPage, setCurrentPage] = useState(1);
     const maxCommentPerPage = 4;
@@ -69,14 +67,12 @@ const CommentView =()=> {
         }
     }
 
-    function handleLike(commentId) {
+    function handleLike(commentId,index) {
         likeOrNot(commentId);
-         reqeustParentComments();
     }
 
     function handleDislike(commentId) {
         dislikeOrNot(commentId);
-         reqeustParentComments();
     }
 
     function handleReply(commentId, content) {
@@ -106,18 +102,18 @@ const CommentView =()=> {
         const commentId = rating.comment; 
         let username = "Anonymous User"
         if (anonymity == false) {
-            username = rating.username;
+            username = parentData.names[index];
         }
         const score = rating.score;
         const content = comment.content;
 
         let isLiked = false;
-        // for (let j=0; j<comment.likedEmails.length;j++) {
-        //     if (email == comment.likedEmails[j]) {
-        //         isLiked = true;
-        //         break;
-        //     }
-        //}
+         for (let j=0; j<comment.likedEmails.length;j++) {
+             if (email == comment.likedEmails[j]) {
+                 isLiked = true;
+                 break;
+             }
+        }
         let numberOfLikes = comment.numLikes;
         let likeButtonText = "Like"
         let likeButtonClass = "likeButtonCV";
@@ -126,14 +122,21 @@ const CommentView =()=> {
         }
 
         let isDisliked = false;
+         for (let j=0; j<comment.dislikedEmails.length;j++) {
+             if (email == comment.dislikedEmails[j]) {
+                 isDisliked = true;
+                 break;
+             }
+        }
         let numberOfDislikes = comment.numDislikes;
-        let DislikeButtonText = "Dislike"
+        let dislikeButtonText = "Dislike"
         let dislikeButtonClass = "dislikeButtonCV";
         if (isDisliked) {
-            likeButtonText = "Cancel dislike"
+            dislikeButtonText = "Cancel dislike"
         }
 
-        return <div className='commentDivCV'>
+        return (
+        <div className='commentDivCV'>
             <div style={{position:"relative",width:"105%"}}>
                 <img 
                     src={require("../../Images/defaultUserAvatar.png")} 
@@ -143,13 +146,13 @@ const CommentView =()=> {
                 {username}
                 <button className={likeButtonClass} 
                 style={{position:"relative",left:"5em",margin:"0em 0.7em 0em 0em"}} 
-                onClick={() => handleLike(commentId)}>
+                onClick={() => handleLike(commentId,index)}>
                     {likeButtonText}({numberOfLikes})
                 </button>
                 <button className={dislikeButtonClass} 
                 style={{position:"relative",left:"5em",margin:"0em 0.7em 0em 0em"}} 
                 onClick={() => handleDislike(commentId)}>
-                    {DislikeButtonText}({numberOfDislikes})
+                    {dislikeButtonText}({numberOfDislikes})
                 </button>
                 <button
                 className='replyButtonCV'
@@ -163,15 +166,16 @@ const CommentView =()=> {
                 onClick={() => handleViewReplies(commentId, content)}>
                     View Replies
                 </button>
-            </div>
-            <div style={{margin:"0.4em 0em 0em 0em"}}>
+            
+                <div style={{margin:"0.4em 0em 0em 0em"}}>
                 <Rating value={score} precision={0.5} readOnly size='small'/>
-            </div>
-            <div style={{margin:"0.3em 0em 0.6em 1em"}}>
+            
+            <p style={{margin:"0.3em 0em 0.6em 1em"}}>
                 {content}
-            </div>
-        </div>
-    }
+            </p>
+            </div></div></div>
+        )    
+}
 
     function renderComments(currentPage) {
         let result = [(
@@ -222,15 +226,13 @@ const CommentView =()=> {
         });
         feedback = await feedback.json();
         
-        if(feedback.result===1){
-            console.log("Like operation succeeded...");
+        if(feedback.result!=0){
+            console.log("Operation succeeded...");
+            reqeustParentComments();
             // console.log(feedback);
         }
         else{          
-            setMsg("");
-            setHeader(feedback.message);
-            setPopout(true);
-            console.log("Like failed...");
+            console.log("Operation failed...");
         }
     } 
 
@@ -246,15 +248,13 @@ const CommentView =()=> {
         });
         feedback = await feedback.json();
         
-        if(feedback.result===1){
-            console.log("Dislike operation succeeded...");
+        if(feedback.result!=0){
+            console.log("Operation succeeded...");
+            reqeustParentComments();
             // console.log(feedback);
         }
         else{          
-            setMsg("");
-            setHeader("Dislike failed...");
-            setPopout(true);
-            console.log("Dislike failed...");
+            console.log("Operation failed...");
         }
     } 
 
