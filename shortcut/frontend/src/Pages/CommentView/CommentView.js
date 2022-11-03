@@ -170,7 +170,9 @@ const CommentView =()=> {
                 <div style={{margin:"0.4em 0em 0em 0em"}}>
                 <Rating value={score} precision={0.5} readOnly size='small'/>
             
-            <p style={{margin:"0.3em 0em 0.6em 1em", maxWidth:"95%"}}>
+
+            <p style={{margin:"0.3em 0em 0.6em 1em", maxWidth:"90%"}}>
+
                 {content}
             </p>
             </div></div></div>
