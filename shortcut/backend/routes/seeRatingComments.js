@@ -11,7 +11,7 @@ var url = "mongodb+srv://CalebZhang:Zhangkeyuan333@cluster0.lb38qs6.mongodb.net/
 
 
 router.post('/seeRatingComments', bodyParser.json(), async (req, res) => {
-    var key = req.body._id;
+    var key = req.body.parent_id;
     mongo.connect(url, async(err, db) => {
         if (err){
           res.json({ 'result': 0, 'message': 'Error.' });
