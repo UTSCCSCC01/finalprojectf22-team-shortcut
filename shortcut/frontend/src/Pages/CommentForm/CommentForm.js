@@ -38,10 +38,12 @@ const CommentForm =()=> {
 
     const [course, setCourse] = useState(code);
     const [score, setScore] = useState(0);
+    const [difficulty, setDifficulty] = useState(0);
     const [comment, setComment] = useState("");
     const [anonymity, setAnonymity]= useState(false);
 
     console.log(score);
+    console.log(difficulty);
     console.log(comment);
     console.log(anonymity);
     console.log(state.user.email);
@@ -60,7 +62,7 @@ const CommentForm =()=> {
     }
 
     async function submit(){
-        const data = {username, email, course, score, comment, anonymity};
+        const data = {username, email, course, score, difficulty, comment, anonymity};
         console.log(data);
 
         let feedback = await fetch('http://localhost:8080/course/rate', {
@@ -104,6 +106,20 @@ const CommentForm =()=> {
                         precision={0.5}
                         onChange={(event, newValue) => {
                             setScore(newValue);
+                        }}
+                    />
+                </div>
+
+                <div class="difficultyDiv">
+                    <h2 class="scoreHeader"> How difficult this course is: </h2>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     <Rating
+                        name="simple-controlled"
+                        size="large"
+                        value={difficulty}
+                        precision={0.5}
+                        onChange={(event, newValue) => {
+                            setDifficulty(newValue);
                         }}
                     />
                 </div>
