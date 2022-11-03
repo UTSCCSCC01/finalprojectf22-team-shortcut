@@ -85,6 +85,7 @@ const CommentView =()=> {
         navigate(`/course/${code}/ChildCommentView`, {state:{user, commentId, content}});
     }
 
+    /*
     function calcOverallScore() {
         const ratings = parentData.ratings
         let i = 0;
@@ -93,7 +94,7 @@ const CommentView =()=> {
             totalScore += ratings[i].score;
         }
         return (totalScore/i).toFixed(2);
-    }
+    } */
 
     function renderComment(index) {
         const rating = parentData.ratings[index];
@@ -170,7 +171,7 @@ const CommentView =()=> {
                 <div style={{margin:"0.4em 0em 0em 0em"}}>
                 <Rating value={score} precision={0.5} readOnly size='small'/>
             
-            <p style={{margin:"0.3em 0em 0.6em 1em"}}>
+            <p style={{margin:"0.3em 0em 0.6em 1em", maxWidth:"95%"}}>
                 {content}
             </p>
             </div></div></div>
@@ -264,7 +265,7 @@ const CommentView =()=> {
             <div className="boxCV">
                 <div className="courseHeaderCV" style={{top:"2em"}}>
                     <h1 style={{fontSize:"3.5em"}}>{course}</h1>
-                    <h1 style={{marginLeft:"4em"}}>Rating: {calcOverallScore()}/5</h1>
+                    {/*<h1 style={{marginLeft:"4em"}}>Rating: {calcOverallScore()}/5</h1>*/}
                 </div>
                 <div className='commentsDivCV'>
                     {renderComments(currentPage)}
