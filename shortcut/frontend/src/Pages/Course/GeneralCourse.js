@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Navbar from "../../Components/Navbar";
 import "./GeneralCourse.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Table, TableHead, TableBody, TableCell, Card, CardContent, CardMedia, Collapse, Paper, InputBase, IconButton, Divider, MenuList, MenuItem, ListItemText} from '@mui/material';
+import { Select, InputLabel, Checkbox,Slider, Box, Radio, RadioGroup, FormControlLabel,FormControl,FormLabel,Table, TableHead, TableBody, TableCell, Card, CardContent, CardMedia, Collapse, Paper, InputBase, IconButton, Divider, MenuList, MenuItem, ListItemText} from '@mui/material';
 
 // icons
 import { ImFilter } from "react-icons/im";
@@ -36,6 +36,18 @@ const GeneralCourse =()=>{
     const [search, setSearch]=useState('');
     const [search_result, setSearchResult]=useState(0);
 
+    // indicate advanced search
+    const [advanced, setAdvanced]=useState(false);
+
+    // advance search body
+    const [breadth, setBreadth]=useState("");
+    const [average, setAverage]=useState(0);
+    const [level, setLevel]=useState("");
+    const [pre, setPre]=useState("");
+    //const [description, setDescription]=useState('');
+    const [search_description, setSearchDescription]=useState(false);
+
+
     
     const [courseList, setCourseList]=useState([]);
     
@@ -50,31 +62,81 @@ const GeneralCourse =()=>{
         navigate(`/course/${code}`, {state:{user}});
         console.log(user);
     }
-   
+    const advanced_button=()=>{
+        setAdvanced(!advanced);
+        setPre("");
+        setLevel("");
+        setBreadth("");
+
+        setAverage(0);
+        setSearchResult(0);
+        setSearchDescription(false);
+    }
+
 
     async function submitSearch(){
         // submit keyword to backend
-        const keywords=search;
-        const breadth = "";
-        const data = {keywords, breadth};
-        console.log(data);
-        let feedback = await fetch('http://localhost:8080/search', {
-            method:'POST',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(data)
-        });
-        feedback = await feedback.json();
-        if(feedback.check===0){
-            // no course found
-            // console.log(feedback);
-            setSearchResult(-1);
+        
+        if(!advanced){
+            const keywords=search;
+            const breadth = "";
+            const data = {keywords, breadth};
+            console.log(data);
+            let feedback = await fetch('http://localhost:8080/search', {
+                method:'POST',
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(data)
+            });
+            feedback = await feedback.json();
+            if(feedback.check===0){
+                // no course found
+                // console.log(feedback);
+                setSearchResult(-1);
+            }
+            else{
+                // course found
+                setSearchResult(1);
+                setCourseList(feedback.a);
+                
+            }
         }
         else{
-            // course found
-            setSearchResult(1);
-            setCourseList(feedback.a);
+            console.log(search_description);
+            var keywords=search;
+            var description="";
+            if(search_description){
+                
+                keywords="";
+                description=search;
+            }
             
+            
+            const score = {average};
+            const res={score, breadth, description, keywords, pre, level};
+            const data={res};
+            console.log(data);
+            let feedback = await fetch('http://localhost:8080/advanceSearch', {
+                method:'POST',
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(data)
+            });
+            feedback = await feedback.json();
+            if(feedback.check===0){
+                // no course found
+                // console.log(feedback);
+                setSearchResult(-1);
+            }
+            else{
+                // course found
+                console.log(feedback);
+                // bug in here, no result still shows check = 1
+                console.log(feedback.a);
+                setSearchResult(1);
+                setCourseList(feedback.a);
+                
+            }
         }
+        
 
 
     }
@@ -158,7 +220,7 @@ const GeneralCourse =()=>{
             <GrSearchAdvanced/>
             </IconButton>
             
-            <IconButton type="button" sx={{ p:"15px"}}><ImFilter color="black"/></IconButton>
+            <IconButton type="button" sx={{ p:"15px"}} onClick={advanced_button}><ImFilter color="black"/></IconButton>
             <MenuList dense style={{maxHeight:"10em", overflow: "scroll"}}>
                 {courses.filter(course=>{
                     const input=search.toLowerCase();
@@ -193,10 +255,83 @@ const GeneralCourse =()=>{
         </Table>
         }
 
-        {search_result<0 &&
+        {search_result<0 && !advanced &&
             <div>
                 <h3 style={{color: "red", textAlign:"center", marginTop:"2em"}}> Sorry, keyword doesn't match any courses</h3>
             </div>
+        }
+
+        {search_result<0 && advanced &&
+            <div>
+                <h3 style={{color: "red", textAlign:"center", marginTop:"2em"}}> Sorry, no matching courses</h3>
+            </div>
+        }
+
+        {advanced &&
+            <div ><div>&nbsp;</div>
+
+            <div style={{maxWidth: "60%", display:"flex"}}>
+            
+            <Box>
+            <FormControl>
+                <FormLabel> Breadth </FormLabel>
+                <RadioGroup onChange={(e)=>setBreadth(e.target.value)}>
+                    <FormControlLabel value="Arts"control={<Radio/>} label="Arts, Literature, and Language"/>
+                    <FormControlLabel value="Natural"control={<Radio/>} label="Natural Sciences"/>
+                    <FormControlLabel value="History"control={<Radio/>} label="History, Philosophy, and Cultural Studies"/>
+                    <FormControlLabel value="Quantitative"control={<Radio/>} label="Quantitative Reasoning"/>
+                    <FormControlLabel value="Social"control={<Radio/>} label="Social and Behavioural Sciences"/>
+                   
+                </RadioGroup>
+            </FormControl></Box>
+
+            <Box>
+            <FormControl>
+                <FormLabel> Level </FormLabel>
+                <RadioGroup onChange={(e)=>setLevel(e.target.value)}>
+                    <FormControlLabel value="A"control={<Radio/>} label="A-Level"/>
+                    <FormControlLabel value="B"control={<Radio/>} label="B-Level"/>
+                    <FormControlLabel value="C"control={<Radio/>} label="C-Level"/>
+                    <FormControlLabel value="D"control={<Radio/>} label="D-Level"/>
+                </RadioGroup>
+            </FormControl></Box>
+            </div><div> &nbsp;</div> <div> &nbsp;</div>
+            <div style={{maxWidth: "60%", display:"flex"}}>
+            <Box>
+                <FormControl>
+                    <FormLabel> Pre-Requisites </FormLabel>
+                    <RadioGroup onChange={(e)=>setPre(e.target.value)}>
+                        <FormControlLabel value="need"control={<Radio/>} label="With Pre-requisites"/>
+                        <FormControlLabel value="no"control={<Radio/>} label="Without Pre-requisites"/>
+                        
+                    </RadioGroup>
+                </FormControl></Box>
+            
+
+            <Box sx={{width:200}}>
+            <FormLabel>Average Rate Higher Than:</FormLabel>
+            <div> &nbsp;</div>
+            <Slider value={average} defaultValue={0}
+                onChange={(e)=>setAverage(e.target.value)} 
+                min={0} max={5} valueLabelDisplay="auto"/>
+            </Box>
+            </div>
+            <div> &nbsp;</div> <div> &nbsp;</div>
+
+            <div style={{textAlign:"center"}}>
+                Do you want to search your keyword in course description?
+                <Checkbox checked={search_description} onChange={()=>{setSearchDescription(!search_description)}}/>
+                <div> &nbsp;</div>
+                
+            </div>
+            
+            <div>&nbsp;</div> 
+            <div style={{textAlign:"center", color:"blue"}}>
+                <div>Note: Not necessary to select every field in detail.</div>
+                Leave blank means accept every options
+                </div>
+            </div>
+            
         }
 
         <div> &nbsp;</div> <div> &nbsp;</div> <div> &nbsp;</div>

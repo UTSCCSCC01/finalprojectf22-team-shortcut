@@ -69,17 +69,36 @@ app.use("/", courseRoutes);
 const seeCourseRatingsRoutes = require("./routes/seeCourseRatings");
 app.use("/", seeCourseRatingsRoutes);
 
+const seeRatingCommentsRoutes = require("./routes/seeRatingComments");
+app.use("/", seeRatingCommentsRoutes);
+
 const displayRoutes = require("./routes/display");
 app.use("/",displayRoutes);
 
 const searchRoutes = require("./routes/search");
 app.use("/",searchRoutes);
 
+const advanceSearchRoutes = require("./routes/advanceSearch");
+app.use("/",advanceSearchRoutes);
+
 const searchprogramskey = require("./routes/searchprogramskey");
 app.use("/", searchprogramskey);
 
 const searchprogramname = require("./routes/searchprogramname");
 app.use("/", searchprogramname);
+
+const likeRoutes = require("./routes/like");
+app.use("/", likeRoutes);
+
+const dislikeRoutes = require("./routes/dislike");
+app.use("/", dislikeRoutes);
+
+
+const advancesearchprogram = require("./routes/advanceprograms");
+app.use("/", advancesearchprogram);
+
+const commentRoutes = require("./routes/comment");
+app.use("/", commentRoutes);
 
 
 //port

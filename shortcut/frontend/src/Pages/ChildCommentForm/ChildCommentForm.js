@@ -1,4 +1,4 @@
-import './CommentForm.css';
+import './ChildCommentForm.css';
 
 
 import Button from '../../Components/Button';
@@ -19,7 +19,7 @@ import Logo from "../../Components/Logo";
 
 
 
-const CommentForm =()=> {
+const ChildCommentForm =()=> {
     let navigate = useNavigate();
 
     // popout for error msg 
@@ -33,20 +33,19 @@ const CommentForm =()=> {
     const [email, setEmail] = useState(state.user.email.data);
     const [username, setUsername]=useState(state.user.name.data);
 
-    const{code}=useParams();
-    console.log(code);
+     const{code}=useParams();
+    //  console.log(code);
 
     const [course, setCourse] = useState(code);
-    const [score, setScore] = useState(0);
-    // const [difficulty, setDifficulty] = useState(0);
     const [comment, setComment] = useState("");
+    const [id, setId] = useState(state.commentId);
     const [anonymity, setAnonymity]= useState(false);
 
-    console.log(score);
-    
-    console.log(comment);
-    console.log(anonymity);
-    console.log(state.user.email);
+     console.log(comment);
+     console.log(anonymity);
+     console.log(state.user.email.data);
+     console.log(id);
+     console.log(course);
 
     const changeComment=(val)=>{
         setComment(val.target.value);
@@ -57,15 +56,14 @@ const CommentForm =()=> {
     }
 
     const handleCancel =()=>{
-        const feedback = state.user
-        navigate(-1, {state: {feedback}});
+        navigate(-1, {state: {user}});
     }
 
     async function submit(){
-        const data = {username, email, course, score, comment, anonymity};
+        const data = {email, course, id, comment, anonymity};
         console.log(data);
 
-        let feedback = await fetch('http://localhost:8080/course/rate', {
+        let feedback = await fetch('http://localhost:8080/comment', {
             method:'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(data)
@@ -95,42 +93,21 @@ const CommentForm =()=> {
             <Logo/>
             
             <div className='box'>
-                
-                <div class="scoreDiv">
-                    <h2 class="scoreHeader"> Give an overall score for this course: </h2>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <Rating
-                        name="simple-controlled"
-                        size="large"
-                        value={score}
-                        precision={0.5}
-                        onChange={(event, newValue) => {
-                            setScore(newValue);
-                        }}
-                    />
-                </div>
-                {/*
-                <div class="difficultyDiv">
-                    <h2 class="scoreHeader"> How difficult this course is: </h2>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                     <Rating
-                        name="simple-controlled"
-                        size="large"
-                        value={difficulty}
-                        precision={0.5}
-                        onChange={(event, newValue) => {
-                            setDifficulty(newValue);
-                        }}
-                    />
-                    </div> */}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                <div class="commentDiv">
-                    <h2 class="commentHeader"> Write your comments: </h2>
+                <div class="contentDivCCF">
+                    <h2 class="commentHeader"> Replying to: </h2>
+                    &nbsp;
+                    <h5 class="" style={{"width":"50em", "position":"relative", "left":"1em"}}> "{state.content.substring(0,70)}" </h5>
+                </div>   
+
+                <div class="commentDivCCF">
+                    <h2 class="commentHeader"> Compose a reply here: </h2>
                     <textarea className="commentInput"  maxLength={1000} placeholder={"Leave your comment here..."} onChange={changeComment}/>
                 </div>   
                 
-                <div class="anonymityDiv">
-                    <h2> Do you want this survey to be anonymous? </h2>
+                <div class="anonymityDivCCF">
+                    <h2> Do you want this reply to be anonymous? </h2>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <Checkbox
                         checked={anonymity}
@@ -151,4 +128,4 @@ const CommentForm =()=> {
     )
 }
 
-export default CommentForm;
+export default ChildCommentForm;

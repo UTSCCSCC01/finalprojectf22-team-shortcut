@@ -34,7 +34,8 @@ const CourseDescription =()=>{
     const [recommended, setRecommended] = useState([]);
     const [notes, setNotes]= useState('');
     const [status, setStatus] = useState('');
-    
+    const [score, setScore]=useState("NaN");
+
     function toProfile(){
         navigate('/profile', {state:{user}});
     }
@@ -70,7 +71,7 @@ const CourseDescription =()=>{
         }
         else{
             // course found
-            
+            console.log(feedback.course);
             setDescription(feedback.course.description);
             setBreadth(feedback.course.breadth);
             setExclusions(feedback.course.exclusions);
@@ -80,6 +81,12 @@ const CourseDescription =()=>{
             setNotes(feedback.course.note);
             setStatus(feedback.course.status);
             setName(feedback.course.name);
+
+            if(feedback.course.score.average<=5 &&feedback.course.score.average>=0){
+                setScore(feedback.course.score.average.toFixed(2));
+            }
+            
+            
            
           
         }
@@ -90,7 +97,9 @@ const CourseDescription =()=>{
     return(
         <div style={{backgroundColor:"white"}}> 
         <Navbar toHome={toHome} toProfile={toProfile}/>
-        <h1 style={{textAlign:"center", margin:"2em"}}>{code}: {name}</h1>
+        <h1 style={{textAlign:"center", margin:"2em"}}>{code}: {name} 
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rate: {score}/5
+        </h1>
         
         
         <Accordion style={{marginBottom:"1em", marginLeft:"8.5em", width: "80%"}}>
