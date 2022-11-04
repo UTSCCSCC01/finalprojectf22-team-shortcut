@@ -101,7 +101,6 @@ const commentRoutes = require("./routes/comment");
 app.use("/", commentRoutes);
 
 
-
 //port
 const port = process.env.PORT || 8080; // process.env.PORT
 

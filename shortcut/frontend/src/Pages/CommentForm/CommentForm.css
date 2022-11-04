@@ -60,9 +60,6 @@
     position: relative;
     left: -17%;
     top: -7%;
-}
-
-.buttons2{
     display: flex;
     flex-direction: row;
     width: 58%;
