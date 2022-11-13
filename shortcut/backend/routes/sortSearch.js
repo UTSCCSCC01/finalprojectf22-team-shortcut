@@ -92,14 +92,14 @@ router.post('/sortSearch', bodyParser.json(), async(req,res)=>{
                         if(sort == 1){
                             var e = new Array();
                             e = a.sort(compare);
-                            res.send({check:1,e})
+                            res.send({check:1,a})
                             return;
                         }
     
                         if(sort == 2){
                             var e = new Array();
                             e = a.sort(compareR);
-                            res.send({check:1,e})
+                            res.send({check:1,a})
                             return;
                         }
 
@@ -131,14 +131,14 @@ router.post('/sortSearch', bodyParser.json(), async(req,res)=>{
                     if(sort == 1){
                         var e = new Array();
                         e = a.sort(compare);
-                        res.send({check:1,e})
+                        res.send({check:1,a})
                         return;
                     }
 
                     if(sort == 2){
                         var e = new Array();
                         e = a.sort(compareR);
-                        res.send({check:1,e})
+                        res.send({check:1,a})
                         return;
                     }
                  
@@ -180,14 +180,14 @@ router.post('/sortSearch', bodyParser.json(), async(req,res)=>{
                     if(sort == 1){
                         var e = new Array();
                         e = a.sort(compare);
-                        res.send({check:1,e})
+                        res.send({check:1,a})
                         return;
                     }
 
                     if(sort == 2){
                         var e = new Array();
                         e = a.sort(compareR);
-                        res.send({check:1,e})
+                        res.send({check:1,a})
                         return;
                     }
 
@@ -222,14 +222,14 @@ router.post('/sortSearch', bodyParser.json(), async(req,res)=>{
                 if(sort == 1){
                     var e = new Array();
                     e = a.sort(compare);
-                    res.send({check:1,e})
+                    res.send({check:1,a})
                     return;
                 }
 
                 if(sort == 2){
                     var e = new Array();
                     e = a.sort(compareR);
-                    res.send({check:1,e})
+                    res.send({check:1,a})
                     return;
                 }
 
@@ -269,14 +269,14 @@ router.post('/sortSearch', bodyParser.json(), async(req,res)=>{
                     if(sort == 1){
                         var e = new Array();
                         e = a.sort(compare);
-                        res.send({check:1,e})
+                        res.send({check:1,a})
                         return;
                     }
 
                     if(sort == 2){
                         var e = new Array();
                         e = a.sort(compareR);
-                        res.send({check:1,e})
+                        res.send({check:1,a})
                         return;
                     }
 
@@ -308,14 +308,14 @@ router.post('/sortSearch', bodyParser.json(), async(req,res)=>{
                 if(sort == 1){
                     var e = new Array();
                     e = a.sort(compare);
-                    res.send({check:1,e})
+                    res.send({check:1,a})
                     return;
                 }
 
                 if(sort == 2){
                     var e = new Array();
                     e = a.sort(compareR);
-                    res.send({check:1,e})
+                    res.send({check:1,a})
                     return;
                 }
 
