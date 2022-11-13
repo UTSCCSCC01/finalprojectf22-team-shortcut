@@ -14,19 +14,22 @@ const bodyParser = require('body-parser');
 router.post('/getrecommand', bodyParser.json(), async(req,res)=>{
     const completed = req.body.completed;
     var preference = req.body.preference;
-    var stream = req.body.stream;
+    var key = req.body.stream;
     var result = {};
     result["completed"] = completed;
     result["required"]={};
+    result["required"].A=[];
+    result["required"].B=[];
+    result["required"].C=[];
+    result["required"].D=[];
     result["electives"]={};
     result["electives"].A=[];
     result["electives"].B=[];
     result["electives"].C=[];
     result["electives"].D=[];
-    // console.log(key);
     mongo.connect(url, async(err, db) => {
         var db1 = db.db("ShortCut");
-        db1.collection("CompSci").findOne({stream:stream}).toArray((err, find) => {
+        db1.collection('CompSci').find({stream:key}).toArray(async (err, find) => {
             if(find.length==0){
                 console.log("wrong in stream name");
             }
@@ -38,7 +41,7 @@ router.post('/getrecommand', bodyParser.json(), async(req,res)=>{
             for(let i=0;i<allrequired.length;i++){
                 let canadd = true;
                 for(let j=0;j<completed.length;j++){
-                    if(allrequired[i].localeCompare(completed[j])==0){
+                    if(allrequired[i].localeCompare(completed[j], undefined, {sensitivity: 'base'})==0){
                         canadd = false;
                         break;
                     }
@@ -56,19 +59,21 @@ router.post('/getrecommand', bodyParser.json(), async(req,res)=>{
                     else{
                         requiredD.push(allrequired[i]);
                     }
-
                 }
-                result["required"].A = requiredA.slice();
-                result["required"].B = requiredB.slice();
-                result["required"].C = requiredC.slice();
-                result["required"].D = requiredD.slice();
             }
+            // for(let i = 0 ; i< requiredA.length;i++){
+            //     result["required"].A.push(requiredA[i]);
+            // }
+            result["required"].A = requiredA.slice();
+            result["required"].B = requiredB.slice();
+            result["required"].C = requiredC.slice();
+            result["required"].D = requiredD.slice();
             const allelectives = find[0].electives;
             for(let z=0; z< allelectives.length;z++){
                 const recommand = [];
                 const notlearned = [];
                 const num = allelectives[z].num/0.5;
-                const count=0;
+                const count=0;//count number of completed course in each elective
                 for(let i=0;i<allelectives[z].list.length;i++){
                     for(let j=0;j<completed.length;j++){
                         let learned = false;
@@ -83,22 +88,31 @@ router.post('/getrecommand', bodyParser.json(), async(req,res)=>{
                 }
                 if(count>num||count==num){}
                 else{
-                    const remains = num-count;
-                    for(let j=0;j<completed.length;j++){
-                        db1.collection("Course").findOne({code:allelectives[z].list[j], 
-                        description:{$regex:preference,$options: 'i'}}).toArray((err,resultfind) => {
-                            if (resultfind.length==1){
-                                recommand.push(resultfind[0].code);
-                                remains=remains-1;
-                            }
-                        });
+                    var remains = num-count;
+                    // console.log(remains)
+                    for(let j=0;j<allelectives[z].list.length;j++){
                         if(remains==0){
                             break;
                         }
+                        // console.log(j)
+                        var temp = await db1.collection("Course").find({code:allelectives[z].list[j], description:{$regex:preference,$options: 'i'}}).toArray();
+                        if(temp.length != 1){
+                            continue;
+                        }
+                        recommand.push(temp[0].code);
+                        remains=remains-1;
+                        // console.log(recommand)
+                        // console.log(remains)
                     }
+                    // console.log(recommand)
+                    // console.log(remains)
                     if(remains>0){
-                        for(let i=0;i<remains.length;i++){
+                        for(let i=0;i<remains;i++){
+                            while(recommand.indexOf(notlearned[i])>-1){
+                                i++;
+                            }
                             recommand.push(notlearned[i]);
+
                         }
                     }
                 }
@@ -113,13 +127,14 @@ router.post('/getrecommand', bodyParser.json(), async(req,res)=>{
                     else if(/[A-Z]{3}B.*/.test(recommand[i])){
                         B.push(recommand[i]);
                     }
-                    else if(/[A-Z]{3}A.*/.test(recommand[i])){
+                    else if(/[A-Z]{3}C.*/.test(recommand[i])){
                         C.push(recommand[i]);
                     }
                     else{
-                        D.push(allrequired[i]);
+                        D.push(recommand[i]);
                     }
                 }
+
                 for(let i = 0 ; i< A.length;i++){
                     result["electives"].A.push(A[i]);
                 }
@@ -133,9 +148,8 @@ router.post('/getrecommand', bodyParser.json(), async(req,res)=>{
                     result["electives"].D.push(D[i]);
                 }
             }
+            res.send(result);
         });
-        res.send(result);
-
     });
 });
 module.exports = router;
