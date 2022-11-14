@@ -11,6 +11,11 @@ import { useState, useEffect } from "react";
 import { requirePropFactory } from '@mui/material';
 import Navbar from '../../Components/Navbar';
 
+
+import {light, dark} from "../../Components/Themes";
+import {ThemeProvider} from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import {Paper} from '@mui/material';
 const CommentView =()=> {
     let navigate = useNavigate();
 
@@ -37,6 +42,17 @@ const CommentView =()=> {
     console.log(parentData);
 
     useEffect(()=> {reqeustParentComments()}, []);
+
+    // light, dark mode
+    const [mode, setMode]=useState(JSON.parse(localStorage.getItem('mode')));
+    const [refresh, setRefresh] = useState(false);
+
+    function re_render(){
+        setRefresh(!refresh);
+       
+    }
+    useEffect(()=> setMode(JSON.parse(localStorage.getItem('mode'))), [refresh]);
+    // done mode
 
 
     const back =()=>{
@@ -136,7 +152,9 @@ const CommentView =()=> {
         }
 
         return (
-        <div className='commentDivCV'>
+        <ThemeProvider theme={mode? dark:light}>
+        <CssBaseline/>
+        <Paper sx={{bgcolor:"background.paper.comments"}} className='commentDivCV'>
             <div style={{position:"relative",width:"105%"}}>
                 <img 
                     src={require("../../Images/defaultUserAvatar.png")} 
@@ -175,7 +193,7 @@ const CommentView =()=> {
 
                 {content}
             </p>
-            </div></div></div>
+            </div></div></Paper> </ThemeProvider>
         )    
 }
 
@@ -261,30 +279,32 @@ const CommentView =()=> {
     } 
 
     return(
-        <div style={{backgroundColor:"white"}}>
-            <Navbar toHome={home} toProfile={toProfile}/>
-            <div className="boxCV">
+        <ThemeProvider theme={mode ? dark:light}>
+            <CssBaseline/>
+        <div >
+            <Navbar toHome={home} toProfile={toProfile} sendState={re_render}/>
+            <Paper sx={{bgcolor:"background.paper.third"}}className="boxCV">
                 <div className="courseHeaderCV" style={{top:"2em"}}>
                     <h1 style={{fontSize:"3.5em"}}>{course}</h1>
                     {/*<h1 style={{marginLeft:"4em"}}>Rating: {calcOverallScore()}/5</h1>*/}
                 </div>
-                <div className='commentsDivCV'>
+                <Paper sx={{bgcolor:"background.paper.comments"}}className='commentsDivCV'>
                     {renderComments(currentPage)}
                     <div className='pageButtonsCV'>
                         <button onClick = {prevPage}> prev </button>
                         &nbsp; Page {currentPage} &nbsp;
                         <button onClick = {nextPage}> next </button>
                     </div>
-                </div>
+                </Paper>
 
                 <div className="buttonsCV">
                     <Button text = "Back" col="steelblue" func={back}></Button>
                     
                 </div>
-            </div>
+            </Paper>
 
             <Popout trigger ={popout} head = {header} message={msg} setTrigger={setPopout}/>
-        </div>
+        </div> </ThemeProvider>
     )
 }
 
