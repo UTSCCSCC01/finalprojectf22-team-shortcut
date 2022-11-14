@@ -14,14 +14,26 @@ import { ImFilter } from "react-icons/im";
 import Specialist from "../../Images/specialist.jpg";
 import Major from "../../Images/major.jpg";
 import Minor from "../../Images/minor.jpg";
-import bottom1 from "../../Images/b12.jpg";
+import bottom1 from "../../Images/b12_transparent.png";
 import bottom2 from "../../Images/Program_Word.jpg";
-import bottom3 from "../../Images/b13.jpg";
+import bottom3 from "../../Images/b13_transparent.png";
 
 import { useEffect } from "react";
+
+import {light, dark} from "../../Components/Themes";
+import {ThemeProvider} from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+
+
+
 var programs = require("./ProgramDictionary.json");
 
 const GeneralProgram =()=>{
+
+    const [mode, setMode]=useState(JSON.parse(localStorage.getItem('mode')));
+    const [refresh, setRefresh] = useState(false);
+
+    
 
     let navigate=useNavigate();
     const {state} =useLocation();
@@ -47,7 +59,9 @@ const GeneralProgram =()=>{
     const [coop, setCoop]=useState("");
     const [type, setType]=useState("");
 
- 
+    function re_render(){
+        setRefresh(!refresh);
+    }
 
 
     function toProfile(){
@@ -72,8 +86,11 @@ const GeneralProgram =()=>{
         setType("");
         setSearchResult(0);
     }
-
+    
     useEffect(()=> {setSearchResult(0)}, [search]);
+    
+    useEffect(()=> setMode(JSON.parse(localStorage.getItem('mode'))), [refresh]);
+
 
     async function submitSearch(){
         const keywords=search;
@@ -126,13 +143,19 @@ const GeneralProgram =()=>{
 
 
     return(
-        <div style={{backgroundColor:"white"}}>
-        <Navbar toProfile={toProfile} toHome={toHome}/>
-        <h1 style={{fontSize:"3em", textAlign:"center", margin:"1.5em", color:"saddlebrown"}}>
-            Find Your Program</h1>
-        <Paper style={{flexDirection:"row", display:"flex", backgroundColor:"lavender", height:"25em"}}>
+      
+        <ThemeProvider theme={mode? dark:light}>
+            <CssBaseline/>
+        <div >
         
-        <Card sx={{maxWidth: 250}}> 
+        <Navbar toProfile={toProfile} toHome={toHome} sendState={re_render}/>
+        <h1  style={{color:"text.secondary", fontSize:"3em", textAlign:"center", margin:"1.5em"}}>
+            Find Your Program</h1>
+        
+      
+        <Paper sx={{bgcolor:"background.paper.secondary"}} style={{flexDirection:"row", display:"flex", height:"25em"}}>
+        
+        <Card sx={{maxWidth: 250, bgcolor:"background.default"}}> 
         <CardMedia component="img" image={Specialist}></CardMedia>
         <CardContent>
             <h3>Specialist</h3>
@@ -149,7 +172,7 @@ const GeneralProgram =()=>{
             </Collapse>
         </Card>
 
-        <Card sx={{maxWidth: 250}}> 
+        <Card sx={{maxWidth: 250 , bgcolor:"background.default"}}> 
         <CardMedia component="img" image={Major}></CardMedia>
         <CardContent>
             <h3>Major</h3>
@@ -167,7 +190,7 @@ const GeneralProgram =()=>{
             </Collapse>
         </Card>
 
-        <Card sx={{maxWidth: 250}}> 
+        <Card sx={{maxWidth: 250, bgcolor:"background.default"}}> 
         <CardMedia component="img" image={Minor}></CardMedia>
         <CardContent>
             <h3>Minor</h3>
@@ -189,7 +212,7 @@ const GeneralProgram =()=>{
         
 
         </Paper> <h1 style={{textAlign:"center", margin:"1.3em"}}>Program Search </h1>
-        <Paper component="form"  style={{backgroundColor:"white", width:"60%", height: "50%"}}>
+        <Paper component="form" sx={{bgcolor:"background.paper.primary"}} style={{ width:"60%", height: "50%"}}>
             
             <InputBase style={{width: "80%", height: "8em"}} placeholder="Search..." value={search} onChange={(e)=> setSearch(e.target.value)}> </InputBase>
             
@@ -207,8 +230,8 @@ const GeneralProgram =()=>{
                 .map((program)=>(
                     <div><Divider/>
                         <MenuItem>
-                        <ListItemText onClick={()=>setSearch(program.keyword)}
-                        sx={{mx:"21em"}}>{program.keyword}</ListItemText>  
+                        <ListItemText  onClick={()=>setSearch(program.keyword)}
+                        sx={{mx:"21em", color:"#6495ed"}}>{program.keyword}</ListItemText>  
                         </MenuItem>                    
                     </div>    
                 ))}
@@ -283,20 +306,20 @@ const GeneralProgram =()=>{
             </div> 
             <div>&nbsp;</div>
             <div style={{maxWidth: "60%", display:"flex"}}>
-            <Box>
+            <Box >
                 <FormControl variant="filled" fullWidth >
                     <InputLabel >Area</InputLabel>
-                    <Select value={area} onChange={(e)=>setArea(e.target.value)} sx={{minWidth:200}} >
-                        <MenuItem value="Computer Science">Computer Science</MenuItem>
-                        <MenuItem value= "Statistics">Statistics</MenuItem>
-                        <MenuItem value="African Studies">African Studies</MenuItem>
-                        <MenuItem value= "paramedicine">Paramedicine</MenuItem>
-                        <MenuItem value= "Combined Degree">Combined Degree</MenuItem>
-                        <MenuItem value= "history">History</MenuItem>
-                        <MenuItem value= "International Development Studies">International Development Studies</MenuItem>
-                        <MenuItem value= "City Studies">City Studies</MenuItem>
-                        <MenuItem value= "neuroscience">Neuroscience</MenuItem>
-                        <MenuItem value= "management">Management</MenuItem>
+                    <Select value={area} onChange={(e)=>setArea(e.target.value)} sx={{ minWidth:200}} >
+                        <MenuItem sx={{bgcolor:"background.paper.primary"}} value="Computer Science">Computer Science</MenuItem>
+                        <MenuItem sx={{bgcolor:"background.paper.primary"}} value= "Statistics">Statistics</MenuItem>
+                        <MenuItem sx={{bgcolor:"background.paper.primary"}} value="African Studies">African Studies</MenuItem>
+                        <MenuItem sx={{bgcolor:"background.paper.primary"}} value= "paramedicine">Paramedicine</MenuItem>
+                        <MenuItem sx={{bgcolor:"background.paper.primary"}} value= "Combined Degree">Combined Degree</MenuItem>
+                        <MenuItem sx={{bgcolor:"background.paper.primary"}} value= "history">History</MenuItem>
+                        <MenuItem sx={{bgcolor:"background.paper.primary"}} value= "International Development Studies">International Development Studies</MenuItem>
+                        <MenuItem sx={{bgcolor:"background.paper.primary"}} value= "City Studies">City Studies</MenuItem>
+                        <MenuItem sx={{bgcolor:"background.paper.primary"}} value= "neuroscience">Neuroscience</MenuItem>
+                        <MenuItem sx={{bgcolor:"background.paper.primary"}} value= "management">Management</MenuItem>
 
 
                     </Select>
@@ -307,9 +330,9 @@ const GeneralProgram =()=>{
                 <FormControl variant="filled" fullWidth>
                     <InputLabel>Degree</InputLabel>
                     <Select sx={{minWidth:260}} value={degree} label="Degree" onChange={(e)=>setDegree(e.target.value)} >
-                        <MenuItem value={"BA"}> Honours Bachelor of Arts</MenuItem>
-                        <MenuItem value={"BSc"}> Honours Bachelor of Science</MenuItem>
-                        <MenuItem value={"BBA"}> Bachelor of Business Administration</MenuItem>
+                        <MenuItem sx={{bgcolor:"background.paper.primary"}} value={"BA"}> Honours Bachelor of Arts</MenuItem>
+                        <MenuItem sx={{bgcolor:"background.paper.primary"}} value={"BSc"}> Honours Bachelor of Science</MenuItem>
+                        <MenuItem sx={{bgcolor:"background.paper.primary"}} value={"BBA"}> Bachelor of Business Administration</MenuItem>
                     </Select>
                 </FormControl>
             </Box></div>
@@ -326,10 +349,12 @@ const GeneralProgram =()=>{
 
         <div> &nbsp;</div> <div> &nbsp;</div> <div> &nbsp;</div>
         <div style={{display:"flex"}}>
-        <img style={{width: "20%", height:"15%"}} src={bottom1}/>
+        <img style={{width: "20%", height:"15%"}} src={bottom1} />
         <img style={{ width: "40%", height:"15%"}} src={bottom2}/>
-        <img style={{width: "20%", height:"15%"}} src={bottom3}/>
-        </div></div>
+        <img style={{width: "20%", height:"15%"}}  src={bottom3}/>
+        </div>
+    
+        </div></ThemeProvider>
 
 
 

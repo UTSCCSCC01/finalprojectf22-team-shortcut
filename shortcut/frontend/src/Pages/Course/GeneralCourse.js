@@ -14,9 +14,15 @@ import A from "../../Images/b15.jpg";
 import B from "../../Images/b14.jpg";
 import C from "../../Images/b18.jpg";
 import D from "../../Images/b16.jpg";
-import bottom1 from "../../Images/b12.jpg";
-import bottom2 from "../../Images/quote3.jpg";
-import bottom3 from "../../Images/b13.jpg";
+import bottom1 from "../../Images/b12_transparent.png";
+import bottom2 from "../../Images/quote3_transparent.png";
+import bottom3 from "../../Images/b13_transparent.png";
+
+
+
+import {light, dark} from "../../Components/Themes";
+import {ThemeProvider} from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 
 // corse disctionary keyword
 var courses = require("./CourseDictionary.json");
@@ -46,10 +52,21 @@ const GeneralCourse =()=>{
     const [pre, setPre]=useState("");
     //const [description, setDescription]=useState('');
     const [search_description, setSearchDescription]=useState(false);
-
+    const [sort, setSort] = useState(0);
 
     
     const [courseList, setCourseList]=useState([]);
+
+
+    // light, dark mode
+    const [mode, setMode]=useState(JSON.parse(localStorage.getItem('mode')));
+    const [refresh, setRefresh] = useState(false);
+
+    function re_render(){
+        setRefresh(!refresh);
+       
+    }
+    useEffect(()=> setMode(JSON.parse(localStorage.getItem('mode'))), [refresh]);
     
     function toProfile(){
         navigate('/profile', {state:{user}});
@@ -71,6 +88,7 @@ const GeneralCourse =()=>{
         setAverage(0);
         setSearchResult(0);
         setSearchDescription(false);
+        setSort(0);
     }
 
 
@@ -112,10 +130,10 @@ const GeneralCourse =()=>{
             
             
             const score = {average};
-            const res={score, breadth, description, keywords, pre, level};
+            const res={sort, score, breadth, description, keywords, pre, level};
             const data={res};
             console.log(data);
-            let feedback = await fetch('http://localhost:8080/advanceSearch', {
+            let feedback = await fetch('http://localhost:8080/sortSearch', {
                 method:'POST',
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(data)
@@ -143,14 +161,17 @@ const GeneralCourse =()=>{
     
 
     return (
+        <ThemeProvider theme={mode? dark:light}>
+            <CssBaseline/>
+
         
-        <div style={{backgroundColor: "white"}}>
-        <Navbar toProfile={toProfile} toHome={toHome}/>
-        <h1 style={{fontSize:"3em", textAlign:"center", margin:"1.5em", color:"saddlebrown"}}>
+        <div>
+        <Navbar toProfile={toProfile} toHome={toHome} sendState={re_render}/>
+        <h1 style={{fontSize:"3em", textAlign:"center", margin:"1.5em"}}>
             Find Your Desired Courses</h1>
-            <Paper style={{flexDirection:"row", display:"flex", backgroundColor:"lavender", height:"25em"}}>
+        <Paper sx={{bgcolor: "background.paper.secondary"}} style={{flexDirection:"row", display:"flex", height:"25em"}}>
         
-        <Card sx={{maxWidth: 200}}> 
+        <Card sx={{maxWidth: 200,bgcolor:"background.default"}}> 
         <CardMedia component="img" image={A}></CardMedia>
         <CardContent>
             <h3>Breadth?</h3>
@@ -165,7 +186,7 @@ const GeneralCourse =()=>{
             </Collapse>
         </Card>
 
-        <Card sx={{maxWidth: 200}}> 
+        <Card sx={{maxWidth: 200, bgcolor:"background.default"}}> 
         <CardMedia component="img" image={B}></CardMedia>
         <CardContent>
             <h3>Pre-Requisite?</h3>
@@ -180,7 +201,7 @@ const GeneralCourse =()=>{
             </Collapse>
         </Card>
 
-        <Card sx={{maxWidth: 200}}> 
+        <Card sx={{maxWidth: 200, bgcolor:"background.default"}}> 
         <CardMedia component="img" image={C}></CardMedia>
         <CardContent>
             <h3>Co-Requisite?</h3>
@@ -195,7 +216,7 @@ const GeneralCourse =()=>{
             </Collapse>
         </Card>
 
-        <Card sx={{maxWidth: 200}}> 
+        <Card sx={{maxWidth: 200, bgcolor:"background.default"}}> 
         <CardMedia component="img" image={D}></CardMedia>
         <CardContent>
             <h3>Exclusions?</h3>
@@ -212,7 +233,7 @@ const GeneralCourse =()=>{
         
 
         </Paper> <h1 style={{textAlign:"center", margin:"1.3em"}}>Course Search </h1>
-        <Paper component="form"  style={{backgroundColor:"white", width:"60%", height: "50%"}}>
+        <Paper component="form" sx={{bgcolor:"background.paper.primary"}} style={{ width:"60%", height: "50%"}}>
             
             <InputBase style={{width: "80%", height: "8em"}} placeholder="Search..." value={search} onChange={(e)=> setSearch(e.target.value)}> </InputBase>
             
@@ -295,6 +316,10 @@ const GeneralCourse =()=>{
                     <FormControlLabel value="D"control={<Radio/>} label="D-Level"/>
                 </RadioGroup>
             </FormControl></Box>
+
+
+            
+
             </div><div> &nbsp;</div> <div> &nbsp;</div>
             <div style={{maxWidth: "60%", display:"flex"}}>
             <Box>
@@ -315,14 +340,28 @@ const GeneralCourse =()=>{
                 onChange={(e)=>setAverage(e.target.value)} 
                 min={0} max={5} valueLabelDisplay="auto"/>
             </Box>
+
+                
+            <Box>
+                <FormControl>
+                    <FormLabel> Sort Search Result on Rate</FormLabel>
+                    <RadioGroup onChange={(e)=>setSort(e.target.value)}>
+                        <FormControlLabel value={2} control={<Radio/>} label="Low to High"/>
+                        <FormControlLabel value={1} control={<Radio/>} label="High to Low"/>
+                        
+                    </RadioGroup>
+                </FormControl></Box>
+            
             </div>
             <div> &nbsp;</div> <div> &nbsp;</div>
-
+            
+            
+            
             <div style={{textAlign:"center"}}>
                 Do you want to search your keyword in course description?
                 <Checkbox checked={search_description} onChange={()=>{setSearchDescription(!search_description)}}/>
-                <div> &nbsp;</div>
                 
+               
             </div>
             
             <div>&nbsp;</div> 
@@ -340,6 +379,7 @@ const GeneralCourse =()=>{
         <img style={{ width: "40%", height:"15%"}} src={bottom2}/>
         <img style={{width: "20%", height:"15%"}} src={bottom3}/>
         </div></div>
+        </ThemeProvider>
     )
 }
 
