@@ -14,6 +14,7 @@ import CommentForm from "./Pages/CommentForm/CommentForm";
 import CommentView from "./Pages/CommentView/CommentView";
 import ChildCommentForm from "./Pages/ChildCommentForm/ChildCommentForm";
 import ChildCommentView from "./Pages/ChildCommentView/ChildCommentView";
+import History from "./Pages/History/History";
 
 
 
@@ -37,6 +38,7 @@ const routes=()=>{
                 <Route path="/course/:code/commentView" element ={<CommentView/>}/>
                 <Route path="/course/:code/ChildcommentForm" element ={<ChildCommentForm/>}/>
                 <Route path="/course/:code/ChildcommentView" element ={<ChildCommentView/>}/>
+                <Route path="/History" element={<History/>}/>
 
                 {/* <Route path='*'><SomeComponent /></Route> */}
             </Routes>
