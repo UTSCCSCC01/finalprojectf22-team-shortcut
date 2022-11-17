@@ -73,11 +73,11 @@ router.post('/getrecommand', bodyParser.json(), async(req,res)=>{
                 const recommand = [];
                 const notlearned = [];
                 const num = allelectives[z].num/0.5;
-                const count=0;//count number of completed course in each elective
+                var count=0;//count number of completed course in each elective
                 for(let i=0;i<allelectives[z].list.length;i++){
+                    let learned = false;
                     for(let j=0;j<completed.length;j++){
-                        let learned = false;
-                        if(completed[j].localeCompare(allelectives[z].list[i])==0){
+                        if(completed[j].toLowerCase().includes(allelectives[z].list[i].toLowerCase())){
                             count=count+1;
                             learned = true;
                         }
@@ -85,6 +85,7 @@ router.post('/getrecommand', bodyParser.json(), async(req,res)=>{
                             notlearned.push(allelectives[z].list[i]);
                         }
                     }
+                    
                 }
                 if(count>num||count==num){}
                 else{
@@ -99,12 +100,20 @@ router.post('/getrecommand', bodyParser.json(), async(req,res)=>{
                         if(temp.length != 1){
                             continue;
                         }
-                        recommand.push(temp[0].code);
-                        remains=remains-1;
+                        let learned = false;
+                        for(let j=0;j<completed.length;j++){
+                            if(completed[j].toLowerCase().includes(temp[0].code.toLowerCase())){
+                                learned = true;
+                            }
+                            if(learned==false){
+                                recommand.push(temp[0].code);
+                                remains=remains-1;
+                            }
+                        }
                         // console.log(recommand)
                         // console.log(remains)
                     }
-                    // console.log(recommand)
+                    console.log(recommand)
                     // console.log(remains)
                     if(remains>0){
                         for(let i=0;i<remains;i++){
