@@ -146,4 +146,15 @@ router.post('/course/update/course', bodyParser.json(), async (req, res) => {
     return;
 });
 
+router.post('/course/list', bodyParser.json(), async (req, res) => {
+    const courseCursor = await Course.find().cursor();
+    var courses = [];
+    for (let doc = await courseCursor.next(); doc != null; doc = await courseCursor.next()) {
+        console.log(doc.code);
+        courses.push(doc.code);
+    }
+    res.json({ "courses": courses });
+    res.end();
+});
+
 module.exports = router;
