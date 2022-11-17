@@ -6,6 +6,7 @@ const Student = require('../schemas/StudentSchema');
 const Comment = require('../schemas/CommentSchema');
 const Rating = require('../schemas/RatingSchema');
 const Course = require('../schemas/CourseSchema');
+const e = require('express');
 
 router.post('/course/rate', bodyParser.json(), async (req, res) => {
 
@@ -151,7 +152,10 @@ router.post('/course/list', bodyParser.json(), async (req, res) => {
     var courses = [];
     for (let doc = await courseCursor.next(); doc != null; doc = await courseCursor.next()) {
         console.log(doc.code);
-        courses.push(doc.code);
+        if (doc.status == 'Available') courses.push(doc.code);
+        else {
+            console.log(doc.code, "is unavailable");
+        }
     }
     res.json({ "courses": courses });
     res.end();
