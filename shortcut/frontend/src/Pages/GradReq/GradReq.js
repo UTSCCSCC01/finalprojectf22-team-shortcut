@@ -4,12 +4,26 @@ import Popout from '../../Components/Popout';
 import Button from '../../Components/Button';
 import * as React from 'react';
 import { Link, Routes, Route, BrowserRouter as Router, useNavigate, useLocation, useParams } from "react-router-dom";
-import Box from '@mui/material/Box';
+import {Box,Paper} from '@mui/material';
 import { useState, useEffect } from "react";
 import { requirePropFactory } from '@mui/material';
 import Navbar from '../../Components/Navbar';
 
+
+import {light, dark} from "../../Components/Themes";
+import {ThemeProvider} from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+
 const GradReq =()=> {
+    const [mode, setMode]=useState(JSON.parse(localStorage.getItem('mode')));
+    const [refresh, setRefresh] = useState(false);
+    function re_render(){
+        setRefresh(!refresh);
+       
+    }
+    useEffect(()=> setMode(JSON.parse(localStorage.getItem('mode'))), [refresh]);
+    
+
     let navigate = useNavigate();
 
     // popout for error msg 
@@ -34,9 +48,11 @@ const GradReq =()=> {
     }
 
     return(
-        <div style={{backgroundColor:"white"}}>
-            <Navbar toHome={home} toProfile={toProfile}/>
-            <div className="boxGR">
+        <ThemeProvider theme={mode? dark:light}>
+            <CssBaseline/>
+        <div >
+            <Navbar toHome={home} toProfile={toProfile} sendState={re_render}/>
+            <Paper sx={{bgcolor:"background.paper.comments"}} className="boxGR">
                 &nbsp;
                 <h1 style={{"font-size":"32px","margin-left":"0.5em","margin-bottom":"0.5em"}}>Graduation Requirements</h1>
                 &nbsp;
@@ -107,10 +123,10 @@ const GradReq =()=> {
                 <div className="buttonsGR">
                     <Button text = "Back" col="steelblue" func={back}></Button>                  
                 </div>
-            </div>
+            </Paper>
 
             <Popout trigger ={popout} head = {header} message={msg} setTrigger={setPopout}/>
-        </div>
+        </div></ThemeProvider>
     )
 }
 
