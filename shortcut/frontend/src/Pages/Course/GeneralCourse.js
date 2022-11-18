@@ -346,8 +346,8 @@ const GeneralCourse =()=>{
                 <FormControl>
                     <FormLabel> Sort Search Result on Rate</FormLabel>
                     <RadioGroup onChange={(e)=>setSort(e.target.value)}>
-                        <FormControlLabel value={2} control={<Radio/>} label="Low to High"/>
-                        <FormControlLabel value={1} control={<Radio/>} label="High to Low"/>
+                        <FormControlLabel value={1} control={<Radio/>} label="Low to High"/>
+                        <FormControlLabel value={2} control={<Radio/>} label="High to Low"/>
                         
                     </RadioGroup>
                 </FormControl></Box>
