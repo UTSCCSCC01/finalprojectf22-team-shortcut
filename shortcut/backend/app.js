@@ -72,6 +72,9 @@ app.use("/", seeCourseRatingsRoutes);
 const seeRatingCommentsRoutes = require("./routes/seeRatingComments");
 app.use("/", seeRatingCommentsRoutes);
 
+const checkPrerequisitesRoutes = require("./routes/checkPrerequisites");
+app.use("/", checkPrerequisitesRoutes);
+
 const displayRoutes = require("./routes/display");
 app.use("/",displayRoutes);
 
@@ -99,6 +102,14 @@ app.use("/", advancesearchprogram);
 
 const commentRoutes = require("./routes/comment");
 app.use("/", commentRoutes);
+
+
+const getrecommand = require("./routes/getrecommand");
+app.use("/", getrecommand);
+
+
+const sortSearchRoutes = require("./routes/sortSearch");
+app.use("/",sortSearchRoutes);
 
 
 //port
