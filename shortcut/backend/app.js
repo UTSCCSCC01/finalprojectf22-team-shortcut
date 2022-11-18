@@ -72,6 +72,9 @@ app.use("/", seeCourseRatingsRoutes);
 const seeRatingCommentsRoutes = require("./routes/seeRatingComments");
 app.use("/", seeRatingCommentsRoutes);
 
+const checkPrerequisitesRoutes = require("./routes/checkPrerequisites");
+app.use("/", checkPrerequisitesRoutes);
+
 const displayRoutes = require("./routes/display");
 app.use("/",displayRoutes);
 
