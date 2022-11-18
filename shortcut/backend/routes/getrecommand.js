@@ -81,9 +81,9 @@ router.post('/getrecommand', bodyParser.json(), async(req,res)=>{
                             count=count+1;
                             learned = true;
                         }
-                        if(learned==false){
-                            notlearned.push(allelectives[z].list[i]);
-                        }
+                    }
+                    if(learned==false){
+                        notlearned.push(allelectives[z].list[i]);
                     }
                     
                 }
@@ -91,30 +91,32 @@ router.post('/getrecommand', bodyParser.json(), async(req,res)=>{
                 else{
                     var remains = num-count;
                     // console.log(remains)
-                    for(let j=0;j<allelectives[z].list.length;j++){
-                        if(remains==0){
-                            break;
-                        }
-                        // console.log(j)
-                        var temp = await db1.collection("Course").find({code:allelectives[z].list[j], description:{$regex:preference,$options: 'i'}}).toArray();
-                        if(temp.length != 1){
-                            continue;
-                        }
-                        let learned = false;
-                        for(let j=0;j<completed.length;j++){
-                            if(completed[j].toLowerCase().includes(temp[0].code.toLowerCase())){
-                                learned = true;
+                    if(preference.length!=0){
+                        for(let j=0;j<allelectives[z].list.length;j++){
+                            if(remains==0){
+                                break;
                             }
-                            if(learned==false){
-                                recommand.push(temp[0].code);
-                                remains=remains-1;
+                            // console.log(j)
+                            var temp = await db1.collection("Course").find({code:allelectives[z].list[j], description:{$regex:preference,$options: 'i'}}).toArray();
+                            if(temp.length != 1){
+                                continue;
                             }
-                        }
+                            let learned = false;
+                            for(let j=0;j<completed.length;j++){
+                                if(completed[j].toLowerCase().includes(temp[0].code.toLowerCase())){
+                                    learned = true;
+                                }
+                                if(learned==false){
+                                    recommand.push(temp[0].code);
+                                    remains=remains-1;
+                                    break;
+                                }
+                            }
+                        
                         // console.log(recommand)
                         // console.log(remains)
+                        }
                     }
-                    console.log(recommand)
-                    // console.log(remains)
                     if(remains>0){
                         for(let i=0;i<remains;i++){
                             while(recommand.indexOf(notlearned[i])>-1){
