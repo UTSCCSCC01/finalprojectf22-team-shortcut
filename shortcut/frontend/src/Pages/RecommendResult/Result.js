@@ -5,41 +5,33 @@ import Navbar from "../../Components/Navbar";
 import { useNavigate, useLocation } from "react-router-dom";
 import {Grid, Button, Select, InputLabel, Fade, Popper, Box, Card, Paper} from '@mui/material';
 
-
-
 import {light, dark} from "../../Components/Themes";
 import {ThemeProvider} from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import PersonalProfile from "../Profile/PersonalProfile";
 
-// for testing
-var courses = require("./Test.json");
 
 const Result =()=>{
     let navigate=useNavigate();
     const {state} =useLocation();
     const user=state.user;
-    /* comment remove later
-    // get user data
+    
     
     const completed = state.feedback.completed;
+    const student_academic_history=state.feedback.completed;
     const required = state.feedback.required;
     const electives = state.feedback.electives
-    */
-   
 
-    // for testing, no data now, remove later
+    
+    const required_A = required.A;
+    const required_B = required.B;
+    const required_C = required.C;
+    const required_D = required.D;
 
-    const completed = courses.completed;
-    const required_A = courses.required.A;
-    const required_B = courses.required.B;
-    const required_C = courses.required.C;
-    const required_D = courses.required.D;
+    const electives_A = electives.A;
+    const electives_B = electives.B;
+    const electives_C = electives.C;
+    const electives_D = electives.D;
 
-    const electives_A = courses.electives.A;
-    const electives_B = courses.electives.B;
-    const electives_C = courses.electives.C;
-    const electives_D = courses.electives.D;
 
     // light, dark mode
     const [mode, setMode]=useState(JSON.parse(localStorage.getItem('mode')));
@@ -61,53 +53,106 @@ const Result =()=>{
     }
 
 
-
+    const [code, setCode]=useState('');
+    const [pre, setPre] = useState([]);
+    const [message, setMessage]=useState('');
     // popout components
     const [pop, setPop]=useState(false);
     const [place, setPlace]=useState(null);
+
+   
+
     const handlePop=(e)=>{
+        
+        
         if(pop){
             setPop(!pop);
+            setPre([]);
+            setMessage('');
         }
         else{
             setPop(!pop);
+            
             setPlace(e.currentTarget);
+            handleSubmit();
         }
         
         
     }
     // popout done
 
+    function fetchArray(array){
+        if(array && array.length>0){
+  
+            const new_array = array.map(item=>{
+                console.log(item);
+                if(Number.isInteger(item) && item){
+                    return "Need satisfy all below: "
+                }
+                else if(Number.isInteger(item) && item===0){
+                    return "Satisfy one of the requirements: "
+                }
+                
+                else if(Array.isArray(item)){
+                    return " ["+fetchArray(item)+"]";
+                }      
+                else{
+                    return " "+item;
+                }
+                
+                
+            })
 
-    /*
-    async function handleClick(){
-        
+            console.log(new_array);
+            return new_array;
+        }
+        else{
+            return [];
+        }
+
+    }
+    
+    async function handleSubmit(e){
+        const code =e.target.value;
+        const data = {student_academic_history, code};
         console.log(data);
-        let feedback = await fetch('http://localhost:8080/login', {
+
+        if(pop){
+            setPop(false);
+            setPre([]);
+            setMessage("");
+            return;
+        }
+        setPop(true);
+        setPlace(e.currentTarget);
+        let feedback = await fetch('http://localhost:8080/checkPrerequisites', {
             method:'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(data)
         });
         feedback = await feedback.json();
-        console.log("passin");
+       
 
         console.log(feedback);
-        console.log("passend");
-        if(feedback.check===1){
-            const user=feedback;
-            navigate('/home', {state:{user}});
-
-            //login succeed
+       
+        if(feedback.result===0){
+            // error
+            setMessage("Sorry, error occurred");            
+        }
+        else if(feedback.result===1){
+            
+            setMessage("You are fully eligible for this course now");
+        }
+        else if(feedback.result===3){
+            setMessage("You have already finish this course");
         }
         else{
-            setHeader("Login Failed");
-            setMsg("Please input correct email and password")
-            setPopout(true);
-            
-
+            setMessage("You are missing some requirements to take this course")
+            setPre(fetchArray(feedback.Prerequisites));
+          
         }
 
-    } */
+    } 
 
     return(
         <ThemeProvider theme={mode? dark:light}>
@@ -132,13 +177,13 @@ const Result =()=>{
                 
                     {required_A.map((course)=>(
                     
-                    <Button onClick={handlePop} color="secondary" variant="outlined" style={{margin:"0.1em",width:"8em"}}>
+                    <Button value={course} onClick={handleSubmit} color="secondary" variant="outlined" style={{margin:"0.1em",width:"8em"}}>
                         {course}  require         
                     </Button>
-
+                    
                     ))}
                     {electives_A.map((course)=>(
-                    <Button onClick={handlePop} color="secondary" variant="outlined" style={{margin:"0.1em",width:"8em"}}>
+                    <Button value={course} onClick={handleSubmit} color="secondary" variant="outlined" style={{margin:"0.1em",width:"8em"}}>
                         {course}  recommend           
                     </Button>
                     ))}
@@ -150,13 +195,13 @@ const Result =()=>{
                 
                     {required_B.map((course)=>(
                
-                    <Button onClick={handlePop} color="secondary" variant="outlined" style={{margin:"0.1em",width:"8em"}}>
+                    <Button value={course} onClick={handleSubmit} color="secondary" variant="outlined" style={{margin:"0.1em",width:"8em"}}>
                         {course}  require         
                     </Button>
 
                     ))}
                     {electives_B.map((course)=>(
-                    <Button onClick={handlePop} color="secondary" variant="outlined" style={{margin:"0.1em",width:"8em"}}>
+                    <Button value={course} onClick={handleSubmit} color="secondary" variant="outlined" style={{margin:"0.1em",width:"8em"}}>
                         {course}  recommend           
                     </Button>
                     ))}
@@ -167,12 +212,12 @@ const Result =()=>{
                 <h2 style={{margin:"1em"}}>Recommended C-Level Courses</h2>
                 
                     {required_C.map((course)=>(
-                    <Button onClick={handlePop} color="secondary" variant="outlined" style={{margin:"0.1em",width:"8em"}}>
+                    <Button value={course} onClick={handleSubmit} color="secondary" variant="outlined" style={{margin:"0.1em",width:"8em"}}>
                         {course}  require         
                     </Button>
                     ))}
                     {electives_C.map((course)=>(
-                    <Button onClick={handlePop} color="secondary" variant="outlined" style={{margin:"0.1em",width:"8em"}}>
+                    <Button value={course} onClick={handleSubmit} color="secondary" variant="outlined" style={{margin:"0.1em",width:"8em"}}>
                         {course}  recommend           
                     </Button>
                     ))}
@@ -183,12 +228,12 @@ const Result =()=>{
                 <h2 style={{margin:"1em"}}>Recommended D-Level Courses</h2>
                 
                     {required_D.map((course)=>(
-                    <Button onClick={handlePop} color="secondary" variant="outlined" style={{margin:"0.1em",width:"8em"}}>
+                    <Button value={course} onClick={handleSubmit} color="secondary" variant="outlined" style={{margin:"0.1em",width:"8em"}}>
                         {course}  require         
                     </Button>
                     ))}
                     {electives_D.map((course)=>(
-                    <Button onClick={handlePop} color="secondary" variant="outlined" style={{margin:"0.1em",width:"8em"}}>
+                    <Button value={course} onClick={handleSubmit} color="secondary" variant="outlined" style={{margin:"0.1em",width:"8em"}}>
                         {course}  recommend           
                     </Button>
                     ))}
@@ -198,8 +243,14 @@ const Result =()=>{
             <Popper placement="bottom" anchorEl={place} open={pop}  transition>
                    {({TransitionProps})=>(
                        <Fade timeout={330} {...TransitionProps}>
-                           <Paper sx={{bgcolor:"background.paper.primary"}} style={{maxWidth:"10em"}}>
-                               You are not eligible for this course now!
+                           <Paper sx={{bgcolor:"background.paper.primary"}} style={{minWidth:"30em", maxWidth:"50em"}}>                               
+                                
+                                <h3 style={{margin:"0.8em",color:"green", textAlign:"center"}}>{message}</h3>
+                                
+                               {pre.map((item)=>(
+                                <p style={{marginLeft:"1em"}}>{item.toString().replaceAll(",", "/")}</p>
+                               ))}
+                               &nbsp;
                            </Paper>
                        </Fade>
                    )}
