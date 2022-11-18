@@ -9,14 +9,17 @@ import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import Popout from '../../Components/Popout';
 import Logo from "../../Components/Logo";
 
-
+import {light, dark} from "../../Components/Themes";
+import {ThemeProvider} from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import {Paper} from "@mui/material";
 
 
 const ChildCommentForm =()=> {
@@ -47,6 +50,17 @@ const ChildCommentForm =()=> {
      console.log(id);
      console.log(course);
 
+
+    // light, dark mode
+    const [mode, setMode]=useState(JSON.parse(localStorage.getItem('mode')));
+    const [refresh, setRefresh] = useState(false);
+
+    function re_render(){
+        setRefresh(!refresh);
+       
+    }
+    useEffect(()=> setMode(JSON.parse(localStorage.getItem('mode'))), [refresh]);
+    // done mode
     const changeComment=(val)=>{
         setComment(val.target.value);
     }
@@ -89,10 +103,12 @@ const ChildCommentForm =()=> {
     } 
 
     return(
+        <ThemeProvider theme={mode ? dark:light}>
+            <CssBaseline/>
         <div>
             <Logo/>
             
-            <div className='box'>
+            <Paper sx={{bgcolor:"background.paper.third"}} className='box'>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                 <div class="contentDivCCF">
@@ -121,10 +137,10 @@ const ChildCommentForm =()=> {
                     <Button text = "Submit" col="steelblue" func={submit}></Button>
                 </div>
 
-            </div>
+            </Paper>
 
             <Popout trigger ={popout} head = {header} message={msg} setTrigger={setPopout}/>
-        </div>
+        </div></ThemeProvider>
     )
 }
 

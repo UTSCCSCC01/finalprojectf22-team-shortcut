@@ -14,6 +14,10 @@ import CommentForm from "./Pages/CommentForm/CommentForm";
 import CommentView from "./Pages/CommentView/CommentView";
 import ChildCommentForm from "./Pages/ChildCommentForm/ChildCommentForm";
 import ChildCommentView from "./Pages/ChildCommentView/ChildCommentView";
+import GradReq from "./Pages/GradReq/GradReq";
+import History from "./Pages/History/History";
+
+import Result from "./Pages/RecommendResult/Result";
 
 
 
@@ -38,7 +42,12 @@ const routes=()=>{
                 <Route path="/course/:code/ChildcommentForm" element ={<ChildCommentForm/>}/>
                 <Route path="/course/:code/ChildcommentView" element ={<ChildCommentView/>}/>
 
+                <Route path="/GradReq" element={<GradReq/>}/>
+                <Route path="/History" element={<History/>}/>
+
+
                 {/* <Route path='*'><SomeComponent /></Route> */}
+                <Route path="/result" element={<Result/>}/>
             </Routes>
         </Router>
         
