@@ -24,6 +24,16 @@ const Home =()=>{
         navigate('/program', {state:{user}});
     }
 
+    function toGradReq(){
+        navigate('/GradReq', {state:{user}});
+    }
+
+    function toHistory(){
+        navigate('/History', {state:{user}});
+    }
+
+
+
     return(
         <div className="home">
             <Navbar toProfile={toProfile}/>
@@ -33,9 +43,9 @@ const Home =()=>{
                 <a style={{color:"sienna"}} onClick={toCourse}>Course Search</a>
                 <a style={{color:"sienna"}} onClick={toProgram}>Program Search</a>
             </div>
-            <div style={{marginTop: "2.5em", fontSize: "2.8em", display: "flex", flexDirection:"row"}}>
-                <a style={{color:"sienna"}} href="/home">Course Planning</a>
-                <a  style={{color:"sienna"}} href="/home">Graduation Requirements</a>
+            <div style={{textDecorationLine:"underline", marginTop: "2.5em", fontSize: "2.8em", display: "flex", flexDirection:"row"}}>
+                <a style={{color:"sienna"}} onClick={toHistory}>Course Planning</a>
+                <a  style={{color:"sienna"}} onClick={toGradReq}>Graduation Requirements</a>
             </div>
                 
             

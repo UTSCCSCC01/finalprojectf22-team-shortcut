@@ -1,0 +1,49 @@
+.streamDivHistory {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.preferenceDivHistory {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.coursesSubDivHistory {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+
+.coursesDivHistory {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+
+.streamInputHistory {
+    width: 20em;
+    position: relative;
+    font-size: medium;
+    text-align: left;
+    resize: none;
+}
+
+.preferenceInputHistory {
+    width: 35em;
+    position: relative;
+    font-size: medium;
+    text-align: left;
+    resize: none;
+}
+
+.buttonsHistory{
+    display: flex;
+    flex-direction: row;
+    width: 58%;
+    margin: 1.5em auto;
+    
+    
+}
