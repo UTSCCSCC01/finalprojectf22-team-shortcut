@@ -2,16 +2,23 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import Navbar from "../../Components/Navbar";
-import {Divider, Accordion, AccordionSummary, AccordionDetails} from '@mui/material';
+import {Paper, Divider, Accordion, AccordionSummary, AccordionDetails, Typography} from '@mui/material';
 import {MdExpandMore} from "react-icons/md";
 
 import Popout from "../../Components/Popout";
 
-import bottom1 from "../../Images/quote4.jpg";
-import bottom2 from "../../Images/quote2.jpg";
+import bottom1 from "../../Images/quote4_transparent.png";
+import bottom2 from "../../Images/quote2_transparent.png";
+
+
+
+import {light, dark} from "../../Components/Themes";
+import {ThemeProvider} from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 
 
 const ProgramDescription =()=>{
+   
     let navigate=useNavigate();
 
     const{name}=useParams();
@@ -33,6 +40,16 @@ const ProgramDescription =()=>{
     const [notes, setNotes]=useState('');
     const[status, setStatus]=useState('');
 
+
+    // light, dark mode
+    const [mode, setMode]=useState(JSON.parse(localStorage.getItem('mode')));
+    const [refresh, setRefresh] = useState(false);
+
+    function re_render(){
+        setRefresh(!refresh);
+       
+    }
+    useEffect(()=> setMode(JSON.parse(localStorage.getItem('mode'))), [refresh]);
 
 
     function toProfile(){
@@ -82,8 +99,10 @@ const ProgramDescription =()=>{
 
 
     return(
-        <div style={{backgroundColor:"white"}}>
-        <Navbar toHome={toHome} toProfile={toProfile}/>
+        <ThemeProvider theme={mode? dark:light}>
+            <CssBaseline/>
+        <div>
+        <Navbar toHome={toHome} toProfile={toProfile} sendState={re_render}/>
         <h1 style={{textAlign:"center", margin:"2em"}}>{name}</h1>
         
         <Accordion   style={{marginBottom:"1em", marginLeft:"8.5em", width: "80%"}}>
@@ -187,12 +206,12 @@ const ProgramDescription =()=>{
 
         <div> &nbsp;</div>
         <div> &nbsp;</div>
-        <div style={{display:"flex", backgroundColor:"whitesmoke"}}>
+        <div style={{display:"flex"}} >
         <img style={{width: "40%", height: "55%"}} src={bottom1}/>
         <img style={{width: "40%", height: "45%"}} src={bottom2}/>
         </div>
         
-        </div>
+        </div> </ThemeProvider>
     )
 
 }

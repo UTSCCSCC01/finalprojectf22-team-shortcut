@@ -1,5 +1,5 @@
 .boxCV {
-    background-color: aliceblue;
+    
     width: 90%;
     size: auto;
     border-radius: 2em;
@@ -29,7 +29,7 @@
 }
 
 .commentsDivCV {
-    background-color: rgb(223, 228, 233);
+    
     width: 95%;
     size: auto;
     border-radius: 1em;
@@ -42,7 +42,7 @@
 }
 
 .commentDivCV {
-    background-color: rgb(223, 228, 233);
+   
     width: 95%;
     size: auto;
     border-color: black;

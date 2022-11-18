@@ -8,9 +8,12 @@ import {MdExpandMore} from "react-icons/md";
 import Button from "../../Components/Button";
 import Popout from "../../Components/Popout";
 
-import bottom1 from "../../Images/quote5.jpg";
-import bottom2 from "../../Images/quote6.jpg";
+import bottom1 from "../../Images/quote5_transparent.png";
+import bottom2 from "../../Images/quote6_transparent.png";
 
+import {light, dark} from "../../Components/Themes";
+import {ThemeProvider} from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 
 const CourseDescription =()=>{
 
@@ -36,6 +39,17 @@ const CourseDescription =()=>{
     const [status, setStatus] = useState('');
     const [score, setScore]=useState("NaN");
 
+    const [mode, setMode]=useState(JSON.parse(localStorage.getItem('mode')));
+    const [refresh, setRefresh] = useState(false);
+
+    function re_render(){
+        setRefresh(!refresh);
+       
+    }
+    useEffect(()=> setMode(JSON.parse(localStorage.getItem('mode'))), [refresh]);
+    
+
+
     function toProfile(){
         navigate('/profile', {state:{user}});
     }
@@ -50,6 +64,93 @@ const CourseDescription =()=>{
     function toViewRate(){
         navigate(`/course/${code}/commentView`, {state:{user}});
     }
+
+
+
+    function fetchArray(array){
+        
+        if(array && array.length>0){
+  
+            const new_array = array.filter(item=>!Number.isInteger(item))
+            .map(item=>{
+      
+                if(Array.isArray(item)){
+                    return " ["+fetchArray(item)+"]";
+                }              
+                else{
+                    return " "+item;
+                }   
+            })
+
+            console.log(new_array);
+            return new_array.toString();
+        }
+        else{
+            return "";
+        }
+        /*
+        if(array && array.length>0){
+  
+            const new_array = array.map(item=>{
+                console.log(item);
+                if(Number.isInteger(item) && item){
+                    return "Need satisfy all: "
+                }
+                else if(Number.isInteger(item) && item===0){
+                    return "Satisfy one of the requirements: "
+                }
+                
+                else if(Array.isArray(item)){
+                    return " ["+fecthArray(item)+"]";
+                }      
+                else{
+                    return " "+item+"/";
+                }
+                
+                
+            })
+
+            console.log(new_array);
+            return new_array.toString().replaceAll(",", " ");
+        }
+        else{
+            return null;
+        } 
+        if(array && array.length>0){
+  
+            const new_array = array.map(item=>{
+                console.log(item);
+                if(Number.isInteger(item) && item){
+                    return "Need satisfy all below: "
+                }
+                else if(Number.isInteger(item) && item===0){
+                    return "Satisfy one of the requirements: "
+                }
+                
+                else if(Array.isArray(item)){
+                    return " ["+fetchArray(item)+"]";
+                }      
+                else{
+                    return " "+item;
+                }
+                
+                
+            })
+
+            console.log(new_array);
+            return new_array;
+        }
+        else{
+            return [];
+        }
+        
+    
+        */
+
+        
+    }
+    
+
     
     async function fetchData(){
         const data = {code};
@@ -74,14 +175,17 @@ const CourseDescription =()=>{
             console.log(feedback.course);
             setDescription(feedback.course.description);
             setBreadth(feedback.course.breadth);
-            setExclusions(feedback.course.exclusions);
-            setPre(feedback.course.prerequisites);
-            setCore(feedback.course.corequisites);
-            setRecommended(feedback.course.recommended);
             setNotes(feedback.course.note);
             setStatus(feedback.course.status);
             setName(feedback.course.name);
 
+            setPre(fetchArray(feedback.course.prerequisites));
+            
+            setExclusions(fetchArray(feedback.course.exclusions));
+            
+            setCore(fetchArray(feedback.course.corequisites));
+            setRecommended(fetchArray(feedback.course.recommended));
+            
             if(feedback.course.score.average<=5 &&feedback.course.score.average>=0){
                 setScore(feedback.course.score.average.toFixed(2));
             }
@@ -95,8 +199,12 @@ const CourseDescription =()=>{
     useEffect(()=> {fetchData()}, [])
 
     return(
-        <div style={{backgroundColor:"white"}}> 
-        <Navbar toHome={toHome} toProfile={toProfile}/>
+
+        <ThemeProvider theme={mode? dark:light}>
+            <CssBaseline/>
+
+        <div> 
+        <Navbar toHome={toHome} toProfile={toProfile} sendState={re_render}/>
         <h1 style={{textAlign:"center", margin:"2em"}}>{code}: {name} 
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rate: {score}/5
         </h1>
@@ -127,10 +235,12 @@ const CourseDescription =()=>{
                 <h3>Course Exclusions</h3>
             </AccordionSummary>
             <AccordionDetails >
-                {exclusions.map((item)=>(
-                    <p> - {item}</p>
+                <p>{exclusions}</p>
+                {/*exclusions.filter(item=>(!Number.isInteger(item)))
+                .map((item)=>(
+                    <p> - {item.toString().replaceAll(",", "/")}</p>
                 ))
-                }
+                */} 
             </AccordionDetails>
         </Accordion>
         
@@ -139,9 +249,11 @@ const CourseDescription =()=>{
                 <h3>Course Pre-Requisites</h3>
             </AccordionSummary>
             <AccordionDetails >
-                {pre.map((item)=>(
-                    <p> - {item}</p>
-                ))}
+                <p>{pre}</p>
+
+                {/* pre.map((item)=>(
+                    <p> {item.toString().replaceAll(",", "/")}</p>
+                )) */}
             </AccordionDetails>
         </Accordion>
 
@@ -150,9 +262,11 @@ const CourseDescription =()=>{
                 <h3>Course Co-Requisites</h3>
             </AccordionSummary>
             <AccordionDetails >
-                {core.map((item)=>(
+                <p>{core}</p>
+                {/*core.filter(item =>(!Number.isInteger(item)))
+                .map((item)=>(
                     <p> - {item}</p>
-                ))}
+                ))*/}
             </AccordionDetails>
         </Accordion>
 
@@ -161,11 +275,10 @@ const CourseDescription =()=>{
                 <h3>Recommendation</h3>
             </AccordionSummary>
             <AccordionDetails >
-                {recommended.map((item)=>(
+                <p>{recommended}</p>
+                {/*recommended.map((item)=>(
                     <p> - {item}</p>
-                ))
-
-                }
+                ))*/}
             </AccordionDetails>
         </Accordion>
 
@@ -197,12 +310,12 @@ const CourseDescription =()=>{
 
         <div> &nbsp;</div>
         <div> &nbsp;</div>
-        <div style={{display:"flex", backgroundColor:"whitesmoke"}}>
+        <div style={{display:"flex"}}>
         <img style={{width: "40%", height: "55%"}} src={bottom1}/>
         <img style={{width: "40%", height: "45%"}} src={bottom2}/>
         </div>
 
-        </div>
+        </div></ThemeProvider>
     )
 
 
