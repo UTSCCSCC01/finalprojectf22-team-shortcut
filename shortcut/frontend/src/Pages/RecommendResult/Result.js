@@ -148,7 +148,7 @@ const Result =()=>{
         }
         else{
             setMessage("You are missing some requirements to take this course")
-            setPre(fetchArray(feedback.Prerequisites));
+            setPre(fetchArray(feedback.Prerequisites[0]));
           
         }
 

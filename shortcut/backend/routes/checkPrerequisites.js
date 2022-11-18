@@ -11,86 +11,82 @@ var url = "mongodb+srv://CalebZhang:Zhangkeyuan333@cluster0.lb38qs6.mongodb.net/
 
 
 function recurser(prerequisite, academic_history){
+    console.log("hello")
     var x = prerequisite;
 
-    if(Array.isArray(x) == false){
-        if(academic_history.includes(x)){
-            return [true, 'none'];
+    if (prerequisite.length == 0) {
+        console.log("empty");
+        return [true, 'none'];
+    }
+    if (prerequisite.length == 1) {
+        console.log("1 prereq");
+        if (Array.isArray(prerequisite[0])) {
+            return result = recurser(prerequisite[0], academic_history);
         }
-        else{
-            return [false, x];
+        else {
+            if (academic_history.includes(prerequisite[0])) {
+                console.log("in history");
+                return [true, 'none']
+            }
+            else return [false, prerequisite];
         }
     }
-    else if(Array.isArray(x)){
-        if(x[0] == 0){
-            var r1 = recurser(x[1], academic_history);
-            var r2 = recurser(x[2], academic_history);
-
-            if(Array.isArray(r1) == false || Array.isArray(r2) == false){
-                return [false, 'failure'];
-            }
-            else{
-                if(r1[1] == 'failure' || r2[1] == 'failure'){
-                    return [false, 'failure'];
-                }
-                if(r1[0] == false && r2[0] == false){
-                    var missing_prerequisites = [];
-                    
-                    missing_prerequisites.push(0);
-                    missing_prerequisites.push(r1[1]);
-                    missing_prerequisites.push(r2[1]);
     
-                    return [false, missing_prerequisites];
+    const logic = prerequisite[0];
+    if (logic == 0) {
+        console.log("get OR");
+        var missing_prerequisites = [];
+        for (let i = 1; i < prerequisite.length; i++) {
+            const p = prerequisite[i];
+            console.log("checking", p)
+            if (Array.isArray(p)) {
+                const result = recurser(p, academic_history);
+                if (!result[0]) missing_prerequisites.push(result[1]);
+                else {
+                    while (missing_prerequisites.length > 0) missing_prerequisites.pop();
+                    break;
                 }
-                else{
-                    return [true, 'none'];
+            }
+            else {
+                if (!academic_history.includes(p)) missing_prerequisites.push(p);
+                if (academic_history.includes(p)) {
+                    while (missing_prerequisites.length > 0) missing_prerequisites.pop();
+                    break;
                 }
             }
         }
-        else if(x[0] == 1){
-            var r1 = recurser(x[1], academic_history);
-            var r2 = recurser(x[2], academic_history);
-
-            if(Array.isArray(r1) == false || Array.isArray(r2) == false){
-                return [false, 'failure'];
-            }
-            else{
-                if(r1[1] == 'failure' || r2[1] == 'failure'){
-                    return [false, 'failure'];
-                }
-                if(r1[0] == false && r2[0] == false){
-                    var missing_prerequisites = [];
-    
-                    missing_prerequisites.push(1);
-                    missing_prerequisites.push(r1[1]);
-                    missing_prerequisites.push(r2[1]);
-    
-                    return [false, missing_prerequisites];
-                }
-                else if(r1[0] == false || r2[0] == false){
-                    var missing_prerequisites = [];
-    
-                    if(r1[0] == false){
-                        missing_prerequisites.push(r1[1]);
-                    }
-                    if(r2[0] == false){
-                        missing_prerequisites.push(r2[1]);
-                    }
-    
-                    return [false, missing_prerequisites];
-                }
-                else{
-                    return [true, 'none'];
-                }
-            }
+        console.log("return OR", missing_prerequisites);
+        if (missing_prerequisites.length == 0) return [true, 'none'];
+        if (missing_prerequisites.length == 1) return [false, missing_prerequisites];
+        else {
+            return [false, [0].concat(missing_prerequisites)];
         }
     }
-    else{
-        return [false, 'failure'];
+    else {
+        console.log("get AND");
+        var missing_prerequisites = [];
+        for (let i = 1; i < prerequisite.length; i++) {
+            const p = prerequisite[i];
+            if (Array.isArray(p)) {
+                const result = recurser(p, academic_history);
+                if (!result[0]) missing_prerequisites.push(result[1]);
+            }
+            else {
+                if (!academic_history.includes(p)) missing_prerequisites.push(p);
+            }
+        }
+        console.log("return AND", missing_prerequisites);
+        if (missing_prerequisites.length == 0) return [true, 'none'];
+        if (missing_prerequisites.length == 1) return [false, missing_prerequisites];
+        else {
+            return [false, [1].concat(missing_prerequisites)];
+        }
     }
 }
 
 router.post('/checkPrerequisites', bodyParser.json(), async (req, res) => {
+    
+
     var key = req.body.code;
     var empty_list = [];
     var academic_history = req.body.student_academic_history;
@@ -131,8 +127,9 @@ router.post('/checkPrerequisites', bodyParser.json(), async (req, res) => {
         var pass = 1;
         var result = [];
 
-        for(const prerequisite of course.prerequisites){
-            result = recurser(prerequisite, academic_history);
+        // for(const prerequisite of course.prerequisites){
+            console.log(course.prerequisites);
+            result = recurser(course.prerequisites, academic_history);
 
             if (Array.isArray(result)) {
                 if(result[1] == 'failure'){
@@ -145,7 +142,7 @@ router.post('/checkPrerequisites', bodyParser.json(), async (req, res) => {
                     pass = 0;
                 }
             }
-        }
+        // }
         
         if(pass == 1){
             res.json({ 'result': 1, 'Prerequisites': missing_prerequisites, 'message': 'User is able to take this course.' });
