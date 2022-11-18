@@ -101,6 +101,14 @@ const commentRoutes = require("./routes/comment");
 app.use("/", commentRoutes);
 
 
+const getrecommand = require("./routes/getrecommand");
+app.use("/", getrecommand);
+
+
+const sortSearchRoutes = require("./routes/sortSearch");
+app.use("/",sortSearchRoutes);
+
+
 //port
 const port = process.env.PORT || 8080; // process.env.PORT
 
