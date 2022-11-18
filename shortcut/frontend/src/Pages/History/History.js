@@ -4,7 +4,7 @@ import './History.css';
 //import Button from '../../Components/Button';
 import * as React from 'react';
 import { useParams, Link, Routes, Route, BrowserRouter as Router, useNavigate, useLocation } from "react-router-dom";
-import {Button, OutlinedInput,Box,Paper, InputLabel, FormControl, Chip, Select, MenuItem} from '@mui/material';
+import {TextField, Autocomplete,InputBase, Button, OutlinedInput,Box,Paper, InputLabel, FormControl, Chip, Select, MenuItem} from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useState, useEffect } from "react";
 import Popout from '../../Components/Popout';
@@ -70,6 +70,14 @@ const History =()=> {
             setCompleted(completed);
             console.log(completed);
         }
+    }
+
+    function select(chosen) {
+            console.log(chosen);
+            
+            setCompleted(chosen);
+            console.log(completed);
+        
     }
   
     function printCompleted() {
@@ -151,7 +159,7 @@ const History =()=> {
           },
         },
     };
-
+    const [search, setSearch]=useState('');
     return(
         <ThemeProvider theme={mode? dark:light}>
             <CssBaseline/>
@@ -197,7 +205,7 @@ const History =()=> {
                         
                         
                             <h2> Select the courses that you have completed: </h2>
-                           
+                           {/*   
                             <Select
                                 input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
                                 
@@ -211,13 +219,20 @@ const History =()=> {
                                     ))}
                                 </Box>
                             )} MenuProps={MenuProps}>
-                            {                      
-                                courseOptions.map((course)=>
+                                
+                                            
+                                courseOptions
+                                .map((course)=>
                                     <MenuItem  sx={{bgcolor:"background.paper.primary"}} key={course} value={course}>
                                     {course}
                                     </MenuItem>)
-                            }          
-                            </Select>
+                                     
+                            </Select>*/} 
+                             <Autocomplete multiple 
+                             options={courseOptions.map((course)=>course)} onChange={(event, value)=>setCompleted(value)}
+                             renderInput={(params)=> <TextField {...params} />} />
+                                    
+                            
                                             
                     </div>
                 </div>
