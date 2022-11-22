@@ -238,10 +238,10 @@ Tracking on Trello Total Mark: 24 / 24
     - 0 marks = documentation has not been created
 
 
-  Your Mark: _ / 14
+  Your Mark: 14 / 14
 
 ---
 
 ## Total Mark
 
-_ / 93
+93 / 93
